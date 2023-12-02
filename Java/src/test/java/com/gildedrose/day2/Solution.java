@@ -13,6 +13,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Solution {
 
+    private int solvePart1(String input) {
+        String[] lines = input.split("\n");
+        List<Game> games = Arrays.stream(lines).map(Game::parseHand).collect(Collectors.toList());
+        List<Game> okGames = games.stream().filter(Game::isOkGamePart1).collect(Collectors.toList());
+        int sum = 0;
+        for (Game okGame : okGames) {
+            sum += okGame.id;
+        }
+        return sum;
+    }
+
     /**
      * Being a legendary item, never has to be sold or decreases in Quality
      */
@@ -23,14 +34,8 @@ public class Solution {
             "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red\n" +
             "Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red\n" +
             "Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green";
-        int solution = solve(input);
+        int solution = solvePart1(input);
         assertEquals(solution, 8);
-    }
-
-    private int solve(String input) {
-        String[] lines = input.split("\n");
-        List<Game> games = Arrays.stream(lines).map(Game::parseHand).collect(Collectors.toList());
-        return 0;
     }
 
     /**
@@ -39,7 +44,7 @@ public class Solution {
     @Test
     public void solution() throws IOException {
         String content = Files.readString(Path.of("src/test/java/com/gildedrose/day2/input.txt"));
-        System.out.println(solve(content));
+        System.out.println(solvePart1(content));
 
     }
 }
