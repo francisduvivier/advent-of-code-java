@@ -55,5 +55,18 @@ public class Game {
         }
         return sum;
     }
+
+    public long getPower() {
+        long power = 1;
+        int minRed = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.red).collect(Collectors.toList()));
+        power *= minRed;
+
+        int minGreen = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.green).collect(Collectors.toList()));
+        power *= minGreen;
+
+        int minBlue = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.blue).collect(Collectors.toList()));
+        power *= minBlue;
+        return power;
+    }
 }
 
