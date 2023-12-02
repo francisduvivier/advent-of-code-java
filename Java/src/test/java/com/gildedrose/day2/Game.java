@@ -23,19 +23,29 @@ public class Game {
     }
 
     public boolean isOkGamePart1() {
-        int red = calcSum(cubeSets.stream().map(cubeSet -> cubeSet.red).collect(Collectors.toList()));
+        int red = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.red).collect(Collectors.toList()));
         if (red > 12) {
             return false;
         }
-        int green = calcSum(cubeSets.stream().map(cubeSet -> cubeSet.green).collect(Collectors.toList()));
+        int green = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.green).collect(Collectors.toList()));
         if (green > 13) {
             return false;
         }
-        int blue = calcSum(cubeSets.stream().map(cubeSet -> cubeSet.blue).collect(Collectors.toList()));
+        int blue = calcMax(cubeSets.stream().map(cubeSet -> cubeSet.blue).collect(Collectors.toList()));
         if (blue > 14) {
             return false;
         }
         return true;
+    }
+
+    private int calcMax(List<Integer> intList) {
+        int max = 0;
+        for (int item : intList) {
+            if (item > max) {
+                max = item;
+            }
+        }
+        return max;
     }
 
     private int calcSum(List<Integer> intList) {
