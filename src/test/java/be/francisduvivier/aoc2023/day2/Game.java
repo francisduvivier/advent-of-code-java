@@ -1,4 +1,4 @@
-package com.gildedrose.day2;
+package be.francisduvivier.aoc2023.day2;
 
 import java.util.ArrayList;
 import java.util.List;

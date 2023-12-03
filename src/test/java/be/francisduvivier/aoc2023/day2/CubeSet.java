@@ -1,4 +1,4 @@
-package com.gildedrose.day2;
+package be.francisduvivier.aoc2023.day2;
 
 public class CubeSet {
     private CubeSet() {
