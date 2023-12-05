@@ -10,7 +10,9 @@ public class Main {
         solve(input);
     }
 
-    static void solve(String sampleInput) {
-
+    static String solve(String sampleInput) {
+        var lines = sampleInput.split("\n");
+        System.out.println("Read lines: " + lines.length);
+        return "0";
     }
 }
