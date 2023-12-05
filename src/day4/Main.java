@@ -20,19 +20,19 @@ public class Main {
         System.out.println("Read lines: " + lines.length);
         var mappers = new ArrayList<Mapper>();
         var i = 0;
-        List<Integer> seeds = new ArrayList<>();
+        List<Long> seeds = new ArrayList<>();
         for (var line : lines) {
             if (i++ == 0) {
-                seeds = Arrays.stream(line.split(": ")[1].split(" ")).map(Integer::parseInt).collect(Collectors.toList());
+                seeds = Arrays.stream(line.split(": ")[1].split(" ")).map(Long::parseLong).collect(Collectors.toList());
             } else if (line.matches(".*map:$")) {
                 mappers.add(new Mapper());
             } else if (line.matches("^[0-9 ]+$")) {
                 mappers.getLast().addMappingLine(line);
             }
         }
-        var lowestMapping = Integer.MAX_VALUE;
+        var lowestMapping = Long.MAX_VALUE;
         for (var seed : seeds) {
-            int mapping = getMapping(seed, mappers);
+            long mapping = getMapping(seed, mappers);
             if (mapping < lowestMapping) {
                 lowestMapping = mapping;
             }
@@ -40,10 +40,12 @@ public class Main {
         return "" + lowestMapping;
     }
 
-    private static int getMapping(Integer seed, List<Mapper> mapperList) {
+    private static long getMapping(Long seed, List<Mapper> mapperList) {
         var val = seed;
         for (var mapper : mapperList) {
+//            System.out.printf("mapping: val: " + val);
             val = mapper.getMapping(val);
+//            System.out.println(" -> " + val);
         }
         return val;
     }

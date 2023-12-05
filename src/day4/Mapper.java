@@ -14,10 +14,10 @@ public class Mapper {
         mappings.add(mapping);
     }
 
-    int getMapping(int value) {
+    long getMapping(long value) {
         for (var mapping : mappings) {
             if (value >= mapping.source && value < (mapping.source + mapping.range)) {
-                int mapDiff = mapping.dest - mapping.source;
+                long mapDiff = mapping.dest - mapping.source;
                 return value + mapDiff;
             }
         }

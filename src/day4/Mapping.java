@@ -1,14 +1,13 @@
 package day4;
 
 public class Mapping {
-    public final int source;
-    public final int dest;
-    public final int range;
+    public final long source;
+    public final long dest;
+    public final long range;
 
-    public Mapping(int source, int dest, int range) {
-
-        this.source = source;
+    public Mapping(long dest, long source, long range) {
         this.dest = dest;
+        this.source = source;
         this.range = range;
     }
 
@@ -17,9 +16,9 @@ public class Mapping {
         var matches = mappingLine.split(" ");
 
         return new Mapping(
-            Integer.parseInt(matches[0]),
-            Integer.parseInt(matches[1]),
-            Integer.parseInt(matches[2])
+            Long.parseLong(matches[0]),
+            Long.parseLong(matches[1]),
+            Long.parseLong(matches[2])
         );
     }
 }
