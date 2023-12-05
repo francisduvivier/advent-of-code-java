@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Solution {
 
+    public static final String INPUT_TXT = "src/be/francisduvivier/aoc2023/day2/input.txt";
+
     private int solvePart1(String input) {
         String[] lines = input.split("\n");
         List<Game> games = Arrays.stream(lines).map(Game::parseHand).collect(Collectors.toList());
@@ -43,7 +45,7 @@ public class Solution {
      */
     @Test
     public void solution1() throws IOException {
-        String content = Files.readString(Path.of("src/test/java/com/gildedrose/day2/input.txt"));
+        String content = Files.readString(Path.of(INPUT_TXT));
         System.out.println(solvePart1(content));
     }
 
@@ -76,7 +78,7 @@ public class Solution {
      */
     @Test
     public void solution2() throws IOException {
-        String content = Files.readString(Path.of("src/test/java/com/gildedrose/day2/input.txt"));
+        String content = Files.readString(Path.of(INPUT_TXT));
         System.out.println(solvePart2(content));
 
     }
