@@ -17,8 +17,8 @@ public class Mapper {
     int getMapping(int value) {
         for (var mapping : mappings) {
             if (value >= mapping.source && value < (mapping.source + mapping.range)) {
-                int mappDiff = mapping.dest - mapping.source;
-                return value + mappDiff;
+                int mapDiff = mapping.dest - mapping.source;
+                return value + mapDiff;
             }
         }
         return value;
