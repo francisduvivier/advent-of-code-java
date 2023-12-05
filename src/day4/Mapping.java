@@ -11,4 +11,15 @@ public class Mapping {
         this.dest = dest;
         this.range = range;
     }
+
+    public static Mapping parseMapping(String mappingLine) {
+        // EG 3078006360 2182201339 30483272
+        var matches = mappingLine.split(" ");
+
+        return new Mapping(
+            Integer.parseInt(matches[0]),
+            Integer.parseInt(matches[1]),
+            Integer.parseInt(matches[2])
+        );
+    }
 }

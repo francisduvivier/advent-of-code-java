@@ -11,7 +11,7 @@ class MapperTest {
         // Arrange
         var mapper = new Mapper();
         // Act
-        mapper.addMapping(10, 20, 2);
+        mapper.addMapping(new Mapping(10, 20, 2));
         // Assert
         assertEquals(mapper.getMapping(9), 9);
         assertEquals(mapper.getMapping(10), 20);
@@ -24,7 +24,20 @@ class MapperTest {
         // Arrange
         var mapper = new Mapper();
         // Act
-        mapper.addMapping(20, 10, 2);
+        mapper.addMapping(new Mapping(20, 10, 2));
+        // Assert
+        assertEquals(mapper.getMapping(19), 19);
+        assertEquals(mapper.getMapping(20), 10);
+        assertEquals(mapper.getMapping(21), 11);
+        assertEquals(mapper.getMapping(22), 22);
+    }
+
+    @Test
+    void addMappingLine() {
+        // Arrange
+        var mapper = new Mapper();
+        // Act
+        mapper.addMappingLine("20 10 2");
         // Assert
         assertEquals(mapper.getMapping(19), 19);
         assertEquals(mapper.getMapping(20), 10);

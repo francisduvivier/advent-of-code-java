@@ -6,8 +6,12 @@ import java.util.List;
 public class Mapper {
     private List<Mapping> mappings = new ArrayList<>();
 
-    void addMapping(int source, int dest, int range) {
-        mappings.add(new Mapping(source, dest, range));
+    void addMappingLine(String mappingLine) {
+        addMapping(Mapping.parseMapping(mappingLine));
+    }
+
+    void addMapping(Mapping mapping) {
+        mappings.add(mapping);
     }
 
     int getMapping(int value) {
