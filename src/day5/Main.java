@@ -40,6 +40,31 @@ public class Main {
         return "" + lowestMapping;
     }
 
+    static String solve2(String sampleInput) {
+        var lines = sampleInput.split("\n");
+        System.out.println("Read lines: " + lines.length);
+        var mappers = new ArrayList<Mapper>();
+        var i = 0;
+        List<Long> seeds = new ArrayList<>();
+        for (var line : lines) {
+            if (i++ == 0) {
+                seeds = Arrays.stream(line.split(": ")[1].split(" ")).map(Long::parseLong).collect(Collectors.toList());
+            } else if (line.matches(".*map:$")) {
+                mappers.add(new Mapper());
+            } else if (line.matches("^[0-9 ]+$")) {
+                mappers.getLast().addMappingLine(line);
+            }
+        }
+        var lowestMapping = Long.MAX_VALUE;
+        for (var seed : seeds) {
+            long mapping = getMapping(seed, mappers);
+            if (mapping < lowestMapping) {
+                lowestMapping = mapping;
+            }
+        }
+        return "" + lowestMapping;
+    }
+
     private static long getMapping(Long seed, List<Mapper> mapperList) {
         var val = seed;
         for (var mapper : mapperList) {

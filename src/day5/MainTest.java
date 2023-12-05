@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static day5.Main.solve;
+import static day5.Main.solve2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
@@ -33,5 +34,11 @@ class MainTest {
     void solvePart1() {
         assertEquals("35", solve(sampleInput));
         System.out.println(solve(input));
+    }
+
+    @Test
+    void solvePart2() {
+        assertEquals("46", solve2(sampleInput));
+        System.out.println(solve2(input));
     }
 }
