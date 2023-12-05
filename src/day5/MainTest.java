@@ -1,4 +1,4 @@
-package day4;
+package day5;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,9 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 
-import static day4.Main.solve;
+import static day5.Main.solve;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
