@@ -1,5 +1,10 @@
 package day4;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
@@ -13,6 +18,33 @@ public class Main {
     static String solve(String sampleInput) {
         var lines = sampleInput.split("\n");
         System.out.println("Read lines: " + lines.length);
-        return "0";
+        var mappers = new ArrayList<Mapper>();
+        var i = 0;
+        List<Integer> seeds = new ArrayList<>();
+        for (var line : lines) {
+            if (i++ == 0) {
+                seeds = Arrays.stream(line.split(": ")[1].split(" ")).map(Integer::parseInt).collect(Collectors.toList());
+            } else if (line.matches(".*map:$")) {
+                mappers.add(new Mapper());
+            } else if (line.matches("^[0-9 ]+$")) {
+                mappers.getLast().addMappingLine(line);
+            }
+        }
+        var lowestMapping = Integer.MAX_VALUE;
+        for (var seed : seeds) {
+            int mapping = getMapping(seed, mappers);
+            if (mapping < lowestMapping) {
+                lowestMapping = mapping;
+            }
+        }
+        return "" + lowestMapping;
+    }
+
+    private static int getMapping(Integer seed, List<Mapper> mapperList) {
+        var val = seed;
+        for (var mapper : mapperList) {
+            val = mapper.getMapping(val);
+        }
+        return val;
     }
 }

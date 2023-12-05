@@ -32,7 +32,7 @@ class MainTest {
 
     @Test
     void solvePart1() {
-        assertEquals(solve(sampleInput), "35");
+        assertEquals("35", solve(sampleInput));
         System.out.println(solve(input));
     }
 }
