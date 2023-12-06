@@ -20,14 +20,22 @@ public class Main {
         long result = 1;
         for (int i = 0; i < times.size(); i++) {
             result *= new Runner(times.get(i), dists.get(i)).getNbWinners();
-
         }
         return "" + result;
 
     }
 
     static String solve2(String sampleInput) {
-        return "TODO";
+        String[] lines = sampleInput.split("\n");
+        List<Long> times = new ArrayList<>();
+        List<Long> dists = new ArrayList<>();
+        times.add(Long.parseLong(Arrays.stream(lines[0].split(": +")[1].split(" +")).collect(Collectors.joining())));
+        dists.add(Long.parseLong(Arrays.stream(lines[1].split(": +")[1].split(" +")).collect(Collectors.joining())));
+        long result = 1;
+        for (int i = 0; i < times.size(); i++) {
+            result *= new Runner(times.get(i), dists.get(i)).getNbWinners();
+        }
+        return "" + result;
     }
 
 }

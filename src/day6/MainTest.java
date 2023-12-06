@@ -38,7 +38,7 @@ class MainTest {
 
     @Test
     void solvePart2() {
-        assertEquals("46", solve2(sampleInput));
+        assertEquals("71503", solve2(sampleInput));
         System.out.println(solve2(input));
     }
 }
