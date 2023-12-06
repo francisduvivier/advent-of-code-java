@@ -11,12 +11,18 @@ import java.util.stream.Collectors;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        var sampleInput = "";
-        var input = "";
     }
 
     static String solve(String sampleInput) {
-        return "TODO";
+        String[] lines = sampleInput.split("\n");
+        List<Integer> times = Arrays.stream(lines[0].split(": +")[1].split(" +")).map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> dists = Arrays.stream(lines[1].split(": +")[1].split(" +")).map(Integer::parseInt).collect(Collectors.toList());
+        long result = 1;
+        for (int i = 0; i < times.size(); i++) {
+            result *= new Runner(times.get(i), dists.get(i)).getNbWinners();
+
+        }
+        return "" + result;
 
     }
 
