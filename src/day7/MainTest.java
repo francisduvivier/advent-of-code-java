@@ -35,12 +35,16 @@ class MainTest {
     @Test
     void solvePart1() {
         assertEquals("6440", solve(sampleInput));
-        System.out.println(solve(input));
+        String solution = solve(input);
+        System.out.println(solution);
+        assertEquals("249748283", solution);
     }
 
     @Test
     void solvePart2() {
         assertEquals("5905", solve2(sampleInput2));
-        System.out.println(solve2(input));
+        String result = solve2(input);
+        System.out.println(result);
+        assertEquals("248029057", result);
     }
 }

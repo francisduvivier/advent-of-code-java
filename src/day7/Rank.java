@@ -8,12 +8,12 @@ import java.util.stream.Stream;
 public enum Rank {
     NO_RANK(""),
     HIGH_CARD(".*"),
-    ONE_PAIR(".*(.)(?:\\1|J).*"),
-    TWO_PAIR(".*(.)(?:\\1|J).*(.)(\\2|J).*"),
-    THREE_OF_A_KIND(".*(.)(.*(?:\\1|J).*){2}.*"),
-    FULL_HOUSE("(.)(?:\\1|J){1,2}(.)(\\2|J){1,2}"),
-    FOUR_OF_A_KIND(".*(.)(.*(?:\\1|J).*){3}.*"),
-    FIVE_OF_A_KIND("(.)(?:\\1|J)*");
+    ONE_PAIR(".*(.)\\1.*"),
+    TWO_PAIR(".*(.)\\1.*(.)\\2.*"),
+    THREE_OF_A_KIND(".*(.)(.*\\1.*){2}.*"),
+    FULL_HOUSE("(.)\\1{1,2}(.)\\2{1,2}"),
+    FOUR_OF_A_KIND(".*(.)(.*\\1.*){3}.*"),
+    FIVE_OF_A_KIND("(.)\\1*");
 
     private final String matcher;
 
