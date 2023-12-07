@@ -1,7 +1,7 @@
 package day7;
 
 class Hand implements Comparable<Hand> {
-    private static char[] order = new char[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J'};
+    static char[] order = new char[]{'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J'};
     private final String characters;
 
     Hand(String hand) {

@@ -10,9 +10,13 @@ class HandTest {
     @Test
     void rank() {
         assertEquals(Rank.FIVE_OF_A_KIND, new Hand("AAAAA").getRANK());
+        assertEquals(Rank.FIVE_OF_A_KIND, new Hand("JAAAA").getRANK());
         assertEquals(Rank.FOUR_OF_A_KIND, new Hand("AA8AA").getRANK());
+        assertEquals(Rank.FOUR_OF_A_KIND, new Hand("AA8JA").getRANK());
         assertEquals(Rank.FULL_HOUSE, new Hand("23332").getRANK());
+        assertEquals(Rank.FULL_HOUSE, new Hand("23J32").getRANK());
         assertEquals(Rank.THREE_OF_A_KIND, new Hand("TTT98").getRANK());
+        assertEquals(Rank.THREE_OF_A_KIND, new Hand("TJT98").getRANK());
         assertEquals(Rank.TWO_PAIR, new Hand("23432").getRANK());
         assertEquals(Rank.ONE_PAIR, new Hand("A23A4").getRANK());
         assertEquals(Rank.HIGH_CARD, new Hand("23456").getRANK());

@@ -27,11 +27,8 @@ public class Main {
         return "" + result;
     }
 
-    static String solve2(String sampleInput) {
-        String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+    static String solve2(String input) {
+        return solve(input);
     }
 
 }
