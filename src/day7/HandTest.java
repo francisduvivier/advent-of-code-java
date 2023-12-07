@@ -32,10 +32,12 @@ class HandTest {
 
     @Test
     void compareTo() {
+        assertTrue(new Hand("2").compareTo(new Hand("J")) > 0);
         assertTrue(new Hand("23556").compareTo(new Hand("23456")) > 0);
         assertTrue(new Hand("A2223").compareTo(new Hand("92223")) > 0);
         assertTrue(new Hand("98989").compareTo(new Hand("91929")) > 0);
         assertTrue(new Hand("QQQQ2").compareTo(new Hand("JKKK2")) > 0);
+        assertTrue(new Hand("99992").compareTo(new Hand("JKKK2")) > 0);
         assertTrue(new Hand("JKKK2").compareTo(new Hand("QQQ22")) > 0);
     }
 }
