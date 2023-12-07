@@ -29,10 +29,6 @@ public enum Rank {
             List<String> sortedChars = Arrays.stream(replaceChars.split("")).sorted().toList();
             var stringBuilder = new StringBuilder();
             for (var sortedChar : sortedChars) {
-                if (sortedChar == "J") {
-                    stringBuilder.append(replacement);
-                }
-
                 stringBuilder.append(sortedChar);
             }
             String sortedString = stringBuilder.toString();
