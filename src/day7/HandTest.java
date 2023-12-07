@@ -21,9 +21,6 @@ class HandTest {
     @Test
     void secondaryRank() {
         assertEquals(new Hand("23456").getSecondaryRANK(), new Hand("23456").getSecondaryRANK());
-        assertEquals(0, new Hand("2").getSecondaryRANK());
-        assertEquals(12, new Hand("A").getSecondaryRANK());
-        assertEquals(12 * 13 + 1, new Hand("A3").getSecondaryRANK());
         assertTrue(new Hand("23556").getSecondaryRANK() > new Hand("23456").getSecondaryRANK());
         assertTrue(new Hand("A2222").getSecondaryRANK() > new Hand("9AAAA").getSecondaryRANK());
         assertTrue(new Hand("A2223").getSecondaryRANK() > new Hand("A2222").getSecondaryRANK());
@@ -34,5 +31,7 @@ class HandTest {
         assertTrue(new Hand("23556").compareTo(new Hand("23456")) > 0);
         assertTrue(new Hand("A2223").compareTo(new Hand("92223")) > 0);
         assertTrue(new Hand("98989").compareTo(new Hand("91929")) > 0);
+        assertTrue(new Hand("QQQQ2").compareTo(new Hand("JKKK2")) > 0);
+        assertTrue(new Hand("JKKK2").compareTo(new Hand("QQQ22")) > 0);
     }
 }

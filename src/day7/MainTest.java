@@ -14,11 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
     String sampleInput;
+    String sampleInput2;
     String input;
 
     @BeforeEach
     void setUp() throws IOException {
         sampleInput = Files.readString(Path.of(getInputDir() + "/sample.txt"));
+        sampleInput2 = Files.readString(Path.of(getInputDir() + "/sample2.txt"));
         input = Files.readString(Path.of(getInputDir() + "/input.txt"));
     }
 
@@ -38,7 +40,7 @@ class MainTest {
 
     @Test
     void solvePart2() {
-        assertEquals("71503", solve2(sampleInput));
+        assertEquals("5905", solve2(sampleInput2));
         System.out.println(solve2(input));
     }
 }
