@@ -30,6 +30,10 @@ public class BinaryTree {
         for (var node : nodes) {
             map.put(node.id, node);
         }
+        for (var node : nodes) {
+            node.leftNode = map.get(node.leftId);
+            node.rightNode = map.get(node.rightId);
+        }
         return map;
     }
 
@@ -40,9 +44,9 @@ public class BinaryTree {
         char[] instructionChars = instructions.toCharArray();
         while (!currNode.id.equals(destinationId)) {
             if (instructionChars[instructionIndex] == 'L') {
-                currNode = nodeMap.get(currNode.leftId);
+                currNode = currNode.leftNode;
             } else {
-                currNode = nodeMap.get(currNode.rightId);
+                currNode = currNode.rightNode;
             }
             steps++;
             instructionIndex = (instructionIndex + 1) % instructionChars.length;
@@ -55,6 +59,8 @@ public class BinaryTree {
         final String leftId;
         final String rightId;
         final String id;
+        BinaryNode rightNode;
+        BinaryNode leftNode;
 
         public BinaryNode(String id, String leftId, String rightId) {
             this.id = id;
