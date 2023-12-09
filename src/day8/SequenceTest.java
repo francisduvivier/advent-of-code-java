@@ -35,4 +35,9 @@ class SequenceTest {
         assertEquals(2, new Sequence(new long[]{2, 2, 2}).extrapolateRec());
         assertEquals(28, new Sequence(new long[]{1, 3, 6, 10, 15, 21}).extrapolateRec());
     }
+
+    @Test
+    void parse() {
+        assertArrayEquals(new long[]{1, 3, 6, 10, 15, 21}, Sequence.parse("1   3   6  10  15  21").start);
+    }
 }

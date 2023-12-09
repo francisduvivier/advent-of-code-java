@@ -8,8 +8,12 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
+
         long result = 0;
-        // TODO
+        for (var line : lines) {
+            var seq = Sequence.parse(line);
+            result += seq.extrapolateRec();
+        }
         return "" + result;
     }
 

@@ -1,7 +1,9 @@
 package day8;
 
+import java.util.Arrays;
+
 public class Sequence {
-    private final long[] start;
+    final long[] start;
     private Sequence diffs;
     private boolean allSameDiffs;
 
@@ -24,6 +26,13 @@ public class Sequence {
             }
         }
         return true;
+    }
+
+    public static Sequence parse(String line) {
+        String[] numberStrings = line.split(" +");
+
+        long[] numbers = Arrays.stream(numberStrings).mapToLong(Long::parseLong).toArray();
+        return new Sequence(numbers); //TODO
     }
 
     boolean allSameDiff() {
