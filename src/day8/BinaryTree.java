@@ -1,9 +1,12 @@
 package day8;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BinaryTree {
     final BinaryNode[] nodes;
+    final Map<String, BinaryNode> nodeMap;
     final String leftId;
     final String rightId;
     final String id;
@@ -11,6 +14,7 @@ public class BinaryTree {
     private BinaryTree(List<BinaryNode> nodeList) {
         this.nodes = new BinaryNode[nodeList.size()];
         nodeList.toArray(this.nodes);
+        this.nodeMap = createMap(this.nodes);
         this.id = nodes[0].id;
         this.leftId = nodes[0].leftId;
         this.rightId = nodes[0].rightId;
@@ -19,6 +23,14 @@ public class BinaryTree {
 
     public static BinaryTree parse(List<String> strings) {
         return new BinaryTree(strings.stream().map(BinaryNode::parse).toList());
+    }
+
+    private Map<String, BinaryNode> createMap(BinaryNode[] nodes) {
+        HashMap<String, BinaryNode> map = new HashMap<>();
+        for (var node : nodes) {
+            map.put(node.id, node);
+        }
+        return map;
     }
 
     public long getStepsRec(String destinationId, String instructions) {
