@@ -15,9 +15,14 @@ public class BinaryTree {
         this.nodes = new BinaryNode[nodeList.size()];
         nodeList.toArray(this.nodes);
         this.nodeMap = createMap(this.nodes);
-        this.id = nodeMap.get("AAA").id;
-        this.leftId = nodeMap.get("AAA").leftId;
-        this.rightId = nodeMap.get("AAA").rightId;
+
+        BinaryNode mainNode = nodeMap.get("AAA");
+        if (mainNode == null) {
+            mainNode = new BinaryNode("", "", "");
+        }
+        this.id = mainNode.id;
+        this.leftId = mainNode.leftId;
+        this.rightId = mainNode.rightId;
 
     }
 
@@ -39,7 +44,6 @@ public class BinaryTree {
 
     public long getSteps(String startMatcher, String destinationMatcher, String instructions) {
         var startNodes = Arrays.stream(nodes).filter(node -> node.id.matches(startMatcher)).collect(Collectors.toSet());
-        var endNodes = Arrays.stream(nodes).filter(node -> node.id.matches(destinationMatcher)).collect(Collectors.toSet());
 
         if (DEBUG) {
             System.out.println("getSteps to " + destinationMatcher + " for(" + instructions.length() + "): " + instructions);
@@ -48,23 +52,27 @@ public class BinaryTree {
         long steps = 0;
         int opIndex = 0;
         char[] instructionChars = instructions.toCharArray();
-        while (!currNodes.stream().allMatch(n -> n.id.equals(destinationMatcher))) {
+        while (!currNodes.stream().allMatch(n -> n.id.matches(destinationMatcher))) {
             char op = instructionChars[opIndex];
             var i = 0;
+            final var opi = opIndex;
+            if (currNodes.stream().allMatch(n -> n.isTried(opi))) {
+                throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is already tried on [" + currNodes.get(0).id + "]");
+            }
             for (final var currNode : currNodes) {
 
-                if (DEBUG) {
-                    System.out.println("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is being tried on [" + currNode.id + "]");
-                }
-                if (currNode.isTried(opIndex)) {
-                    throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is already tried on [" + currNode.id + "]");
-                }
-                currNode.markTried(opIndex);
+                BinaryNode next;
                 if (op == 'L') {
-                    currNodes.set(i, currNode.leftNode);
+                    next = (currNode.leftNode);
                 } else {
-                    currNodes.set(i, currNode.rightNode);
+                    next = (currNode.rightNode);
                 }
+                if (DEBUG) {
+                    System.out.println("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is being tried on [" + currNode.id + "] => [" + next.id + "]");
+                }
+
+                currNode.markTried(opIndex);
+                currNodes.set(i++, next);
             }
             steps++;
             opIndex = (opIndex + 1) % instructionChars.length;
@@ -88,7 +96,7 @@ public class BinaryTree {
         }
 
         public static BinaryNode parse(String line) {
-            String[] firstParts = line.split("[^A-Z]+");
+            String[] firstParts = line.split("[^A-Z0-9]+");
             String id = firstParts[0];
             String leftId = firstParts[1];
             String rightId = firstParts[2];
