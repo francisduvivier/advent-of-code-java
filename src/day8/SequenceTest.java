@@ -29,11 +29,19 @@ class SequenceTest {
     }
 
     @Test
-    void extrapolateRec() {
-        assertEquals(68, new Sequence(new long[]{10, 13, 16, 21, 30, 45}).extrapolateRec());
-        assertEquals(23, new Sequence(new long[]{3, 3, 5, 9, 15}).extrapolateRec());
-        assertEquals(2, new Sequence(new long[]{2, 2, 2}).extrapolateRec());
-        assertEquals(28, new Sequence(new long[]{1, 3, 6, 10, 15, 21}).extrapolateRec());
+    void extrapolateRightRec() {
+        assertEquals(68, new Sequence(new long[]{10, 13, 16, 21, 30, 45}).extrapolateRightRec());
+        assertEquals(23, new Sequence(new long[]{3, 3, 5, 9, 15}).extrapolateRightRec());
+        assertEquals(2, new Sequence(new long[]{2, 2, 2}).extrapolateRightRec());
+        assertEquals(28, new Sequence(new long[]{1, 3, 6, 10, 15, 21}).extrapolateRightRec());
+    }
+
+    @Test
+    void extrapolateLeftRec() {
+        assertEquals(2, new Sequence(new long[]{2, 2, 2}).extrapolateLeftRec());
+        assertEquals(-2, new Sequence(new long[]{0, 2, 4, 6}).extrapolateLeftRec());
+        assertEquals(5, new Sequence(new long[]{3, 3, 5, 9, 15}).extrapolateLeftRec());
+        assertEquals(5, new Sequence(new long[]{10, 13, 16, 21, 30, 45}).extrapolateLeftRec());
     }
 
     @Test

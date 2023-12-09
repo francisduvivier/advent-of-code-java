@@ -34,13 +34,12 @@ class MainTest {
     void solvePart1() {
         assertEquals("114", solve(sampleInput));
         String solution = solve(input);
-        System.out.println(solution);
-        assertEquals("TODO", solution);
+        assertEquals("1930746032", solution);
     }
 
     @Test
     void solvePart2() {
-        assertEquals("TODO", solve2(sampleInput));
+        assertEquals("2", solve2(sampleInput));
         System.out.println(solve2(input));
     }
 }

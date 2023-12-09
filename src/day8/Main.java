@@ -12,15 +12,19 @@ public class Main {
         long result = 0;
         for (var line : lines) {
             var seq = Sequence.parse(line);
-            result += seq.extrapolateRec();
+            result += seq.extrapolateRightRec();
         }
         return "" + result;
     }
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
+
         long result = 0;
-        // TODO
+        for (var line : lines) {
+            var seq = Sequence.parse(line);
+            result += seq.extrapolateLeftRec();
+        }
         return "" + result;
     }
 

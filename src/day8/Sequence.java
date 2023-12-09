@@ -52,12 +52,21 @@ public class Sequence {
         return this.start[1] - this.start[0];
     }
 
-    long extrapolateRec() {
+    long extrapolateRightRec() {
         long lastVal = this.start[this.start.length - 1];
         if (this.allSameDiffs) {
             return lastVal + this.getDiff();
         }
-        long nextDiff = this.diffs.extrapolateRec();
+        long nextDiff = this.diffs.extrapolateRightRec();
         return lastVal + nextDiff;
+    }
+
+    public long extrapolateLeftRec() {
+        long firstVal = this.start[0];
+        if (this.allSameDiffs) {
+            return firstVal - this.getDiff();
+        }
+        long nextDiff = this.diffs.extrapolateLeftRec();
+        return firstVal - nextDiff;
     }
 }
