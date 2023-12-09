@@ -3,6 +3,7 @@ package day8;
 import java.util.*;
 
 public class BinaryTree {
+    final boolean DEBUG = true;
     final BinaryNode[] nodes;
     final Map<String, BinaryNode> nodeMap;
     final String leftId;
@@ -36,11 +37,17 @@ public class BinaryTree {
     }
 
     public long getSteps(String destinationId, String instructions) {
+        if (DEBUG) {
+            System.out.println("getSteps to " + destinationId + " for: " + instructions);
+        }
         var currNode = this.nodes[0];
         long steps = 0;
         int instructionIndex = 0;
         char[] instructionChars = instructions.toCharArray();
         while (!currNode.id.equals(destinationId)) {
+            if (DEBUG) {
+                System.out.println("STEP [" + steps + "]: inst index [" + instructionIndex + "]-> " + instructionChars[instructionIndex] + " is being tried on [" + currNode.id + "]");
+            }
             if (currNode.isTried(instructionIndex)) {
                 throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + instructionIndex + "]-> " + instructionChars[instructionIndex] + " is already tried on [" + currNode.id + "]");
             }
