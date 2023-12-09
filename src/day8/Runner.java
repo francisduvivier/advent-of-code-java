@@ -18,6 +18,6 @@ public class Runner {
     }
 
     public long stepsTo(String destinationId) {
-        return startNode.getStepsRec(destinationId, instructions); // TODO
+        return startNode.getSteps(destinationId, instructions); // TODO
     }
 }

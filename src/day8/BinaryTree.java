@@ -33,8 +33,24 @@ public class BinaryTree {
         return map;
     }
 
-    public long getStepsRec(String destinationId, String instructions) {
-        return 0; //TODO
+    public long getSteps(String destinationId, String instructions) {
+        var currNode = this.nodes[0];
+        long steps = 0;
+        int instructionIndex = 0;
+        char[] instructionChars = instructions.toCharArray();
+        var currChar = instructionChars[instructionIndex];
+        while (!currNode.id.equals(destinationId)) {
+            if (currChar == 'L') {
+                currNode = nodeMap.get(currNode.leftId);
+            } else {
+                currNode = nodeMap.get(currNode.rightId);
+            }
+            steps++;
+            instructionIndex = (instructionIndex + 1) % instructions.length();
+            currChar = instructionChars[instructionIndex];
+        }
+
+        return steps;
     }
 
     private static class BinaryNode {
