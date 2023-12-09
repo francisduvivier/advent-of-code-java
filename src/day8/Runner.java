@@ -1,22 +1,23 @@
 package day8;
 
-public class Runner {
-    private final long time;
-    private final long distance;
+import java.util.Arrays;
 
-    public Runner(long time, long distance) {
-        this.time = time;
-        this.distance = distance;
+public class Runner {
+
+    final String instructions;
+    final BinaryNode startNode;
+
+    public Runner(String instructions, BinaryNode startNode) {
+
+        this.instructions = instructions;
+        this.startNode = startNode;
     }
 
-    long getNbWinners() {
-        long startLosers = 0;
-        for (long i = 1; i < this.time; i++) {
-            if (i * (this.time - i) > this.distance) {
-                break;
-            } else {
-                startLosers++;
-            }
-        }
-        return this.time - 2 * startLosers - 1;
-    }}
+    public static Runner parse(String[] lines) {
+        return new Runner(lines[0], BinaryNode.parse(Arrays.stream(lines).toList().subList(2, lines.length)));
+    }
+
+    public long stepsTo(String destinationId) {
+        return startNode.getStepsRec(destinationId, instructions); // TODO
+    }
+}

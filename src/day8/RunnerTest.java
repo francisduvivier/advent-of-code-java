@@ -2,18 +2,41 @@ package day8;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RunnerTest {
 
+    private String[] sampleInput;
+    private String[] sampleInput2;
+
+    {
+        try {
+            sampleInput = Files.readString(Path.of(getInputDir() + "/sample.txt")).split("\n");
+            sampleInput2 = Files.readString(Path.of(getInputDir() + "/sample2.txt")).split("\n");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getInputDir() {
+        return "src/" + getClass().getPackageName();
+    }
+
     @Test
-    void getNbWinners() {
-        // Arrange
-        // Act
-        var nbWinners = new Runner(7, 9).getNbWinners();
-        // Assert
-        assertEquals(4, new Runner(7, 9).getNbWinners());
-        assertEquals(8, new Runner(15, 40).getNbWinners());
-        assertEquals(9, new Runner(30, 200).getNbWinners());
+    void parse() {
+        Runner fistSampleParsed = Runner.parse(sampleInput);
+        assertEquals("RL", fistSampleParsed.instructions);
+        assertEquals("AAA", fistSampleParsed.startNode.id);
+        assertEquals("BBB", fistSampleParsed.startNode.leftId);
+        assertEquals("CCC", fistSampleParsed.startNode.rightId);
+    }
+
+    @Test
+    void stepsTo() {
+        // TODO
     }
 }
