@@ -38,7 +38,7 @@ public class BinaryTree {
 
     public long getSteps(String destinationId, String instructions) {
         if (DEBUG) {
-            System.out.println("getSteps to " + destinationId + " for: " + instructions);
+            System.out.println("getSteps to " + destinationId + " for(" + instructions.length() + "): " + instructions);
         }
         var currNode = this.nodes[0];
         long steps = 0;
