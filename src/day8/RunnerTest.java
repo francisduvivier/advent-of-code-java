@@ -37,6 +37,10 @@ class RunnerTest {
 
     @Test
     void stepsTo() {
-        // TODO
+        Runner fistSampleParsed = Runner.parse(sampleInput);
+        Runner secondSampleParsed = Runner.parse(sampleInput);
+
+        assertEquals(2, fistSampleParsed.stepsTo("ZZZ"));
+        assertEquals(6, secondSampleParsed.stepsTo("ZZZ"));
     }
 }
