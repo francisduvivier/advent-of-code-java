@@ -5,16 +5,16 @@ import java.util.Arrays;
 public class Runner {
 
     final String instructions;
-    final BinaryNode startNode;
+    final BinaryTree startNode;
 
-    public Runner(String instructions, BinaryNode startNode) {
+    public Runner(String instructions, BinaryTree startNode) {
 
         this.instructions = instructions;
         this.startNode = startNode;
     }
 
     public static Runner parse(String[] lines) {
-        return new Runner(lines[0], BinaryNode.parse(Arrays.stream(lines).toList().subList(2, lines.length)));
+        return new Runner(lines[0], BinaryTree.parse(Arrays.stream(lines).toList().subList(2, lines.length)));
     }
 
     public long stepsTo(String destinationId) {
