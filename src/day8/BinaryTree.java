@@ -50,36 +50,15 @@ public class BinaryTree {
         }
         updateZAndRepeatDataForStartNodes(destinationMatcher, instructions, startNodes);
         System.out.println("Z indexes and repeats found for all startNodes(" + startNodes.size() + ")");
-        return findZMatch(new ArrayList<>(startNodes));
+        List<ZWithMod> zData = startNodes.stream().map(binaryNode -> new ZWithMod(binaryNode.zIndexes.get(0), binaryNode.modulo)).collect(Collectors.toList());
+        return solveEuclid(zData);
     }
 
-    long findZMatch(List<Repeater> startNodes) {
-        var start = startNodes.get(0);
-        List<Repeater> otherNodes = startNodes.subList(1, startNodes.size());
-        for (long multiplier = 0; multiplier < Long.MAX_VALUE; multiplier++) {
-            if (DEBUG || multiplier % 10000_000 == 0) {
-                System.out.println("Trying multiplier: " + multiplier);
-            }
-            for (var zOption : start.getZIndexes()) {
-                long steps = zOption + (start.getModulo() * multiplier);
-                if (DEBUG) {
-                    System.out.println("Trying steps: " + multiplier);
-                }
-                if (otherNodes.stream().allMatch(o -> hasZMatchAt(o, steps))) {
-                    return steps;
-                }
-            }
+    static long solveEuclid(List<ZWithMod> zData) {
+        if (zData.size() == 1) {
+            return zData.get(0).zVal;
         }
-        return -1;
-    }
-
-    private boolean hasZMatchAt(Repeater o, long l) {
-        for (var zOption : o.getZIndexes()) {
-            if (l % o.getModulo() == zOption) {
-                return true;
-            }
-        }
-        return false;
+        return zData.get(1).zVal;
     }
 
     private void updateZAndRepeatDataForStartNodes(String destinationMatcher, String instructions, List<BinaryNode> startNodes) {
