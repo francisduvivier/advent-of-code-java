@@ -40,6 +40,7 @@ class MainTest {
     @Test
     void solvePart2() {
         assertEquals("2", solve2(sampleInput));
-        System.out.println(solve2(input));
+        String solution = solve2(input);
+        assertEquals("1154", solution);
     }
 }

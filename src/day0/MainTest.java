@@ -33,12 +33,12 @@ class MainTest {
     @Test
     void solvePart1() {
         assertEquals("TODO", solve(sampleInput));
-        System.out.println(solve(input));
+        assertEquals("PART 1 SOLUTION IS", solve(input));
     }
 
     @Test
     void solvePart2() {
         assertEquals("TODO", solve2(sampleInput));
-        System.out.println(solve2(input));
+        assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }
