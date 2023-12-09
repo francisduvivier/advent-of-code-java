@@ -38,16 +38,14 @@ public class BinaryTree {
         long steps = 0;
         int instructionIndex = 0;
         char[] instructionChars = instructions.toCharArray();
-        var currChar = instructionChars[instructionIndex];
         while (!currNode.id.equals(destinationId)) {
-            if (currChar == 'L') {
+            if (instructionChars[instructionIndex] == 'L') {
                 currNode = nodeMap.get(currNode.leftId);
             } else {
                 currNode = nodeMap.get(currNode.rightId);
             }
             steps++;
-            instructionIndex = (instructionIndex + 1) % instructions.length();
-            currChar = instructionChars[instructionIndex];
+            instructionIndex = (instructionIndex + 1) % instructionChars.length;
         }
 
         return steps;
