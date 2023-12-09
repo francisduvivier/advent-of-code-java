@@ -1,6 +1,7 @@
 package day8;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BinaryTree {
     final boolean DEBUG = true;
@@ -36,29 +37,37 @@ public class BinaryTree {
         return map;
     }
 
-    public long getSteps(String destinationId, String instructions) {
+    public long getSteps(String startMatcher, String destinationMatcher, String instructions) {
+        var startNodes = Arrays.stream(nodes).filter(node -> node.id.matches(startMatcher)).collect(Collectors.toSet());
+        var endNodes = Arrays.stream(nodes).filter(node -> node.id.matches(destinationMatcher)).collect(Collectors.toSet());
+
         if (DEBUG) {
-            System.out.println("getSteps to " + destinationId + " for(" + instructions.length() + "): " + instructions);
+            System.out.println("getSteps to " + destinationMatcher + " for(" + instructions.length() + "): " + instructions);
         }
-        var currNode = this.nodeMap.get(this.id);
+        var currNodes = new ArrayList<>(startNodes);
         long steps = 0;
-        int instructionIndex = 0;
+        int opIndex = 0;
         char[] instructionChars = instructions.toCharArray();
-        while (!currNode.id.equals(destinationId)) {
-            if (DEBUG) {
-                System.out.println("STEP [" + steps + "]: inst index [" + instructionIndex + "]-> " + instructionChars[instructionIndex] + " is being tried on [" + currNode.id + "]");
-            }
-            if (currNode.isTried(instructionIndex)) {
-                throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + instructionIndex + "]-> " + instructionChars[instructionIndex] + " is already tried on [" + currNode.id + "]");
-            }
-            currNode.markTried(instructionIndex);
-            if (instructionChars[instructionIndex] == 'L') {
-                currNode = currNode.leftNode;
-            } else {
-                currNode = currNode.rightNode;
+        while (!currNodes.stream().allMatch(n -> n.id.equals(destinationMatcher))) {
+            char op = instructionChars[opIndex];
+            var i = 0;
+            for (final var currNode : currNodes) {
+
+                if (DEBUG) {
+                    System.out.println("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is being tried on [" + currNode.id + "]");
+                }
+                if (currNode.isTried(opIndex)) {
+                    throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + opIndex + "]-> " + op + " is already tried on [" + currNode.id + "]");
+                }
+                currNode.markTried(opIndex);
+                if (op == 'L') {
+                    currNodes.set(i, currNode.leftNode);
+                } else {
+                    currNodes.set(i, currNode.rightNode);
+                }
             }
             steps++;
-            instructionIndex = (instructionIndex + 1) % instructionChars.length;
+            opIndex = (opIndex + 1) % instructionChars.length;
         }
 
         return steps;

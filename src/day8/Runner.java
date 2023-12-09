@@ -17,7 +17,11 @@ public class Runner {
         return new Runner(lines[0], BinaryTree.parse(Arrays.stream(lines).toList().subList(2, lines.length)));
     }
 
-    public long stepsTo(String destinationId) {
-        return tree.getSteps(destinationId, instructions); // TODO
+    public long stepsTo(String destinationMatcher) {
+        return tree.getSteps("AAA", destinationMatcher, instructions); // TODO
+    }
+
+    public long multiStepsTo(String startMatcher, String destinationMatcher) {
+        return tree.getSteps(startMatcher, destinationMatcher, instructions);
     }
 }
