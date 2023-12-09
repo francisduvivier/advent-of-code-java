@@ -19,6 +19,7 @@ public class Main {
 
         Runner runner = Runner.parse(lines);
         long result = runner.multiStepsTo("..A", "..Z");
+        // find repeat number, with this modulo, all the z matches are, ok, so then you take 1 of the sequences and then keep multiplying till all of the others have a
         return "" + result;
     }
 
