@@ -3,12 +3,14 @@ package day8;
 public class Sequence {
     private final long[] start;
     private Sequence diffs;
+    private boolean allSameDiffs;
 
 
     public Sequence(long[] start) {
         this.start = start;
         long[] diffs = getDiffs();
-        if (!allSameDiffs(diffs)) {
+        this.allSameDiffs = allSameDiffs(diffs);
+        if (!this.allSameDiffs) {
             this.diffs = new Sequence(diffs);
         } else {
             this.diffs = null;
@@ -42,7 +44,11 @@ public class Sequence {
     }
 
     long extrapolateRec() {
-        // TODO
-        return 0;
+        long lastVal = this.start[this.start.length - 1];
+        if (this.allSameDiffs) {
+            return lastVal + this.getDiff();
+        }
+        long nextDiff = this.diffs.extrapolateRec();
+        return lastVal + nextDiff;
     }
 }
