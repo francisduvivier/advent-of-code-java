@@ -47,6 +47,6 @@ class RunnerTest {
 
         assertEquals(2, fistSampleParsed.stepsTo("ZZZ"));
         assertEquals(6, secondSampleParsed.stepsTo("ZZZ"));
-        assertThrows(InvalidParameterException.class, () -> loopSampleParsed.stepsTo("ZZZ"));
+        assertThrows(IllegalArgumentException.class, () -> loopSampleParsed.stepsTo("ZZZ"));
     }
 }

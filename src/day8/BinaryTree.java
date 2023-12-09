@@ -1,8 +1,6 @@
 package day8;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BinaryTree {
     final BinaryNode[] nodes;
@@ -43,6 +41,10 @@ public class BinaryTree {
         int instructionIndex = 0;
         char[] instructionChars = instructions.toCharArray();
         while (!currNode.id.equals(destinationId)) {
+            if (currNode.isTried(instructionIndex)) {
+                throw new IllegalArgumentException("STEP [" + steps + "]: inst index [" + instructionIndex + "]-> " + instructionChars[instructionIndex] + " is already tried on [" + currNode.id + "]");
+            }
+            currNode.markTried(instructionIndex);
             if (instructionChars[instructionIndex] == 'L') {
                 currNode = currNode.leftNode;
             } else {
@@ -61,6 +63,7 @@ public class BinaryTree {
         final String id;
         BinaryNode rightNode;
         BinaryNode leftNode;
+        Set<Integer> triedValues = new HashSet<>();
 
         public BinaryNode(String id, String leftId, String rightId) {
             this.id = id;
@@ -76,5 +79,12 @@ public class BinaryTree {
             return new BinaryNode(id, leftId, rightId);
         }
 
+        public void markTried(int instructionIndex) {
+            triedValues.add(instructionIndex);
+        }
+
+        public boolean isTried(int instructionIndex) {
+            return triedValues.contains(instructionIndex);
+        }
     }
 }
