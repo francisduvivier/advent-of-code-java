@@ -5,12 +5,12 @@ import java.util.Arrays;
 public class Runner {
 
     final String instructions;
-    final BinaryTree startNode;
+    final BinaryTree tree;
 
-    public Runner(String instructions, BinaryTree startNode) {
+    public Runner(String instructions, BinaryTree tree) {
 
         this.instructions = instructions;
-        this.startNode = startNode;
+        this.tree = tree;
     }
 
     public static Runner parse(String[] lines) {
@@ -18,6 +18,6 @@ public class Runner {
     }
 
     public long stepsTo(String destinationId) {
-        return startNode.getSteps(destinationId, instructions); // TODO
+        return tree.getSteps(destinationId, instructions); // TODO
     }
 }

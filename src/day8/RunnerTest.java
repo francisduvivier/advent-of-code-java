@@ -33,9 +33,9 @@ class RunnerTest {
     void parse() {
         Runner fistSampleParsed = Runner.parse(sampleInput);
         assertEquals("RL", fistSampleParsed.instructions);
-        assertEquals("AAA", fistSampleParsed.startNode.id);
-        assertEquals("BBB", fistSampleParsed.startNode.leftId);
-        assertEquals("CCC", fistSampleParsed.startNode.rightId);
+        assertEquals("AAA", fistSampleParsed.tree.id);
+        assertEquals("BBB", fistSampleParsed.tree.leftId);
+        assertEquals("CCC", fistSampleParsed.tree.rightId);
     }
 
     @Test
