@@ -14,9 +14,9 @@ public class BinaryTree {
         this.nodes = new BinaryNode[nodeList.size()];
         nodeList.toArray(this.nodes);
         this.nodeMap = createMap(this.nodes);
-        this.id = nodes[0].id;
-        this.leftId = nodes[0].leftId;
-        this.rightId = nodes[0].rightId;
+        this.id = nodeMap.get("AAA").id;
+        this.leftId = nodeMap.get("AAA").leftId;
+        this.rightId = nodeMap.get("AAA").rightId;
 
     }
 
@@ -40,7 +40,7 @@ public class BinaryTree {
         if (DEBUG) {
             System.out.println("getSteps to " + destinationId + " for(" + instructions.length() + "): " + instructions);
         }
-        var currNode = this.nodes[0];
+        var currNode = this.nodeMap.get(this.id);
         long steps = 0;
         int instructionIndex = 0;
         char[] instructionChars = instructions.toCharArray();
