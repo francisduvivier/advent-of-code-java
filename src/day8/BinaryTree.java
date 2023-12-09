@@ -17,11 +17,7 @@ public class BinaryTree {
     }
 
     public static BinaryTree parse(List<String> strings) {
-        String[] firstParts = strings.getFirst().split("[^A-Z]+");
-        String id = firstParts[0];
-        String leftId = firstParts[1];
-        String rightId = firstParts[2];
-        return new BinaryTree(new BinaryNode[]{new BinaryNode(id, leftId, rightId)});
+        return new BinaryTree(new BinaryNode[]{BinaryNode.parse(strings.getFirst())});
     }
 
     public long getStepsRec(String destinationId, String instructions) {
@@ -34,10 +30,18 @@ public class BinaryTree {
         final String id;
 
         public BinaryNode(String id, String leftId, String rightId) {
-
             this.id = id;
             this.leftId = leftId;
             this.rightId = rightId;
         }
+
+        public static BinaryNode parse(String line) {
+            String[] firstParts = line.split("[^A-Z]+");
+            String id = firstParts[0];
+            String leftId = firstParts[1];
+            String rightId = firstParts[2];
+            return new BinaryNode(id, leftId, rightId);
+        }
+
     }
 }
