@@ -8,8 +8,9 @@ public class BinaryTree {
     final String rightId;
     final String id;
 
-    public BinaryTree(BinaryNode[] nodes) {
-        this.nodes = nodes;
+    public BinaryTree(List<BinaryNode> nodeList) {
+        this.nodes = new BinaryNode[nodeList.size()];
+        nodeList.toArray(this.nodes);
         this.id = nodes[0].id;
         this.leftId = nodes[0].leftId;
         this.rightId = nodes[0].rightId;
@@ -17,7 +18,7 @@ public class BinaryTree {
     }
 
     public static BinaryTree parse(List<String> strings) {
-        return new BinaryTree(new BinaryNode[]{BinaryNode.parse(strings.getFirst())});
+        return new BinaryTree(strings.stream().map(BinaryNode::parse).toList());
     }
 
     public long getStepsRec(String destinationId, String instructions) {
