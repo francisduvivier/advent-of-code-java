@@ -8,7 +8,7 @@ public class BinaryTree {
     final String rightId;
     final String id;
 
-    public BinaryTree(List<BinaryNode> nodeList) {
+    private BinaryTree(List<BinaryNode> nodeList) {
         this.nodes = new BinaryNode[nodeList.size()];
         nodeList.toArray(this.nodes);
         this.id = nodes[0].id;
