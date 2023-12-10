@@ -20,6 +20,7 @@ public class Runner {
         var foundOutside = false;
         boolean prevIsDown = currConnector.prev.y > currConnector.y;
         boolean prevIsLeft = currConnector.prev.x < currConnector.x;
+        boolean prevIsRight = currConnector.prev.x > currConnector.x;
         switch (currConnector.letter) {
             case '|': {
                 if (prevIsDown) {
@@ -27,6 +28,7 @@ public class Runner {
                 } else {
                     dirs.add(RIGHT);
                 }
+                break;
             }
             case '-': {
                 if (prevIsLeft) {
@@ -34,6 +36,35 @@ public class Runner {
                 } else {
                     dirs.add(DOWN);
                 }
+                break;
+            }
+            case 'J': {
+                if (!prevIsLeft) {
+                    dirs.add(DOWN);
+                    dirs.add(RIGHT);
+                }
+                break;
+            }
+            case 'L': {
+                if (prevIsRight) {
+                    dirs.add(DOWN);
+                    dirs.add(LEFT);
+                }
+                break;
+            }
+            case 'F': {
+                if (prevIsDown) {
+                    dirs.add(UP);
+                    dirs.add(LEFT);
+                }
+                break;
+            }
+            case '7': {
+                if (prevIsLeft) {
+                    dirs.add(UP);
+                    dirs.add(RIGHT);
+                }
+                break;
             }
         }
         for (var dir : dirs) {
@@ -99,11 +130,9 @@ public class Runner {
         int totalNonLoopTiles = nbGridTiles - loopMap.size();
         if (leftIsOutSide) {
             int nbRight = totalNonLoopTiles - nbLeft;
-            return nbRight
-                ;
+            return nbRight;
         } else {
-            return nbLeft
-                ;
+            return nbLeft;
         }
     }
 
