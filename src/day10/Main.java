@@ -14,8 +14,9 @@ public class Main {
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
+        Runner runner = new Runner(lines);
+        long result = runner.findTilesInside();
+
         return "" + result;
     }
 

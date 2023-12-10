@@ -21,6 +21,7 @@ public class Connector {
     final Connector[] connectees = new Connector[2];
     final String id;
     final String[] grid;
+    public Connector prev;
 
     public Connector(String[] grid, int x, int y) {
         this.x = x;
