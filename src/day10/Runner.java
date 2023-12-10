@@ -18,12 +18,12 @@ public class Runner {
         return getLoopMap('S').size();
     }
 
-    private Map<String, Connector> followLoop(Connector tryConnector) {
+    private Map<String, Connector> followLoop(Connector start) {
         Map<String, Connector> cMap = new HashMap<>();
-        var currConnector = tryConnector;
+        var currConnector = start;
         while (!cMap.containsKey(currConnector.id)) {
             cMap.put(currConnector.id, currConnector);
-            var connectees = currConnector.updateConnectees();
+            var connectees = currConnector.updateConnectees(cMap);
             for (var c : connectees) {
                 if (!cMap.containsKey(c.id)) {
                     c.prev = currConnector;
@@ -40,7 +40,11 @@ public class Runner {
     }
 
     public long findTilesInside() {
-        var loopMap = getLoopMap('S');
+        char startLetter = 'S';
+        var loopMap = getLoopMap(startLetter);
+        Connector start = loopMap.values().stream().filter(v -> v.letter == startLetter).findFirst().get();
+        var currConnector = start.connectees[0];
+
         return loopMap.size();
     }
 

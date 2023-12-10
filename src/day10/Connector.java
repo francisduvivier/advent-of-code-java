@@ -2,6 +2,7 @@ package day10;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 
 public class Connector {
 
@@ -31,7 +32,7 @@ public class Connector {
         this.id = this.x + "," + this.y;
     }
 
-    Connector[] updateConnectees() {
+    Connector[] updateConnectees(Map<String, Connector> cMap) {
         var connecteeList = new ArrayList<Connector>();
         int[][] directions = new int[][]{};
         switch (this.letter) {
@@ -39,9 +40,8 @@ public class Connector {
                 for (var xYOffset : XYOFFSETS) {
                     try {
                         var tryConnector = new Connector(this.grid, x + xYOffset[0], y + xYOffset[1]);
-
                         if (tryConnector.letter != '.') {
-                            Connector[] secondOrderConnectees = tryConnector.updateConnectees();
+                            Connector[] secondOrderConnectees = tryConnector.updateConnectees(cMap);
                             if (Arrays.stream(secondOrderConnectees).anyMatch(connector -> connector.id.equals(this.id))) {
                                 connecteeList.add(tryConnector);
                             }
@@ -89,7 +89,12 @@ public class Connector {
             throw e; //Should not happen;
         }
         assert connecteeList.size() == 2;
-        connecteeList.toArray(connectees);
+        connecteeList.stream().map(c -> {
+            if (cMap.containsKey(c.id)) {
+                return cMap.get(c.id);
+            }
+            return c;
+        }).toList().toArray(connectees);
         return connectees;
     }
 
