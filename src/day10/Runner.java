@@ -1,11 +1,8 @@
 package day10;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import static day10.Connector.findTilesRec;
+import static day10.Connector.*;
 
 public class Runner {
     private final String[] lines;
@@ -16,6 +13,35 @@ public class Runner {
 
     private static int getUnCountedJunk() {
         return 0;
+    }
+
+    private static boolean findTilesRecFrom(Connector currConnector, Map<String, Connector> loopMap, HashSet<String> tilesLeft) {
+        List<int[]> dirs = new ArrayList<>();
+        var foundOutside = false;
+        boolean prevIsDown = currConnector.prev.y > currConnector.y;
+        boolean prevIsLeft = currConnector.prev.x < currConnector.x;
+        switch (currConnector.letter) {
+            case '|': {
+                if (prevIsDown) {
+                    dirs.add(LEFT);
+                } else {
+                    dirs.add(RIGHT);
+                }
+            }
+            case '-': {
+                if (prevIsLeft) {
+                    dirs.add(UP);
+                } else {
+                    dirs.add(DOWN);
+                }
+            }
+        }
+        for (var dir : dirs) {
+            if (findTilesRec(loopMap, tilesLeft, currConnector.x + dir[0], currConnector.y + dir[1])) {
+                foundOutside = true;
+            }
+        }
+        return foundOutside;
     }
 
     public long getLoopSize() {
@@ -55,22 +81,7 @@ public class Runner {
         currConnector.prev = start;
         var leftIsOutSide = false;
         while (currConnector != start) {
-            var foundOutside = false;
-            if (currConnector.letter == '|') {
-                boolean prevIsDown = currConnector.prev.y > currConnector.y;
-                if (prevIsDown) {
-                    foundOutside = findTilesRec(loopMap, tilesLeft, currConnector.x - 1, currConnector.y);
-                } else {
-                    foundOutside = findTilesRec(loopMap, tilesLeft, currConnector.x + 1, currConnector.y);
-                }
-            } else if (currConnector.letter == '-') {
-                boolean prevIsLeft = currConnector.prev.x < currConnector.x;
-                if (prevIsLeft) {
-                    foundOutside = findTilesRec(loopMap, tilesLeft, currConnector.x, currConnector.y - 1);
-                } else {
-                    foundOutside = findTilesRec(loopMap, tilesLeft, currConnector.x, currConnector.y + 1);
-                }
-            }
+            var foundOutside = findTilesRecFrom(currConnector, loopMap, tilesLeft);
             if (foundOutside) {
                 leftIsOutSide = true;
             }
@@ -87,18 +98,11 @@ public class Runner {
         int nbGridTiles = this.lines.length * this.lines[0].length();
         int totalNonLoopTiles = nbGridTiles - loopMap.size();
         if (leftIsOutSide) {
-//            Set<String> uncountedJunk = findConnectorsIn(tilesLeft);
             int nbRight = totalNonLoopTiles - nbLeft;
             return nbRight
-//                + uncountedJunk.size()
                 ;
         } else {
-//            HashSet<String> exclusions = new HashSet<>();
-//            exclusions.addAll(tilesLeft);
-//            exclusions.addAll(loopMap.keySet());
-//            var unCountedJunk = findConnectorsNotIn(exclusions);
             return nbLeft
-//                + unCountedJunk.size()
                 ;
         }
     }
