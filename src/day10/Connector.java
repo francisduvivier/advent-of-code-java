@@ -3,17 +3,18 @@ package day10;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 
 public class Connector {
 
-    static final int[][] XYOFFSETS;
+    static final int[][] DIRXY_OPTIONS;
     static int[] UP = {0, -1};
     static int[] RIGHT = {1, 0};
     static int[] LEFT = {-1, 0};
     static int[] DOWN = {0, 1};
 
     static {
-        XYOFFSETS = new int[][]{UP, RIGHT, LEFT, DOWN};
+        DIRXY_OPTIONS = new int[][]{UP, RIGHT, LEFT, DOWN};
     }
 
     final int x;
@@ -29,7 +30,40 @@ public class Connector {
         this.y = y;
         this.grid = grid;
         this.letter = this.grid[y].charAt(x);
-        this.id = this.x + "," + this.y;
+        this.id = createKey(this.x, this.y);
+    }
+
+    static String createKey(int x1, int y1) {
+        return x1 + "," + y1;
+    }
+
+    static boolean findTilesRec(Map<String, Connector> loopMap, Set<String> tilesLeft, int x, int y) {
+        String[] grid = loopMap.values().stream().findAny().get().grid;
+        if (isOutSide(x, y, grid)) {
+            return true;
+        }
+        String id = Connector.createKey(x, y);
+        if (tilesLeft.contains(id)) {
+            return false;
+        }
+        if (loopMap.containsKey(id)) {
+            return false;
+        }
+        tilesLeft.add(id);
+        var foundOutSize = false;
+        for (var xy : DIRXY_OPTIONS) {
+            if (findTilesRec(loopMap, tilesLeft, x + xy[0], y + xy[1])) {
+                foundOutSize = true;
+            }
+        }
+        return foundOutSize;
+    }
+
+    private static boolean isOutSide(int x, int y, String[] grid) {
+        return x < 0
+            || x >= grid[0].length()
+            || y < 0
+            || y >= grid.length;
     }
 
     Connector[] updateConnectees(Map<String, Connector> cMap) {
@@ -37,7 +71,7 @@ public class Connector {
         int[][] directions = new int[][]{};
         switch (this.letter) {
             case 'S': {
-                for (var xYOffset : XYOFFSETS) {
+                for (var xYOffset : DIRXY_OPTIONS) {
                     try {
                         var tryConnector = new Connector(this.grid, x + xYOffset[0], y + xYOffset[1]);
                         if (tryConnector.letter != '.') {
