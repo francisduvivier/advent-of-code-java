@@ -1,8 +1,7 @@
 package day10;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Runner {
     private final String[] lines;
@@ -12,12 +11,37 @@ public class Runner {
     }
 
     public long getLoopSize() {
-        long sum = 0;
-        for (var line : lines) {
-            var filtered = Arrays.stream(line.split("")).filter(v -> !v.equals("."));
-            sum += filtered.count();
+        return getLoopSize('S');
+    }
+
+    public long getLoopSize(char startChar) {
+        for (var sy = 0; sy < lines.length; sy++) {
+            for (var sx = 0; sx < lines[0].length(); sx++) {
+                var tryConnector = new Connector(this.lines, sx, sy);
+                if (tryConnector.letter == startChar) {
+
+                    return followLoop(tryConnector);
+                }
+
+            }
         }
-        return sum;
+        throw new IllegalArgumentException("StartChar [" + startChar + "] Not found");
+    }
+
+    private long followLoop(Connector tryConnector) {
+        Map<String, Connector> cMap = new HashMap<>();
+        var currConnector = tryConnector;
+        while (!cMap.containsKey(currConnector.id)) {
+            cMap.put(currConnector.id, currConnector);
+            var connectees = currConnector.updateConnectees();
+            for (var c : connectees) {
+                if (!cMap.containsKey(c.id)) {
+                    currConnector = c;
+                    break;
+                }
+            }
+        }
+        return cMap.size();
     }
 
     long getStepsToFarthestPoint() {
