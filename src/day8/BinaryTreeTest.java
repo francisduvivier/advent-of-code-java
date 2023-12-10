@@ -10,18 +10,15 @@ class BinaryTreeTest {
 
     @Test
     void solveEuclid() {
-        int TODO = 4000;
-        // Solve for x: (M1 *x + Z1) mod M2 = Z2
-        assertEquals(TODO, BinaryTree.solveEuclid(List.of(
-            new ZWithMod(20803, 20808),
-            new ZWithMod(17873, 17880)
+        assertEquals(1268983, BinaryTree.solveEuclid(List.of(
+            20803L,
+            17873L
         )));
 
-        assertEquals(TODO, BinaryTree.solveEuclid(List.of(
-            new ZWithMod(20803, 20808),
-            new ZWithMod(17873, 17880),
-            new ZWithMod(21389, 21395)
+        assertEquals(92635759, BinaryTree.solveEuclid(List.of(
+            20803L,
+            17873L,
+            21389L
         )));
-
     }
 }
