@@ -18,7 +18,7 @@ public class Runner {
     }
 
     public long stepsTo(String destinationMatcher) {
-        return tree.getSteps("AAA", destinationMatcher, instructions); // TODO
+        return tree.getSteps("AAA", destinationMatcher, instructions);
     }
 
     public long multiStepsTo(String startMatcher, String destinationMatcher) {

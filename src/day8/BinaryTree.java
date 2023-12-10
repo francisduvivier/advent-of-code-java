@@ -30,6 +30,29 @@ public class BinaryTree {
         return new BinaryTree(strings.stream().map(BinaryNode::parse).toList());
     }
 
+    static long solveEuclid(List<ZWithMod> zData) {
+        var currVal = zData.get(0).zVal;
+        for (var val : zData.subList(1, zData.size())) {
+            currVal = lcm(currVal, val.zVal);
+        }
+        return currVal;
+    }
+
+    private static long lcm(long currVal, long zVal) {
+        return currVal * zVal / gcd(currVal, zVal);
+    }
+
+    private static long gcd(long currVal, long zVal) {
+        while (currVal != 0 && zVal != 0) {
+            if (zVal > currVal) {
+                zVal %= currVal;
+            } else {
+                currVal %= zVal;
+            }
+        }
+        return currVal + zVal;
+    }
+
     private Map<String, BinaryNode> createMap(BinaryNode[] nodes) {
         HashMap<String, BinaryNode> map = new HashMap<>();
         for (var node : nodes) {
@@ -52,13 +75,6 @@ public class BinaryTree {
         System.out.println("Z indexes and repeats found for all startNodes(" + startNodes.size() + ")");
         List<ZWithMod> zData = startNodes.stream().map(binaryNode -> new ZWithMod(binaryNode.zIndexes.get(0), binaryNode.modulo)).collect(Collectors.toList());
         return solveEuclid(zData);
-    }
-
-    static long solveEuclid(List<ZWithMod> zData) {
-        if (zData.size() == 1) {
-            return zData.get(0).zVal;
-        }
-        return zData.get(1).zVal;
     }
 
     private void updateZAndRepeatDataForStartNodes(String destinationMatcher, String instructions, List<BinaryNode> startNodes) {
