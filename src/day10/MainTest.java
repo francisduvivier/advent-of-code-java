@@ -15,12 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MainTest {
     String sampleInput;
     String sampleInput2;
+    String sampleInput3;
     String input;
 
     @BeforeEach
     void setUp() throws IOException {
         sampleInput = Files.readString(Path.of(getInputDir() + "/sample.txt"));
         sampleInput2 = Files.readString(Path.of(getInputDir() + "/sample2.txt"));
+        sampleInput3 = Files.readString(Path.of(getInputDir() + "/sample3.txt"));
         input = Files.readString(Path.of(getInputDir() + "/input.txt"));
     }
 
@@ -36,12 +38,14 @@ class MainTest {
     void solvePart1() {
         assertEquals("4", solve(sampleInput2));
         assertEquals("8", solve(sampleInput));
-        assertEquals("PART 1 SOLUTION IS", solve(input));
+        assertEquals("70", solve(sampleInput3));
+        assertEquals("6942", solve(input));
     }
 
     @Test
     void solvePart2() {
-        assertEquals("TODO", solve2(sampleInput));
+        assertEquals("1", solve2(sampleInput2));
+        assertEquals("8", solve2(sampleInput));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }
