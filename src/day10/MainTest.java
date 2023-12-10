@@ -16,6 +16,8 @@ class MainTest {
     String sampleInput;
     String sampleInput2;
     String sampleInput3;
+    String sampleInput4;
+    String sampleInput5;
     String input;
 
     @BeforeEach
@@ -23,6 +25,8 @@ class MainTest {
         sampleInput = Files.readString(Path.of(getInputDir() + "/sample.txt"));
         sampleInput2 = Files.readString(Path.of(getInputDir() + "/sample2.txt"));
         sampleInput3 = Files.readString(Path.of(getInputDir() + "/sample3.txt"));
+        sampleInput4 = Files.readString(Path.of(getInputDir() + "/sample4.txt"));
+        sampleInput5 = Files.readString(Path.of(getInputDir() + "/sample5.txt"));
         input = Files.readString(Path.of(getInputDir() + "/input.txt"));
     }
 
@@ -45,6 +49,8 @@ class MainTest {
     @Test
     void solvePart2() {
         assertEquals("1", solve2(sampleInput2));
+        assertEquals("4", solve2(sampleInput5));
+        assertEquals("10", solve2(sampleInput4));
         assertEquals("8", solve2(sampleInput3));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
