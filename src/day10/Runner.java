@@ -136,33 +136,6 @@ public class Runner {
         }
     }
 
-    private HashSet<String> findConnectorsNotIn(HashSet<String> exclusions) {
-        HashSet<String> junk = new HashSet<>();
-        for (var sy = 0; sy < lines.length; sy++) {
-            for (var sx = 0; sx < lines[0].length(); sx++) {
-                var tryConnector = new Connector(this.lines, sx, sy);
-                if (!exclusions.contains(tryConnector.id)
-                    && tryConnector.letter != '.') {
-                    junk.add(tryConnector.id);
-                }
-            }
-        }
-        return junk;
-    }
-
-    private HashSet<String> findConnectorsIn(HashSet<String> inclusions) {
-        HashSet<String> junk = new HashSet<>();
-        for (var sy = 0; sy < lines.length; sy++) {
-            for (var sx = 0; sx < lines[0].length(); sx++) {
-                var tryConnector = new Connector(this.lines, sx, sy);
-                if (tryConnector.letter != '.' && inclusions.contains(tryConnector.id)) {
-                    junk.add(tryConnector.id);
-                }
-            }
-        }
-        return junk;
-    }
-
     private Map<String, Connector> getLoopMap(char startChar) {
         for (var sy = 0; sy < lines.length; sy++) {
             for (var sx = 0; sx < lines[0].length(); sx++) {
