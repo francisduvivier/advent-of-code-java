@@ -45,7 +45,7 @@ class MainTest {
     @Test
     void solvePart2() {
         assertEquals("1", solve2(sampleInput2));
-        assertEquals("8", solve2(sampleInput));
+        assertEquals("8", solve2(sampleInput3));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }

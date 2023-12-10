@@ -38,17 +38,18 @@ public class Connector {
     }
 
     static boolean findTilesRec(Map<String, Connector> loopMap, Set<String> tilesLeft, int x, int y) {
+        String id = Connector.createKey(x, y);
+        if (loopMap.containsKey(id)) {
+            return false;
+        }
         String[] grid = loopMap.values().stream().findAny().get().grid;
         if (isOutSide(x, y, grid)) {
             return true;
         }
-        String id = Connector.createKey(x, y);
         if (tilesLeft.contains(id)) {
             return false;
         }
-        if (loopMap.containsKey(id)) {
-            return false;
-        }
+
         tilesLeft.add(id);
         var foundOutSize = false;
         for (var xy : DIRXY_OPTIONS) {

@@ -52,7 +52,7 @@ public class Runner {
         while (currConnector != start) {
             var foundOutside = false;
             if (currConnector.letter == '|') {
-                boolean prevIsDown = currConnector.prev.y < currConnector.y;
+                boolean prevIsDown = currConnector.prev.y > currConnector.y;
                 if (prevIsDown) {
                     foundOutside = findTilesRec(loopMap, tilesLeft, currConnector.x - 1, currConnector.y);
                 } else {
