@@ -101,6 +101,7 @@ public class BinaryTree {
                 }
                 if (currNode.isTried(opi)) {
                     startNode.modulo = steps + 1;
+                    startNode.modulo -= startNode.modulo % instructionChars.length;
                     currNodes.set(currNodes.indexOf(currNode), null);
                 } else {
                     currNodes.set(currNodes.indexOf(currNode), next);
