@@ -2,6 +2,7 @@ package day12;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Runner {
@@ -31,5 +32,10 @@ public class Runner {
             new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions()
                 +
                 new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions();
+    }
+    public static String extend(String origMatchNumbers, String delimiter) {
+        Stream<String> stream = Arrays.stream(new String[5]);
+        String matcherNumbers = stream.map((s) -> origMatchNumbers).collect(Collectors.joining(delimiter));
+        return matcherNumbers;
     }
 }

@@ -23,4 +23,12 @@ class RunnerTest {
         assertEquals("^[.?]*[#?]{1}[.?]*$", Runner.createMatcher("1"));
         assertEquals(true, "..#..".matches("^[.?]*[#?]{1}[.?]*$"));
     }
+    @Test
+    void extend() {
+        // Arrange
+        // Act
+        // Assert
+        assertEquals("???.###????.###????.###????.###????.###", Runner.extend("???.###", "?"));
+        assertEquals("1,1,3,1,1,3,1,1,3,1,1,3,1,1,3", Runner.extend("1,1,3", ","));
+    }
 }
