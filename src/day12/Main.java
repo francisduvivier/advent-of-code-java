@@ -27,6 +27,7 @@ public class Main {
         for (String line : lines) {
             String matcherNumbers = extend(line.split(" ")[1], ",");
             String toMatch = extend(line.split(" ")[0], "?");
+            Runner.countMap.clear();
             result += new Runner(toMatch, Runner.createMatcher(matcherNumbers)).getOptions();
         }
         return "" + result;

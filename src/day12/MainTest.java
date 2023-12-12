@@ -37,6 +37,15 @@ class MainTest {
     }
 
     @Test
+    void solvePart2Sample() {
+        assertEquals("525152", solve2(sampleInput));
+    }
+    @Test
+    void solvePart2Retry() {
+        assertEquals("525152", solve2(sampleInput));
+        assertEquals("", solve2(input));
+    }
+    @Test
     void solvePart2() {
         assertEquals("525152", solve2(sampleInput));
         assertEquals("", solve2(input));

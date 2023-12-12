@@ -1,11 +1,14 @@
 package day12;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Runner {
+    public static Map<String, Long> countMap = new HashMap<>();
     private final String toMatchLine;
     private final String matcher;
 
@@ -21,6 +24,12 @@ public class Runner {
         return matcher;
     }
 
+    public static String extend(String origMatchNumbers, String delimiter) {
+        Stream<String> stream = Arrays.stream(new String[5]);
+        String matcherNumbers = stream.map((s) -> origMatchNumbers).collect(Collectors.joining(delimiter));
+        return matcherNumbers;
+    }
+
     long getOptions() {
         if (!toMatchLine.matches(matcher)) {
             return 0;
@@ -28,14 +37,22 @@ public class Runner {
         if (!toMatchLine.matches(".*[?].*")) {
             return 1;
         }
-        return
-            new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions()
-                +
-                new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions();
-    }
-    public static String extend(String origMatchNumbers, String delimiter) {
-        Stream<String> stream = Arrays.stream(new String[5]);
-        String matcherNumbers = stream.map((s) -> origMatchNumbers).collect(Collectors.joining(delimiter));
-        return matcherNumbers;
+        String[] parts = toMatchLine.split("[?].*");
+        boolean hasDotBeforeFirstQ = parts.length > 0 && parts[0].endsWith(".");
+        String key = null;
+        if (hasDotBeforeFirstQ) {
+            String first = parts[0];
+            key = first.length() + "," + first.split("#+").length + String.join(",", Arrays.stream(parts).toList().subList(1, parts.length));
+            if (countMap.containsKey(key)) {
+                return countMap.get(key);
+            }
+        }
+        long result = new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions()
+            +
+            new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions();
+        if (hasDotBeforeFirstQ) {
+            countMap.put(key, result);
+        }
+        return result;
     }
 }
