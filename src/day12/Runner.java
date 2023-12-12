@@ -30,26 +30,26 @@ public class Runner {
         return matcherNumbers;
     }
 
-    long getOptions() {
+    long getOptions(int depth) {
         if (!toMatchLine.matches(matcher)) {
             return 0;
         }
         if (!toMatchLine.matches(".*[?].*")) {
             return 1;
         }
-        String[] parts = toMatchLine.split("[?].*");
-        boolean hasDotBeforeFirstQ = parts.length > 0 && parts[0].endsWith(".");
+        int charBeforeQIndex = toMatchLine.indexOf('?') - 1;
+        boolean hasDotBeforeFirstQ = charBeforeQIndex >= 0 && toMatchLine.charAt(charBeforeQIndex) == '.';
         String key = null;
         if (hasDotBeforeFirstQ) {
-            String first = parts[0];
-            key = first.length() + "," + first.split("#+").length;
+            int alreadyMatched = toMatchLine.substring(0, charBeforeQIndex + 1).split("#+").length;
+            key = depth + "," + alreadyMatched;
             if (countMap.containsKey(key)) {
                 return countMap.get(key);
             }
         }
-        long result = new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions()
+        long result = new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions(depth + 1)
             +
-            new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions();
+            new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions(depth + 1);
         if (hasDotBeforeFirstQ) {
             countMap.put(key, result);
         }

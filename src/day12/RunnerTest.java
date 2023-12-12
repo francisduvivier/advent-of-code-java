@@ -11,8 +11,10 @@ class RunnerTest {
         // Arrange
         // Act
         // Assert
-        assertEquals(1, new Runner(".?.", Runner.createMatcher("1")).getOptions());
-        assertEquals(10, new Runner("?###????????", Runner.createMatcher("3,2,1")).getOptions());
+        Runner.countMap.clear();
+        assertEquals(1, new Runner(".?.", Runner.createMatcher("1")).getOptions(0));
+        Runner.countMap.clear();
+        assertEquals(10, new Runner("?###????????", Runner.createMatcher("3,2,1")).getOptions(0));
     }
 
     @Test
@@ -23,6 +25,7 @@ class RunnerTest {
         assertEquals("^[.?]*[#?]{1}[.?]*$", Runner.createMatcher("1"));
         assertEquals(true, "..#..".matches("^[.?]*[#?]{1}[.?]*$"));
     }
+
     @Test
     void extend() {
         // Arrange
