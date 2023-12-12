@@ -42,7 +42,7 @@ public class Runner {
         String key = null;
         if (hasDotBeforeFirstQ) {
             String first = parts[0];
-            key = first.length() + "," + first.split("#+").length + String.join(",", Arrays.stream(parts).toList().subList(1, parts.length));
+            key = first.length() + "," + first.split("#+").length;
             if (countMap.containsKey(key)) {
                 return countMap.get(key);
             }
