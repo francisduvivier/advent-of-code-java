@@ -20,21 +20,31 @@ public class Runner {
     static String createMatcher(String matcherLine) {
         Stream<String> amounts = Arrays.stream(matcherLine.split(","));
         List<String> matchers = amounts.map(amount -> "[#?]{" + amount + "}").toList();
-        String matcher = "^[.?]*" + String.join("[.?]+", matchers) + "[.?]*$";
+        String matcher = "(^|[.?]+)" + String.join("[.?]+", matchers) + "([.?]+|$)";
         return matcher;
     }
 
-    public static String extend(String origMatchNumbers, String delimiter) {
-        Stream<String> stream = Arrays.stream(new String[5]);
+    static String createMatcher(String matcherLine, int multiplier) {
+        Stream<String> amounts = Arrays.stream(matcherLine.split(","));
+        List<String> matchers = amounts.map(amount -> "[#?]{" + amount + "}").toList();
+        String matcher = "[.?]*(" + String.join("[.?]+", matchers) + "([.?]+|$)){" + multiplier + "}";
+        return matcher;
+    }
+
+    public static String extend(String origMatchNumbers, String delimiter, int multiplier) {
+        Stream<String> stream = Arrays.stream(new String[multiplier]);
         String matcherNumbers = stream.map((s) -> origMatchNumbers).collect(Collectors.joining(delimiter));
         return matcherNumbers;
     }
 
     long getOptions(int depth) {
-        if (!toMatchLine.matches(matcher)) {
+        System.out.println("depth " + depth+"");
+        if (!isPossible()) {
+            System.out.println("+ No Match at depth " + depth + ": " + toMatchLine);
             return 0;
         }
         if (!toMatchLine.matches(".*[?].*")) {
+            System.out.println("+ Match: " + toMatchLine);
             return 1;
         }
         int charBeforeQIndex = toMatchLine.indexOf('?') - 1;
@@ -44,15 +54,22 @@ public class Runner {
             int alreadyMatched = toMatchLine.substring(0, charBeforeQIndex + 1).split("#+").length;
             key = depth + "," + alreadyMatched;
             if (countMap.containsKey(key)) {
-                return countMap.get(key);
+                Long result = countMap.get(key);
+                System.out.println("- Using Cached Result" + key + " , " + result + ": " + toMatchLine);
+                return result;
             }
         }
-        long result = new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions(depth + 1)
-            +
-            new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions(depth + 1);
+        long result =
+            new Runner(toMatchLine.replaceFirst("[?]", "."), matcher).getOptions(depth + 1)
+                + new Runner(toMatchLine.replaceFirst("[?]", "#"), matcher).getOptions(depth + 1);
         if (hasDotBeforeFirstQ) {
             countMap.put(key, result);
+            System.out.println("- Adding Count: " + key + " , " + result + ": " + toMatchLine);
         }
         return result;
+    }
+
+    private boolean isPossible() {
+        return toMatchLine.matches(matcher);
     }
 }

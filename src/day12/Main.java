@@ -22,12 +22,19 @@ public class Main {
         long result = 0;
         int i = 0;
         for (String line : lines) {
-            System.out.println((i++) + " Doing line: " + line);
-            String matcherNumbers = extend(line.split(" ")[1], ",");
-            String toMatch = extend(line.split(" ")[0], "?");
-            Runner.countMap.clear();
-            result += new Runner(toMatch, Runner.createMatcher(matcherNumbers)).getOptions(0);
+            result += solveLine(line, i);
+            i++;
         }
         return "" + result;
+    }
+
+    public static long solveLine(String line, int i) {
+        String matcherNumbers = line.split(" ")[1];
+        String matcher = Runner.createMatcher(matcherNumbers, 5);
+        String toMatch = extend(line.split(" ")[0], "?", 5);
+        Runner.countMap.clear();
+        System.out.println(" ***************** Doing line " + i + ": " + line + ", matcher:\n" + matcher);
+        long result = new Runner(toMatch, matcher).getOptions(0);
+        return result;
     }
 }

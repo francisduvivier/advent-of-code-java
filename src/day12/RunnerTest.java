@@ -31,7 +31,7 @@ class RunnerTest {
         // Arrange
         // Act
         // Assert
-        assertEquals("???.###????.###????.###????.###????.###", Runner.extend("???.###", "?"));
-        assertEquals("1,1,3,1,1,3,1,1,3,1,1,3,1,1,3", Runner.extend("1,1,3", ","));
+        assertEquals("???.###????.###????.###????.###????.###", Runner.extend("???.###", "?", 5));
+        assertEquals("1,1,3,1,1,3,1,1,3,1,1,3,1,1,3", Runner.extend("1,1,3", ",", 5));
     }
 }

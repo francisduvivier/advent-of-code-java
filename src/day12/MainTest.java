@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static day12.Main.solve;
-import static day12.Main.solve2;
+import static day12.Main.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
@@ -40,11 +39,18 @@ class MainTest {
     void solvePart2Sample() {
         assertEquals("525152", solve2(sampleInput));
     }
+
     @Test
-    void solvePart2Retry2() {
+    void solvePart2Line66() {
+        assertEquals("LINE 66 FOUND", solveLine(input.split("\n")[66], 66));
+    }
+
+    @Test
+    void solvePart2Retry0() {
         assertEquals("525152", solve2(sampleInput));
         assertEquals("", solve2(input));
     }
+
     @Test
     void solvePart2() {
         assertEquals("525152", solve2(sampleInput));
