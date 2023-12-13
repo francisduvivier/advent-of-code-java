@@ -27,7 +27,7 @@ public class Main {
             } else if (line.matches(".*map:$")) {
                 mappers.add(new Mapper());
             } else if (line.matches("^[0-9 ]+$")) {
-                mappers.getLast().addMappingLine(line);
+                mappers.get(mappers.size()-1).addMappingLine(line);
             }
         }
         var lowestMapping = Long.MAX_VALUE;
@@ -52,7 +52,7 @@ public class Main {
             } else if (line.matches(".*map:$")) {
                 mappers.add(new Mapper());
             } else if (line.matches("^[0-9 ]+$")) {
-                mappers.getLast().addMappingLine(line);
+                mappers.get(mappers.size()-1).addMappingLine(line);
             }
         }
         var lowestMapping = Long.MAX_VALUE;

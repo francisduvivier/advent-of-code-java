@@ -36,21 +36,14 @@ class MainTest {
     }
 
     @Test
-    void solvePart2Sample() {
+    void solvePart2Sample0() {
         assertEquals("525152", solve2(sampleInput));
     }
 
     @Test
     void solvePart2Line66() {
-        assertEquals("LINE 66 FOUND", solveLine(input.split("\n")[66], 66));
+        assertEquals("3411720000", solveLine(input.split("\n")[66], 66));
     }
-
-    @Test
-    void solvePart2Retry0() {
-        assertEquals("525152", solve2(sampleInput));
-        assertEquals("", solve2(input));
-    }
-
     @Test
     void solvePart2() {
         assertEquals("525152", solve2(sampleInput));
