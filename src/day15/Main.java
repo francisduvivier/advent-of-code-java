@@ -8,9 +8,11 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+        var runner = new Runner();
+        for (var part : lines[0].split(",")) {
+            runner.run(part);
+        }
+        return "" + runner.getTotal();
     }
 
     static String solve2(String sampleInput) {

@@ -9,7 +9,7 @@ public class Runner {
     private final long time;
     private final long distance;
 
-    public Runner(long time, long distance) {
+    Runner(long time, long distance) {
         this.time = time;
         this.distance = distance;
     }

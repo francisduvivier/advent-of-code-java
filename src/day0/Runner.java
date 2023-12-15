@@ -2,7 +2,7 @@ package day0;
 
 public class Runner {
 
-    public Runner() {
+    Runner() {
     }
 
     long run() {

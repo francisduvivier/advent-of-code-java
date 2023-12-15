@@ -4,7 +4,7 @@ public class Runner {
 
     private long total;
 
-    public Runner() {
+    Runner() {
     }
 
     char run(String s) {

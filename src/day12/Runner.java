@@ -16,7 +16,7 @@ public class Runner {
     private final String matcher;
     private int maxDepth;
 
-    public Runner(String toMatchLine, String matcher) {
+    Runner(String toMatchLine, String matcher) {
         this.toMatchLine = toMatchLine;
         this.maxDepth = toMatchLine.split("[?]").length - 1;
         this.matcher = matcher;

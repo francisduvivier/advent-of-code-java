@@ -7,7 +7,7 @@ import static day10.Connector.*;
 public class Runner {
     private final String[] lines;
 
-    public Runner(String[] lines) {
+    Runner(String[] lines) {
         this.lines = lines;
     }
 

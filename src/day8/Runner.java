@@ -7,7 +7,7 @@ public class Runner {
     final String instructions;
     final BinaryTree tree;
 
-    public Runner(String instructions, BinaryTree tree) {
+    Runner(String instructions, BinaryTree tree) {
 
         this.instructions = instructions;
         this.tree = tree;
