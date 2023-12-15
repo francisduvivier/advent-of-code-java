@@ -17,6 +17,11 @@ public class Main {
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
+        // SO we need to have a list of 256 box elements
+        // Then every box should have a list containing lenses
+        // lens objects have a label and a number
+        // we need to be able to look up lenses by their label so we can remove them from the list
+
         long result = 0;
         // TODO
         return "" + result;
