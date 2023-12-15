@@ -36,7 +36,7 @@ public class Main {
         for (var part : lines[0].split(",")) {
             String[] stepSplit = part.split("[-=]");
             var label = stepSplit[0];
-            int boxIndex = hasher.hash(part);
+            int boxIndex = hasher.hash(label);
             var lenses = boxes[boxIndex];
 
             if (part.contains("-")) {
