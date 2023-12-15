@@ -1,10 +1,10 @@
 package day15;
 
-public class Runner {
+public class Hasher {
 
     private long total;
 
-    Runner() {
+    Hasher() {
     }
 
     char run(String s) {

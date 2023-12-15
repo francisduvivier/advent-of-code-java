@@ -8,7 +8,7 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        var runner = new Runner();
+        var runner = new Hasher();
         for (var part : lines[0].split(",")) {
             runner.run(part);
         }
@@ -21,7 +21,7 @@ public class Main {
         // Then every box should have a list containing lenses
         // lens objects have a label and a number
         // we need to be able to look up lenses by their label so we can remove them from the list
-
+        // Box is decided by hash algo from day 1
         long result = 0;
         // TODO
         return "" + result;
