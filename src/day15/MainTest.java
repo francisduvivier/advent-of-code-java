@@ -25,12 +25,12 @@ class MainTest {
     @Test
     void solvePart1() {
         assertEquals("1320", solve(sampleInput));
-        assertEquals("PART 1 SOLUTION IS", solve(input));
+        assertEquals("520500", solve(input));
     }
 
     @Test
     void solvePart2() {
-        assertEquals("TODO", solve2(sampleInput));
+        assertEquals("145", solve2(sampleInput));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }

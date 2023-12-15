@@ -7,7 +7,7 @@ public class Hasher {
     Hasher() {
     }
 
-    char run(String s) {
+    char hash(String s) {
         short result = 0;
         for (char charVal : s.toCharArray()) {
             result += charVal;
