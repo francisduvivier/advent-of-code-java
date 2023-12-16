@@ -34,14 +34,12 @@ public class Main {
         if (DEBUG) {
             System.out.println("mark Tile [" + nextTile.key + "]:" + nextTile.value + ", with dir [" + dir + "]");
         }
-        if (nextTile.value.equals(".")) {
-            if (!nextTile.addMark(dir)) {
-                if (DEBUG) {
-                    System.out.println("STOP LOOP Tile [" + nextTile.key + "]:" + nextTile.value + ", with dir [" + dir + "]");
-                }
-                // tile was already marked with this dir, returning to avoid loop
-                return;
+        if (!nextTile.addMark(dir)) {
+            if (DEBUG) {
+                System.out.println("STOP LOOP Tile [" + nextTile.key + "]:" + nextTile.value + ", with dir [" + dir + "]");
             }
+            // tile was already marked with this dir, returning to avoid loop
+            return;
         }
         switch (nextTile.value) {
             case ".": {
