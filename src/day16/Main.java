@@ -23,15 +23,15 @@ public class Main {
     }
 
     private static void markTilesRec(Grid grid, Tile tile, DIR dir) {
-        if (tile.value.equals(".")) {
-            tile.mark();
-        }
         if (DEBUG) {
             System.out.println("mark Tile[" + tile.value + "], with dir [" + dir + "]");
         }
         var nextTile = grid.getNext(tile, dir);
         if (nextTile == null) {
             return;
+        }
+        if (nextTile.value.equals(".")) {
+            nextTile.mark();
         }
         switch (nextTile.value) {
             case ".": {
@@ -42,8 +42,8 @@ public class Main {
                 if (dir == RIGHT || dir == LEFT) {
                     markTilesRec(grid, nextTile, dir);
                 } else {
-                    markTilesRec(grid, nextTile, UP);
-                    markTilesRec(grid, nextTile, DOWN);
+                    markTilesRec(grid, nextTile, RIGHT);
+                    markTilesRec(grid, nextTile, LEFT);
                 }
                 break;
             }
@@ -51,8 +51,8 @@ public class Main {
                 if (dir == UP || dir == DOWN) {
                     markTilesRec(grid, nextTile, dir);
                 } else {
-                    markTilesRec(grid, nextTile, LEFT);
-                    markTilesRec(grid, nextTile, RIGHT);
+                    markTilesRec(grid, nextTile, UP);
+                    markTilesRec(grid, nextTile, DOWN);
                 }
                 break;
             }
