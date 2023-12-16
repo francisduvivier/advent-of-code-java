@@ -34,4 +34,16 @@ public class Tile {
     public String toString() {
         return getMarks() > 0 ? "#" : this.value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof Tile)) {
+            return false;
+        }
+        Tile otherTile = (Tile) obj;
+        if (otherTile.value == null) {
+            return value == null;
+        }
+        return otherTile.value.equals(value);
+    }
 }

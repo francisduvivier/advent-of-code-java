@@ -7,8 +7,8 @@ import static util.Tile.toKey;
 
 public class Grid {
     public final Map<String, Tile> tiles = new HashMap<>();
-    private final int rows;
-    private final int cols;
+    public final int rows;
+    public final int cols;
 
     public Grid(String[] lines) {
         var row = 0;
