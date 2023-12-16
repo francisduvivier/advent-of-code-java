@@ -87,9 +87,9 @@ public class Main {
                 }
                 if (moddedTile == null) {
                     usedMod = true;
-                } else if (moddedTile.key.equals(Tile.toKey(row, row + (offset - 1)))) {
+                } else if (moddedTile.key.equals(Tile.toKey(row + (offset - 1), col))) {
                     usedMod = true;
-                } else if (moddedTile.key.equals(Tile.toKey(row, row - (offset)))) {
+                } else if (moddedTile.key.equals(Tile.toKey(row - offset, col))) {
                     usedMod = true;
                 }
             }
