@@ -18,14 +18,14 @@ public class Main {
         for (var pattern : patterns) {
             String[] lines = pattern.split("\n");
             Grid grid = new Grid(lines);
-            total += getPoints(lines, grid);
+            total += getPoints(grid);
         }
         return "" + total;
     }
 
-    private static long getPoints(String[] lines, Grid grid) {
+    private static long getPoints(Grid grid) {
         // LEFT SIDE
-        for (var row = 1; row < lines.length; row++) {
+        for (var row = 1; row < grid.rows; row++) {
             var points = tryRow(grid, row);
             if (points != 0) {
                 return 100L * points;
@@ -33,7 +33,7 @@ public class Main {
         }
 
         // TOP SIDE
-        for (var col = 1; col < lines[0].length(); col++) {
+        for (var col = 1; col < grid.cols; col++) {
             var points = tryCol(grid, col);
             if (points != 0) {
                 return points;
@@ -43,8 +43,19 @@ public class Main {
     }
 
     static String solve2(String sampleInput) {
-        // TODO
-        return "";
+        String[] patterns = sampleInput.split("\n\n");
+        long total = 0;
+
+        for (var pattern : patterns) {
+            String[] lines = pattern.split("\n");
+            Grid grid = new Grid(lines);
+            total += getPointsModded(grid);
+        }
+        return "" + total;
+    }
+
+    private static long getPointsModded(Grid grid) {
+        return 0; //TODO
     }
 
     private static int tryRow(Grid grid, int row) {
