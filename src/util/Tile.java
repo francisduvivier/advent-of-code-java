@@ -1,11 +1,14 @@
 package util;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Tile {
+    public final String key;
     final int row;
     final int col;
-    final String key;
+    private final Set<DIR> markDirs = new HashSet<>();
     public String value;
-    private int marks;
 
     public Tile(int row, int col, String value) {
         this.row = row;
@@ -18,12 +21,17 @@ public class Tile {
         return row + "," + col;
     }
 
-    public void mark() {
-        this.marks++;
+    public boolean addMark(DIR dir) {
+        return this.markDirs.add(dir);
     }
 
 
     public int getMarks() {
-        return marks;
+        return markDirs.size();
+    }
+
+    @Override
+    public String toString() {
+        return getMarks() > 0 ? "#" : this.value;
     }
 }

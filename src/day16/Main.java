@@ -19,19 +19,29 @@ public class Main {
         Grid grid = new Grid(lines);
         markTilesRec(grid, new Tile(0, -1, ""), RIGHT);
         var energized = grid.tiles.values().stream().filter(t -> t.getMarks() > 0).count();
+        System.out.println(grid);
         return "" + energized;
     }
 
     private static void markTilesRec(Grid grid, Tile tile, DIR dir) {
-        if (DEBUG) {
-            System.out.println("mark Tile[" + tile.value + "], with dir [" + dir + "]");
-        }
         var nextTile = grid.getNext(tile, dir);
         if (nextTile == null) {
+            if (DEBUG) {
+                System.out.println("HIT WALL Tile [" + tile.key + "]:" + tile.value + ", with dir [" + dir + "]");
+            }
             return;
         }
+        if (DEBUG) {
+            System.out.println("mark Tile [" + nextTile.key + "]:" + nextTile.value + ", with dir [" + dir + "]");
+        }
         if (nextTile.value.equals(".")) {
-            nextTile.mark();
+            if (!nextTile.addMark(dir)) {
+                if (DEBUG) {
+                    System.out.println("STOP LOOP Tile [" + nextTile.key + "]:" + nextTile.value + ", with dir [" + dir + "]");
+                }
+                // tile was already marked with this dir, returning to avoid loop
+                return;
+            }
         }
         switch (nextTile.value) {
             case ".": {

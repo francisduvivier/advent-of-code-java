@@ -37,7 +37,7 @@ public class Grid {
                 return getTile(tile.row, tile.col + 1);
             }
             case LEFT -> {
-                return getTile(tile.row, tile.col + 1);
+                return getTile(tile.row, tile.col - 1);
             }
         }
         return null;
@@ -66,4 +66,15 @@ public class Grid {
             || row >= this.rows;
     }
 
+    public String toString() {
+        String[] rowStrings = new String[rows];
+        for (var row = 0; row < rows; row++) {
+            var rowEls = new String[cols];
+            for (var col = 0; col < cols; col++) {
+                rowEls[col] = getTile(row, col).toString();
+            }
+            rowStrings[row] = String.join("", rowEls);
+        }
+        return String.join("\n", rowStrings);
+    }
 }
