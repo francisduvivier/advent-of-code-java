@@ -16,11 +16,20 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
+        int startRow = 0;
+        int startCol = -1;
+        DIR dir = RIGHT;
+
+        var energized = getEnergized(lines, startRow, startCol, dir);
+        return "" + energized;
+    }
+
+    private static long getEnergized(String[] lines, int startRow, int startCol, DIR dir) {
         Grid grid = new Grid(lines);
-        markTilesRec(grid, new Tile(0, -1, ""), RIGHT);
+        markTilesRec(grid, new Tile(startRow, startCol, ""), dir);
         var energized = grid.tiles.values().stream().filter(t -> t.getMarks() > 0).count();
         System.out.println(grid);
-        return "" + energized;
+        return energized;
     }
 
     private static void markTilesRec(Grid grid, Tile tile, DIR dir) {
@@ -90,9 +99,38 @@ public class Main {
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+        long max = 0;
+
+        // LEFT SIDE
+        for (var row = 0; row < lines.length; row++) {
+            var energized = getEnergized(lines, row, -1, RIGHT);
+            if (max < energized) {
+                max = energized;
+            }
+        }
+        // RIGHT SIDE
+        for (var row = 0; row < lines.length; row++) {
+            var energized = getEnergized(lines, row, lines[0].length(), LEFT);
+            if (max < energized) {
+                max = energized;
+            }
+        }
+
+        // TOP SIDE
+        for (var col = 0; col < lines[0].length(); col++) {
+            var energized = getEnergized(lines, -1, col, DOWN);
+            if (max < energized) {
+                max = energized;
+            }
+        }
+        // BOT SIDE
+        for (var col = 0; col < lines[0].length(); col++) {
+            var energized = getEnergized(lines, lines.length, col, UP);
+            if (max < energized) {
+                max = energized;
+            }
+        }
+        return "" + max;
     }
 
 }
