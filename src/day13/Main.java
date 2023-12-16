@@ -18,19 +18,28 @@ public class Main {
         for (var pattern : patterns) {
             String[] lines = pattern.split("\n");
             Grid grid = new Grid(lines);
-            // LEFT SIDE
-            for (var row = 1; row < lines.length; row++) {
-                var points = 100 * tryRow(grid, row);
-                total += points;
-            }
-
-            // TOP SIDE
-            for (var col = 1; col < lines[0].length(); col++) {
-                var points = tryCol(grid, col);
-                total += points;
-            }
+            total += getPoints(lines, grid);
         }
         return "" + total;
+    }
+
+    private static long getPoints(String[] lines, Grid grid) {
+        // LEFT SIDE
+        for (var row = 1; row < lines.length; row++) {
+            var points = tryRow(grid, row);
+            if (points != 0) {
+                return 100L * points;
+            }
+        }
+
+        // TOP SIDE
+        for (var col = 1; col < lines[0].length(); col++) {
+            var points = tryCol(grid, col);
+            if (points != 0) {
+                return points;
+            }
+        }
+        return 0;
     }
 
     static String solve2(String sampleInput) {
