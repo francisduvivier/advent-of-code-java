@@ -9,25 +9,32 @@ import static util.DIR.*;
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
+    private static final boolean DEBUG = true;
+
     public static void main(String[] args) {
     }
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
         Grid grid = new Grid(lines);
-        markTilesRec(grid, grid.getTile(0, 0), RIGHT);
+        markTilesRec(grid, new Tile(0, -1, ""), RIGHT);
         var energized = grid.tiles.values().stream().filter(t -> t.getMarks() > 0).count();
         return "" + energized;
     }
 
     private static void markTilesRec(Grid grid, Tile tile, DIR dir) {
+        if (tile.value.equals(".")) {
+            tile.mark();
+        }
+        if (DEBUG) {
+            System.out.println("mark Tile[" + tile.value + "], with dir [" + dir + "]");
+        }
         var nextTile = grid.getNext(tile, dir);
         if (nextTile == null) {
             return;
         }
         switch (nextTile.value) {
             case ".": {
-                nextTile.mark();
                 markTilesRec(grid, nextTile, dir);
                 break;
             }
