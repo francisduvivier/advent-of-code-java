@@ -9,8 +9,10 @@ public class Grid {
     public final Map<String, Tile> tiles = new HashMap<>();
     public final int rows;
     public final int cols;
+    private final String[] lines;
 
     public Grid(String[] lines) {
+        this.lines = lines;
         var row = 0;
         for (var line : lines) {
             var col = 0;
@@ -23,6 +25,11 @@ public class Grid {
         }
         this.rows = lines.length;
         this.cols = lines[0].length();
+    }
+
+    @Override
+    public Grid clone() {
+        return new Grid(lines);
     }
 
     public Tile getNext(Tile tile, DIR dir) {

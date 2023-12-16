@@ -30,7 +30,7 @@ class MainTest {
 
     @Test
     void solvePart2() {
-        assertEquals("51", solve2(sampleInput));
+        assertEquals("400", solve2(sampleInput));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }
