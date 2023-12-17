@@ -10,6 +10,7 @@ import java.util.PriorityQueue;
 
 public class ConstrainedPathRunner {
     private static final boolean DEBUG = true;
+    public static final int PRINT_INTERNVAL = 1;
     final PathGrid grid;
 
     public ConstrainedPathRunner(PathGrid grid) {
@@ -47,7 +48,7 @@ public class ConstrainedPathRunner {
                 }
             }
             if (DEBUG) {
-                if (tryCount++ % 10000 == 0) {
+                if (tryCount++ % PRINT_INTERNVAL == 0) {
                     System.out.println("try[" + tryCount + "]: " +
                         bestTile.cost + " dist: " + (grid.rows + grid.cols + bestTile.gscore));
                 }

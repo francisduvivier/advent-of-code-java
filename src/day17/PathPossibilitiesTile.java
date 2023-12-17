@@ -18,7 +18,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         if (other.hasHorizontalDir() != first.hasHorizontalDir()) {
             return false;
         }
-        if (first.amountSameDir > other.amountSameDir) {
+        if (first.amountSameDir != other.amountSameDir) {
             return false;
         }
         return first.cost < other.cost;
@@ -28,7 +28,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         if (newPossibility.amountSameDir >= maxStraight) {
             return false;
         }
-        if (newPossibility.amountSameDir == 0 && newPossibility.prev.amountSameDir < minStraight) {
+        if (newPossibility.amountSameDir == 0 && newPossibility.prev.amountSameDir < minStraight - 1) {
             if (newPossibility.prev.prev != null) {
                 return false;
             }
