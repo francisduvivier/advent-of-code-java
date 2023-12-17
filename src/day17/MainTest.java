@@ -34,6 +34,6 @@ class MainTest {
         System.out.println("SAMPLE 2 OK!");
         assertEquals("94", solve2(sampleInput));
         System.out.println("SAMPLE 1 OK!");
-        assertEquals("PART 2 SOLUTION IS", solve2(input)); //Between 1224 and 1227
+        assertEquals("1219", solve2(input)); //Between 1224 and 1227
     }
 }
