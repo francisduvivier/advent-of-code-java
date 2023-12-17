@@ -35,21 +35,7 @@ public class TGrid<V, T extends VTile<V>> {
     }
 
     public T getNext(T tile, DIR dir) {
-        switch (dir) {
-            case UP -> {
-                return getTile(tile.row - 1, tile.col);
-            }
-            case DOWN -> {
-                return getTile(tile.row + 1, tile.col);
-            }
-            case RIGHT -> {
-                return getTile(tile.row, tile.col + 1);
-            }
-            case LEFT -> {
-                return getTile(tile.row, tile.col - 1);
-            }
-        }
-        return null;
+        return getTile(tile.row + dir.rowDiff, tile.col + +dir.colDiff);
     }
 
     public void setTile(T tile) {

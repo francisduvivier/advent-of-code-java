@@ -6,8 +6,8 @@ public enum DIR {
     RIGHT(0, 1),
     LEFT(0, -1);
 
-    private final int rowDiff;
-    private final int colDiff;
+    public final int rowDiff;
+    public final int colDiff;
 
     DIR(int rowDiff, int colDiff) {
         this.rowDiff = rowDiff;
