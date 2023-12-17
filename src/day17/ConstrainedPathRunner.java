@@ -9,6 +9,7 @@ import util.astar.PathTile;
 import java.util.PriorityQueue;
 
 public class ConstrainedPathRunner {
+    private static final boolean DEBUG = true;
     final PathGrid grid;
 
     public ConstrainedPathRunner(PathGrid grid) {
@@ -34,6 +35,7 @@ public class ConstrainedPathRunner {
         PathPossibilitiesGrid pathCache = new PathPossibilitiesGrid(grid.lines);
         PathTile bestTile = new PathTile(0, -1, 0, null);
         PathPossibilitiesTile destination = pathCache.getTile(grid.rows - 1, grid.cols - 1);
+        int tryCount = 0;
         do {
             for (var dir : DIR.DIRS) {
                 PathTile next = grid.getNext(bestTile, dir);
@@ -42,6 +44,11 @@ public class ConstrainedPathRunner {
                     if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next)) {
                         prioQueue.add(next);
                     }
+                }
+            }
+            if (DEBUG) {
+                if (tryCount++ % 10000 == 0) {
+                    getPathString(bestTile);
                 }
             }
             bestTile = prioQueue.poll();

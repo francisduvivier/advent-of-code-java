@@ -3,6 +3,8 @@ package util.astar;
 import util.DIR;
 import util.VTile;
 
+import java.util.Set;
+
 public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
     public final PathTile prev;
     public final long cost;
@@ -25,24 +27,27 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
     }
 
     private int calcAmountSameDir() {
+
         if (dir == null) {
             return 0;
         }
-        var amount = 0;
         var ancestor = this.prev;
-        while (ancestor != null
+        if (ancestor != null
             && ancestor.dir != null
             && ancestor != this
-            && Math.abs(ancestor.dir.rowDiff) == Math.abs(dir.rowDiff)
+            && ancestor.hasHorizontalDir() == hasHorizontalDir()
         ) {
-            ancestor = ancestor.prev;
-            amount++;
+            return ancestor.amountSameDir + 1;
         }
-        return amount;
+        return 0;
     }
 
     public DIR getDir() {
         return dir;
+    }
+
+    public boolean hasHorizontalDir() {
+        return dir == null || dir.rowDiff == 0;
     }
 
     @Override
