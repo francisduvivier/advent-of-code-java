@@ -24,11 +24,15 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         return first.cost < other.cost;
     }
 
-    boolean insertIfBetter(PathTile newPossibility, PriorityQueue prioQueue, int maxStraight) {
+    boolean insertIfBetter(PathTile newPossibility, PriorityQueue prioQueue, int maxStraight, int minStraight) {
         if (newPossibility.amountSameDir >= maxStraight) {
             return false;
         }
-
+        if (newPossibility.amountSameDir == 0 && newPossibility.prev.amountSameDir < minStraight) {
+            if (newPossibility.prev.prev != null) {
+                return false;
+            }
+        }
         var sameOrBetterFound = false;
         ArrayList<PathTile> clone = new ArrayList<>(this.possibilities);
         for (var curr : clone) {

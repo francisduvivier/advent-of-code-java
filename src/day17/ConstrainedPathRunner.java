@@ -16,7 +16,7 @@ public class ConstrainedPathRunner {
         this.grid = grid;
     }
 
-    PathTile run(int maxStraight) {
+    PathTile run(int maxStraight, int minStraight) {
         // So we will generate options at ever turn, then these options will be added to the PrioQueue.
         // But so then we need to be able to check whether an option is "possibly better"
         // Or rather we need to be able to exclude options.
@@ -41,7 +41,7 @@ public class ConstrainedPathRunner {
                 PathTile next = grid.getNext(bestTile, dir);
                 if (next != null) {
                     String prevKey = bestTile.prev == null ? null : bestTile.prev.key;
-                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next, prioQueue, maxStraight)) {
+                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next, prioQueue, maxStraight, minStraight)) {
                         prioQueue.add(next);
                     }
                 }

@@ -13,7 +13,7 @@ public class Main {
         String[] lines = sampleInput.split("\n");
         var grid = new PathGrid(lines);
         ConstrainedPathRunner constrainedPathRunner = new ConstrainedPathRunner(grid);
-        PathTile result = constrainedPathRunner.run(3);
+        PathTile result = constrainedPathRunner.run(3, 0);
         System.out.println(constrainedPathRunner.getPathString(result));
         Integer firstTile = grid.getTile(0, 0).value;
         return "" + (result.cost - firstTile);
@@ -23,7 +23,7 @@ public class Main {
         String[] lines = sampleInput.split("\n");
         var grid = new PathGrid(lines);
         ConstrainedPathRunner constrainedPathRunner = new ConstrainedPathRunner(grid);
-        PathTile result = constrainedPathRunner.run(10);
+        PathTile result = constrainedPathRunner.run(10, 4);
         System.out.println(constrainedPathRunner.getPathString(result));
         Integer firstTile = grid.getTile(0, 0).value;
         return "" + (result.cost - firstTile);
