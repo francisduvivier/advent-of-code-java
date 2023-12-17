@@ -1,5 +1,8 @@
 package day17;
 
+import util.DIR;
+import util.Grid;
+import util.Tile;
 import util.astar.PathGrid;
 import util.astar.PathTile;
 
@@ -28,6 +31,34 @@ public class ConstrainedPathRunner {
         // also add each of these options to the PathPossibilitiesGrid
         // then take the smallest val from th queue and repeat
         var prioQueue = new PriorityQueue<PathTile>();
-        return null; // TODO
+        PathPossibilitiesGrid pathCache = new PathPossibilitiesGrid(grid.lines);
+        PathTile bestTile = new PathTile(0, -1, 0, null);
+        PathPossibilitiesTile destination = pathCache.getTile(grid.rows - 1, grid.cols - 1);
+        do {
+            for (var dir : DIR.DIRS) {
+                PathTile next = grid.getNext(bestTile, dir);
+                if (next != null) {
+                    String prevKey = bestTile.prev == null ? null : bestTile.prev.key;
+                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next)) {
+                        prioQueue.add(next);
+                    }
+                }
+            }
+            bestTile = prioQueue.poll();
+        } while (bestTile != null && !bestTile.key.equals(destination.key));
+
+
+        PathTile best = destination.getBest();
+        return best;
+    }
+
+    String getPathString(PathTile path) {
+        var printGrid = new Grid(grid.lines);
+        var prev = path;
+        while (prev != null && prev != prev.prev && prev.dir != null) {
+            printGrid.setTile(new Tile(prev.row, prev.col, prev.dir.toString()));
+            prev = prev.prev;
+        }
+        return printGrid.toString();
     }
 }

@@ -9,7 +9,7 @@ public class TGrid<V, T extends VTile<V>> {
     public final Map<String, T> tiles = new HashMap<>();
     public final int rows;
     public final int cols;
-    protected final String[] lines;
+    public final String[] lines;
     private final TileFactory<T> tileFactory;
 
     public TGrid(String[] lines, TileFactory<T> tileFactory) {

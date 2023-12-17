@@ -18,6 +18,9 @@ public class PathGrid extends TGrid<Integer, PathTile> {
     @Override
     public PathTile getNext(PathTile tile, DIR dir) {
         var origNext = super.getNext(tile, dir);
+        if (origNext == null) {
+            return null; // Out of bounds
+        }
         return new PathTile(origNext.row, origNext.col, origNext.value, tile);
     }
 }

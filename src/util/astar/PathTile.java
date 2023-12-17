@@ -25,12 +25,16 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
     }
 
     private int calcAmountSameDir() {
-        if (this.dir == null) {
+        if (dir == null) {
             return 0;
         }
         var amount = 0;
         var ancestor = this.prev;
-        while (ancestor != null && ancestor != this && ancestor.dir == dir) {
+        while (ancestor != null
+            && ancestor.dir != null
+            && ancestor != this
+            && Math.abs(ancestor.dir.rowDiff) == Math.abs(dir.rowDiff)
+        ) {
             ancestor = ancestor.prev;
             amount++;
         }
