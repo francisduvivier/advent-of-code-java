@@ -37,27 +37,23 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
         }
         if (ancestor.isStartTile()) {
             // From the start tile, the dir is not defined
-            return 1;
+            return 0;
         }
         if (ancestor.dir != null
             && ancestor != this
-            && ancestor.hasHorizontalDir() == hasHorizontalDir()
+            && ancestor.dir == dir
         ) {
             return ancestor.amountSameDir + 1;
         }
         return 0;
     }
 
-    private boolean isStartTile() {
+    public boolean isStartTile() {
         return this.prev != null && this.prev.prev == null;
     }
 
     public DIR getDir() {
         return dir;
-    }
-
-    public boolean hasHorizontalDir() {
-        return dir == null || dir.rowDiff == 0;
     }
 
     @Override
@@ -82,7 +78,7 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
             return false;
         }
         PathTile otherTile = (PathTile) obj;
-        return otherTile.hasHorizontalDir() == this.hasHorizontalDir() &&
+        return otherTile.dir == this.dir &&
             otherTile.row == row &&
             otherTile.col == col &&
             otherTile.amountSameDir == amountSameDir &&

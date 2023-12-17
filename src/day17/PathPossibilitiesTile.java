@@ -15,7 +15,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
     }
 
     private static boolean isStrictlyBetterThan(PathTile first, PathTile other) {
-        if (other.hasHorizontalDir() != first.hasHorizontalDir()) {
+        if (other.dir != first.dir) {
             return false;
         }
         if (first.amountSameDir != other.amountSameDir) {
@@ -29,7 +29,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
             return false;
         }
         if (newPossibility.amountSameDir == 0 && newPossibility.prev.amountSameDir < minStraight - 1) {
-            if (newPossibility.prev.prev != null) {
+            if (!newPossibility.isStartTile() && !newPossibility.prev.isStartTile()) {
                 return false;
             }
         }

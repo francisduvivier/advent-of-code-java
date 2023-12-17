@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 
 public class ConstrainedPathRunner {
     private static final boolean DEBUG = true;
-    public static final int PRINT_INTERNVAL = 1;
+    public static final int PRINT_INTERNVAL = 10_000;
     final PathGrid grid;
 
     public ConstrainedPathRunner(PathGrid grid) {
