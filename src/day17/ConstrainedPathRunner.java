@@ -42,7 +42,7 @@ public class ConstrainedPathRunner {
                 PathTile next = grid.getNext(bestTile, dir);
                 if (next != null) {
                     String prevKey = bestTile.prev == null ? null : bestTile.prev.key;
-                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next, prioQueue, maxStraight, minStraight)) {
+                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next, prioQueue, maxStraight, minStraight, destination)) {
                         prioQueue.add(next);
                     }
                 }

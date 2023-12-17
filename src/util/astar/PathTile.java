@@ -32,14 +32,24 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
             return 0;
         }
         var ancestor = this.prev;
-        if (ancestor != null
-            && ancestor.dir != null
+        if (ancestor == null) {
+            return -1;
+        }
+        if (ancestor.isStartTile()) {
+            // From the start tile, the dir is not defined
+            return 1;
+        }
+        if (ancestor.dir != null
             && ancestor != this
             && ancestor.hasHorizontalDir() == hasHorizontalDir()
         ) {
             return ancestor.amountSameDir + 1;
         }
         return 0;
+    }
+
+    private boolean isStartTile() {
+        return this.prev != null && this.prev.prev == null;
     }
 
     public DIR getDir() {

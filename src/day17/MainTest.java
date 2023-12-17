@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static day17.DayUtil.input;
-import static day17.DayUtil.sampleInput;
+import static day17.DayUtil.*;
 import static day17.Main.solve;
 import static day17.Main.solve2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +30,10 @@ class MainTest {
 
     @Test
     void solvePart2() {
+        assertEquals("71", solve2(sampleInput2));
+        System.out.println("SAMPLE 2 OK!");
         assertEquals("94", solve2(sampleInput));
-        assertEquals("PART 2 SOLUTION IS", solve2(input));
+        System.out.println("SAMPLE 1 OK!");
+        assertEquals("PART 2 SOLUTION IS", solve2(input)); //Between 1224 and 1227
     }
 }
