@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class VTile<V> {
     public final String key;
-    final int row;
-    final int col;
+    public final int row;
+    public final int col;
     private final Set<DIR> markDirs = new HashSet<>();
     public V value;
 

@@ -11,6 +11,6 @@ class RunnerTest {
         // Arrange
         // Act
         // Assert
-        assertEquals(0, new Runner().run());
+        assertEquals(0, new ConstrainedPathRunner().run());
     }
 }
