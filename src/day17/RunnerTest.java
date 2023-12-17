@@ -12,6 +12,6 @@ class RunnerTest {
         // Arrange
         // Act
         // Assert
-        assertEquals(0, new ConstrainedPathRunner(new PathGrid(new String[]{""})).run());
+        assertEquals(0, new ConstrainedPathRunner(new PathGrid(new String[]{""})).run(3));
     }
 }

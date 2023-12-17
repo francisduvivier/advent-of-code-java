@@ -24,8 +24,8 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         return first.cost < other.cost;
     }
 
-    boolean insertIfBetter(PathTile newPossibility, PriorityQueue prioQueue) {
-        if (newPossibility.amountSameDir > 2) {
+    boolean insertIfBetter(PathTile newPossibility, PriorityQueue prioQueue, int maxStraight) {
+        if (newPossibility.amountSameDir >= maxStraight) {
             return false;
         }
         var sameOrBetterFound = false;
