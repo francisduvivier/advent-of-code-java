@@ -1,10 +1,12 @@
 package util.astar;
 
-import util.Tile;
+import util.VTile;
 
-public class PathTile extends Tile<Integer> {
-    public PathTile(int row, int col, Integer value) {
+public class PathTile extends VTile<Integer> {
+    public final PathTile prev;
+
+    public PathTile(int row, int col, Integer value, PathTile prev) {
         super(row, col, value);
-//        this.
+        this.prev = prev;
     }
 }
