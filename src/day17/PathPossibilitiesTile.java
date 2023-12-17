@@ -31,7 +31,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         var sameOrBetterFound = false;
         ArrayList<PathTile> clone = new ArrayList<>(this.possibilities);
         for (var curr : clone) {
-            if (PathPossibilitiesTile.isStrictlyBetterThan(curr, newPossibility)) {
+            if (curr.equals(newPossibility) || PathPossibilitiesTile.isStrictlyBetterThan(curr, newPossibility)) {
                 sameOrBetterFound = true;
                 break;
             }

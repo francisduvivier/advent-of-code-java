@@ -72,7 +72,7 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
             return false;
         }
         PathTile otherTile = (PathTile) obj;
-        return otherTile.dir == this.dir &&
+        return otherTile.hasHorizontalDir() == this.hasHorizontalDir() &&
             otherTile.row == row &&
             otherTile.col == col &&
             otherTile.amountSameDir == amountSameDir &&
