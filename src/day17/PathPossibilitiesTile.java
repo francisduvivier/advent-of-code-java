@@ -16,10 +16,10 @@ public class PathPossibilitiesTile extends VTile<Integer> {
 
     private static boolean isStrictlyBetterThan(PathTile first, PathTile other) {
         if (other.hasHorizontalDir() != first.hasHorizontalDir()) {
-            return first.cost + 18 < other.cost;
+            return false;
         }
         if (first.amountSameDir > other.amountSameDir) {
-            return first.cost + 18 < other.cost;
+            return false;
         }
         return first.cost < other.cost;
     }
