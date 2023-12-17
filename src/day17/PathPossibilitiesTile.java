@@ -24,7 +24,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         return first.cost < other.cost;
     }
 
-    boolean insertIfBetter(PathTile newPossibility) {
+    boolean insertIfBetter(PathTile newPossibility, PriorityQueue prioQueue) {
         if (newPossibility.amountSameDir > 2) {
             return false;
         }
@@ -37,6 +37,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
             }
             if (PathPossibilitiesTile.isStrictlyBetterThan(newPossibility, curr)) {
                 this.possibilities.remove(curr);
+                prioQueue.remove(curr);
             }
         }
         if (!sameOrBetterFound) {

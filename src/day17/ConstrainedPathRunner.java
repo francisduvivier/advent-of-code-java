@@ -41,14 +41,15 @@ public class ConstrainedPathRunner {
                 PathTile next = grid.getNext(bestTile, dir);
                 if (next != null) {
                     String prevKey = bestTile.prev == null ? null : bestTile.prev.key;
-                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next)) {
+                    if (!next.key.equals(prevKey) && pathCache.getTile(next.key).insertIfBetter(next, prioQueue)) {
                         prioQueue.add(next);
                     }
                 }
             }
             if (DEBUG) {
                 if (tryCount++ % 10000 == 0) {
-                    getPathString(bestTile);
+                    System.out.println("try[" + tryCount + "]: " +
+                        bestTile.cost + " dist: " + (grid.rows + grid.cols + bestTile.gscore));
                 }
             }
             bestTile = prioQueue.poll();
