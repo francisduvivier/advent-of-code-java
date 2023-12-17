@@ -1,6 +1,6 @@
 package util;
 
-public class Grid extends TGrid<Tile> {
+public class Grid extends TGrid<String, Tile> {
     public Grid(String[] lines) {
         super(lines, new TileFactory<>() {
             @Override

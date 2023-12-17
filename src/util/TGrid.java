@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static util.Tile.toKey;
 
-public class TGrid<T extends VTile> {
+public class TGrid<V, T extends VTile<V>> {
     public final Map<String, T> tiles = new HashMap<>();
     public final int rows;
     public final int cols;
@@ -30,7 +30,7 @@ public class TGrid<T extends VTile> {
     }
 
     @Override
-    public TGrid<T> clone() {
+    public TGrid<V, T> clone() {
         return new TGrid<>(lines, tileFactory);
     }
 
