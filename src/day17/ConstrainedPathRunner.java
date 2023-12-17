@@ -54,7 +54,7 @@ public class ConstrainedPathRunner {
                 }
             }
             bestTile = prioQueue.poll();
-        } while (bestTile != null && !bestTile.key.equals(destination.key));
+        } while (bestTile != null);
 
 
         PathTile best = destination.getBest();
