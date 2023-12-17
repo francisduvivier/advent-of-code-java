@@ -28,6 +28,7 @@ public class PathPossibilitiesTile extends VTile<Integer> {
         if (newPossibility.amountSameDir >= maxStraight) {
             return false;
         }
+
         var sameOrBetterFound = false;
         ArrayList<PathTile> clone = new ArrayList<>(this.possibilities);
         for (var curr : clone) {

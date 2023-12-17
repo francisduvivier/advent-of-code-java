@@ -32,12 +32,12 @@ class MainTest {
     void solvePart1_DEBUG() {
         assertEquals("102", solve(sampleInput));
         System.out.println("SAMPLE OK!");
-        assertEquals("PART 1 SOLUTION IS", solve(input));
+        assertEquals("1076", solve(input));
     }
 
     @Test
     void solvePart2() {
-        assertEquals("TODO", solve2(sampleInput));
+        assertEquals("94", solve2(sampleInput));
         assertEquals("PART 2 SOLUTION IS", solve2(input));
     }
 }

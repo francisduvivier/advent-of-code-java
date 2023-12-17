@@ -21,9 +21,12 @@ public class Main {
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+        var grid = new PathGrid(lines);
+        ConstrainedPathRunner constrainedPathRunner = new ConstrainedPathRunner(grid);
+        PathTile result = constrainedPathRunner.run(10);
+        System.out.println(constrainedPathRunner.getPathString(result));
+        Integer firstTile = grid.getTile(0, 0).value;
+        return "" + (result.cost - firstTile);
     }
 
 }
