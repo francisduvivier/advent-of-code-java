@@ -6,7 +6,7 @@ public enum DIR {
     RIGHT(0, 1, ">"),
     LEFT(0, -1, "<");
 
-    public static final DIR[] DIRS = new DIR[]{UP, DOWN, RIGHT, LEFT};
+    public static final DIR[] DIRS = new DIR[]{UP, RIGHT, DOWN, LEFT};
     public final int rowDiff;
     public final int colDiff;
     private final String print;
@@ -28,8 +28,62 @@ public enum DIR {
         throw new IllegalArgumentException("Cannot find direction from tile: [" + from + "] to [" + to + "]");
     }
 
+    public static DIR valueOfLetter(String dirLetter) {
+        switch (dirLetter) {
+            case "L": {
+                return DIR.LEFT;
+            }
+            case "U": {
+                return DIR.UP;
+            }
+            case "D": {
+                return DIR.DOWN;
+            }
+            case "R": {
+                return DIR.RIGHT;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return this.print;
+    }
+
+    public DIR getLeftHandDir() {
+        switch (this) {
+            case UP -> {
+                return LEFT;
+            }
+            case DOWN -> {
+                return RIGHT;
+            }
+            case RIGHT -> {
+                return UP;
+            }
+            case LEFT -> {
+                return DOWN;
+            }
+        }
+        return null;
+    }
+
+    public DIR getRightHandDir() {
+        switch (this) {
+            case UP -> {
+                return RIGHT;
+            }
+            case DOWN -> {
+                return LEFT;
+            }
+            case RIGHT -> {
+                return DOWN;
+            }
+            case LEFT -> {
+                return UP;
+            }
+        }
+        return null;
     }
 }

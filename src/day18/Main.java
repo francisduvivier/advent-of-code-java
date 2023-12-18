@@ -8,9 +8,8 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+        Runner runner = new Runner(lines);
+        return "" + runner.run();
     }
 
     static String solve2(String sampleInput) {

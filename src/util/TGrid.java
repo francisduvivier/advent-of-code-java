@@ -7,10 +7,10 @@ import static util.Tile.toKey;
 
 public class TGrid<V, T extends VTile<V>> {
     public final Map<String, T> tiles = new HashMap<>();
-    public final int rows;
-    public final int cols;
     public final String[] lines;
     private final TileFactory<T> tileFactory;
+    public int rows;
+    public int cols;
 
     public TGrid(String[] lines, TileFactory<T> tileFactory) {
         this.lines = lines;
@@ -26,7 +26,7 @@ public class TGrid<V, T extends VTile<V>> {
             row++;
         }
         this.rows = lines.length;
-        this.cols = lines[0].length();
+        this.cols = lines.length > 0 ? lines[0].length() : 0;
     }
 
     @Override
@@ -40,6 +40,11 @@ public class TGrid<V, T extends VTile<V>> {
 
     public void setTile(T tile) {
         this.tiles.put(tile.key, tile);
+        this.cols = Math.max(this.cols, tile.col + 1);
+        this.rows = Math.max(this.rows, tile.row + 1);
+        if (tile.row < 0 || tile.col < 0) {
+            throw new IllegalArgumentException("NOK tile coordinates:" + tile);
+        }
     }
 
     public T getTile(int row, int col) {
@@ -66,7 +71,12 @@ public class TGrid<V, T extends VTile<V>> {
         for (var row = 0; row < rows; row++) {
             var rowEls = new String[cols];
             for (var col = 0; col < cols; col++) {
-                rowEls[col] = getTile(row, col).toString();
+                T tile = getTile(row, col);
+                if (tile == null) {
+                    rowEls[col] = ".";
+                } else {
+                    rowEls[col] = tile.toString();
+                }
             }
             rowStrings[row] = String.join("", rowEls);
         }
