@@ -63,7 +63,7 @@ public class TGrid<V, T extends VTile<V>> {
         return tiles.get(key);
     }
 
-    public boolean isOutSide(int row, int col) {
+    public boolean isOutSide(long row, long col) {
         return col < this.minCol
             || col >= this.cols
             || row < this.minRow

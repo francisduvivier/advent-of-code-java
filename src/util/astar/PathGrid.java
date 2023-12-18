@@ -9,7 +9,7 @@ public class PathGrid extends TGrid<Integer, PathTile> {
     public PathGrid(String[] lines) {
         super(lines, new TileFactory<>() {
             @Override
-            public PathTile create(int row, int col, String val) {
+            public PathTile create(long row, long col, String val) {
                 return new PathTile(row, col, Integer.parseInt(val), null);
             }
         });

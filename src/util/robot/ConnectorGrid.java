@@ -13,7 +13,7 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
     public ConnectorGrid() {
         super(new String[]{}, new TileFactory<>() {
             @Override
-            public Connector<String> create(int row, int col, String val) {
+            public Connector<String> create(long row, long col, String val) {
                 return new Connector<>(row, col, val, null);
             }
         });
@@ -42,10 +42,10 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
     }
 
     public static Connector<String> createNext(Connector<String> tile, DIR dir) {
-        return new Connector<>(tile.row + dir.rowDiff, tile.col + +dir.colDiff, tile.value, tile);
+        return new Connector<>(tile.row + dir.rowDiff, tile.col + dir.colDiff, tile.value, tile);
     }
 
-    public int findTilesInside(Connector<String> start) {
+    public long findTilesInside(Connector<String> start) {
         Set<Connector<String>> tilesInside = new HashSet<>();
         var curr = start;
         var foundOutside = false;

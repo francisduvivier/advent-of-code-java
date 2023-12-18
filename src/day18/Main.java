@@ -3,6 +3,7 @@ package day18;
 import util.DIR;
 
 import java.util.Arrays;
+import java.util.List;
 
 import static util.DIR.DIRS;
 
@@ -29,7 +30,11 @@ public class Main {
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        Runner runner = new Runner(Arrays.stream(lines).map(Main::createInstruction2).toList().toArray(new Runner.INSTRUCT[0]));
+        List<Runner.INSTRUCT> instructions = Arrays.stream(lines).map(Main::createInstruction2).toList();
+        for (var instruct : instructions) {
+            System.out.println(instruct.dir() + ": " + instruct.amount());
+        }
+        Runner runner = new Runner(instructions.toArray(new Runner.INSTRUCT[0]));
         return "" + runner.run();
     }
 

@@ -9,7 +9,7 @@ public class PathPossibilitiesGrid extends TGrid<Integer, PathPossibilitiesTile>
     public PathPossibilitiesGrid(String[] lines) {
         super(lines, new TileFactory<>() {
             @Override
-            public PathPossibilitiesTile create(int row, int col, String val) {
+            public PathPossibilitiesTile create(long row, long col, String val) {
                 return new PathPossibilitiesTile(row, col, Integer.parseInt(val));
             }
         });

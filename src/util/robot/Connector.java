@@ -8,7 +8,7 @@ public class Connector<T> extends VTile<T> {
     public Connector<T> prev;
     private Connector<T> next;
 
-    public Connector(int row, int col, T value, Connector<T> prev) {
+    public Connector(long row, long col, T value, Connector<T> prev) {
         super(row, col, value);
         this.prev = prev;
     }

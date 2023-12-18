@@ -5,12 +5,12 @@ import java.util.Set;
 
 public class VTile<V> {
     public final String key;
-    public final int row;
-    public final int col;
+    public final long row;
+    public final long col;
     private final Set<DIR> markDirs = new HashSet<>();
     public V value;
 
-    public VTile(int row, int col, V value) {
+    public VTile(long row, long col, V value) {
         this.row = row;
         this.col = col;
         this.value = value;

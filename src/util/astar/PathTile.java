@@ -10,9 +10,9 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
     public final long cost;
     public final DIR dir;
     public final int amountSameDir;
-    public final int gscore;
+    public final long gscore;
 
-    public PathTile(int row, int col, Integer value, PathTile prev) {
+    public PathTile(long row, long col, Integer value, PathTile prev) {
         super(row, col, value);
         this.prev = prev;
         if (prev != null) {
@@ -58,7 +58,7 @@ public class PathTile extends VTile<Integer> implements Comparable<PathTile> {
 
     @Override
     public int compareTo(PathTile o) {
-        int gScoreDiff = gscore - o.gscore;
+        long gScoreDiff = gscore - o.gscore;
         long result = gScoreDiff + (cost - o.cost);
         if (result == 0) {
             return 0;

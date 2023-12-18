@@ -23,7 +23,7 @@ public class Runner {
             if (curr == start) {
                 curr.setValue(instruction.color());
             }
-            for (int step = 1; step <= instruction.amount(); step++) {
+            for (long step = 1; step <= instruction.amount(); step++) {
                 Connector<String> next = ConnectorGrid.createNext(curr, instruction.dir());
                 curr.setNext(next);
                 next.setValue(instruction.color());
@@ -44,6 +44,6 @@ public class Runner {
         return grid.findTilesInside(start);
     }
 
-    public record INSTRUCT(DIR dir, int amount, String color) {
+    public record INSTRUCT(DIR dir, long amount, String color) {
     }
 }

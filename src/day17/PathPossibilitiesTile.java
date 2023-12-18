@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 public class PathPossibilitiesTile extends VTile<Integer> {
     private final PriorityQueue<PathTile> possibilities;
 
-    public PathPossibilitiesTile(int row, int col, Integer value) {
+    public PathPossibilitiesTile(long row, long col, Integer value) {
         super(row, col, value);
         this.possibilities = new PriorityQueue<>();
     }

@@ -7,19 +7,19 @@ public enum DIR {
     LEFT(0, -1, "<");
 
     public static final DIR[] DIRS = new DIR[]{RIGHT, DOWN, LEFT, UP};
-    public final int rowDiff;
-    public final int colDiff;
+    public final long rowDiff;
+    public final long colDiff;
     private final String print;
 
-    DIR(int rowDiff, int colDiff, String print) {
+    DIR(long rowDiff, long colDiff, String print) {
         this.rowDiff = rowDiff;
         this.colDiff = colDiff;
         this.print = print;
     }
 
     public static DIR calcDir(VTile from, VTile to) {
-        int rowDiff = to.row - from.row;
-        int colDiff = to.col - from.col;
+        long rowDiff = to.row - from.row;
+        long colDiff = to.col - from.col;
         for (var dir : new DIR[]{UP, DOWN, RIGHT, LEFT}) {
             if (rowDiff == dir.rowDiff && colDiff == dir.colDiff) {
                 return dir;
