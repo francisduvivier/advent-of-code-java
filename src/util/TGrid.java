@@ -17,6 +17,9 @@ public class TGrid<V, T extends VTile<V>> {
     public TGrid(String[] lines, TileFactory<T> tileFactory) {
         this.lines = lines;
         this.tileFactory = tileFactory;
+        if (lines == null) {
+            return;
+        }
         var row = 0;
         for (var line : lines) {
             var col = 0;
@@ -46,9 +49,6 @@ public class TGrid<V, T extends VTile<V>> {
         this.rows = Math.max(this.rows, tile.row + 1);
         this.minRow = Math.min(this.minRow, tile.row);
         this.minCol = Math.min(this.minCol, tile.col);
-//        if (tile.row < 0 || tile.col < 0) {
-//            throw new IllegalArgumentException("NOK tile coordinates: " + tile.key);
-//        }
     }
 
     public T getTile(long row, long col) {

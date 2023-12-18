@@ -1,4 +1,4 @@
-package util.robot;
+package day18.robot;
 
 import org.junit.jupiter.api.Test;
 

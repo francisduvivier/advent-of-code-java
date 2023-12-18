@@ -1,4 +1,4 @@
-package util.robot;
+package day18.robot;
 
 import util.DIR;
 import util.VTile;
@@ -6,11 +6,14 @@ import util.VTile;
 public class Connector<T> extends VTile<T> {
 
     public Connector<T> prev;
-    private Connector<T> next;
+    public Connector<T> next;
 
     public Connector(long row, long col, T value, Connector<T> prev) {
         super(row, col, value);
         this.prev = prev;
+        if (prev != null) {
+            assert prev.col != col || prev.row != row;
+        }
     }
 
     @Override
@@ -30,9 +33,14 @@ public class Connector<T> extends VTile<T> {
 
     @Override
     public String toString() {
-        if (this.value == null) {
-            return ".";
-        } else return this.value.toString().split("")[0];
+        if (this.next == null || this.prev == null) {
+            return "O";
+        }
+        if (this.isCornerTile() || this.value.equals(1)) {
+            return "X";
+        } else {
+            return this.getDir().isHorizontal() ? "-" : "|";
+        }
     }
 
     @Override
@@ -46,5 +54,9 @@ public class Connector<T> extends VTile<T> {
 
     public void setNext(Connector<T> next) {
         this.next = next;
+    }
+
+    public DIR getDir() {
+        return DIR.calcDir(this, this.next);
     }
 }

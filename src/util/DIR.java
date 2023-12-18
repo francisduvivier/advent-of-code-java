@@ -21,11 +21,21 @@ public enum DIR {
         long rowDiff = to.row - from.row;
         long colDiff = to.col - from.col;
         for (var dir : new DIR[]{UP, DOWN, RIGHT, LEFT}) {
-            if (rowDiff == dir.rowDiff && colDiff == dir.colDiff) {
+            if (sign(rowDiff) == sign(dir.rowDiff) && sign(colDiff) == sign(dir.colDiff)) {
                 return dir;
             }
         }
-        throw new IllegalArgumentException("Cannot find direction from tile: [" + from + "] to [" + to + "]");
+        throw new IllegalArgumentException("Cannot find direction from tile: [" + from.key + "] to [" + from.key + "]");
+    }
+
+    private static int sign(long val) {
+        if (val > 0) {
+            return 1;
+        }
+        if (val < 0) {
+            return -1;
+        }
+        return 0;
     }
 
     public static DIR valueOfLetter(String dirLetter) {
@@ -85,5 +95,9 @@ public enum DIR {
             }
         }
         return null;
+    }
+
+    public boolean isHorizontal() {
+        return this.rowDiff == 0;
     }
 }

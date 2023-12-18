@@ -1,33 +1,27 @@
-package util.robot;
+package day18.robot;
 
 import util.DIR;
 import util.TGrid;
-import util.TileFactory;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static util.DIR.DIRS;
 
-public class ConnectorGrid extends TGrid<String, Connector<String>> {
+public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
     public ConnectorGrid() {
-        super(new String[]{}, new TileFactory<>() {
-            @Override
-            public Connector<String> create(long row, long col, String val) {
-                return new Connector<>(row, col, val, null);
-            }
-        });
+        super(null, null);
     }
 
-    static boolean findTilesInDir(ConnectorGrid grid, Set<Connector<String>> tilesLeft, Connector<String> tile, DIR dir) {
+    static boolean findTilesInDir(ConnectorGrid grid, Set<Connector<Integer>> tilesLeft, Connector<Integer> tile, DIR dir) {
         Boolean result = null;
         while (result == null) {
-            Connector<String> loopTile = grid.getNext(tile, dir);
+            Connector<Integer> loopTile = grid.getNext(tile, dir);
             if (loopTile != null && loopTile.value != null) {
                 result = false;
                 break;
             }
-            Connector<String> newTile = createNext(tile, dir);
+            Connector<Integer> newTile = createNext(tile, dir, 0);
             if (grid.isOutSide(newTile.row, newTile.col)) {
                 result = true;
                 break;
@@ -41,12 +35,14 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         return result;
     }
 
-    public static Connector<String> createNext(Connector<String> tile, DIR dir) {
-        return new Connector<>(tile.row + dir.rowDiff, tile.col + dir.colDiff, tile.value, tile);
+    public static Connector<Integer> createNext(Connector<Integer> tile, DIR dir, int step) {
+        Connector<Integer> next = new Connector<>(tile.row + step * dir.rowDiff, tile.col + step * dir.colDiff, step, tile);
+        tile.next = next;
+        return next;
     }
 
-    public long findTilesInside(Connector<String> start) {
-        Set<Connector<String>> tilesInside = new HashSet<>();
+    public long findTilesInside(Connector<Integer> start) {
+        Set<Connector<Integer>> tilesInside = new HashSet<>();
         var curr = start;
         var foundOutside = false;
         while (curr.prev != start) {
@@ -79,7 +75,6 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         while (foundNewTiles) {
             var startAmount = tilesInside.size();
             for (var tile : new HashSet<>(tilesInside)) {
-                tile.setValue("#");
                 setTile(tile);
                 for (var dir : DIRS) {
                     findTilesInDir(this, tilesInside, tile, dir);
@@ -90,12 +85,11 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         return tiles.size();
     }
 
-    public void fillFromConnector(Connector<String> start) {
+    public void fillFromConnector(Connector<Integer> start) {
         setTile(start);
         var curr = start;
         while (curr.prev != start) {
             setTile(curr);
-//            assert curr.value != null;
             curr = curr.prev;
         }
         setTile(curr);
