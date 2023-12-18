@@ -9,10 +9,10 @@ public class TGrid<V, T extends VTile<V>> {
     public final Map<String, T> tiles = new HashMap<>();
     public final String[] lines;
     private final TileFactory<T> tileFactory;
-    public int rows;
-    public int cols;
-    public int minRow;
-    public int minCol;
+    public long rows;
+    public long cols;
+    public long minRow;
+    public long minCol;
 
     public TGrid(String[] lines, TileFactory<T> tileFactory) {
         this.lines = lines;
@@ -51,7 +51,7 @@ public class TGrid<V, T extends VTile<V>> {
 //        }
     }
 
-    public T getTile(int row, int col) {
+    public T getTile(long row, long col) {
         return tiles.get(toKey(row, col));
     }
 
@@ -71,18 +71,26 @@ public class TGrid<V, T extends VTile<V>> {
     }
 
     public String toString() {
-        String[] rowStrings = new String[rows - this.minRow];
+        if (
+            this.minRow < -Integer.MAX_VALUE ||
+                this.minCol < -Integer.MAX_VALUE ||
+                this.rows > Integer.MAX_VALUE ||
+                this.cols > Integer.MAX_VALUE
+        ) {
+            return "TOO BIG";
+        }
+        String[] rowStrings = new String[(int) (rows - this.minRow)];
         for (var row = this.minRow; row < rows; row++) {
-            var rowEls = new String[cols - this.minCol];
+            var rowEls = new String[(int) (cols - this.minCol)];
             for (var col = this.minCol; col < cols; col++) {
-                T tile = getTile(row, col);
+                T tile = getTile((int) row, (int) col);
                 if (tile == null) {
-                    rowEls[col - this.minCol] = ".";
+                    rowEls[(int) (col - this.minCol)] = ".";
                 } else {
-                    rowEls[col - this.minCol] = tile.toString();
+                    rowEls[(int) (col - this.minCol)] = tile.toString();
                 }
             }
-            rowStrings[row - this.minRow] = String.join("", rowEls);
+            rowStrings[(int) (row - this.minRow)] = String.join("", rowEls);
         }
         return String.join("\n", rowStrings);
     }

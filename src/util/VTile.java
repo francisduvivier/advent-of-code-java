@@ -17,7 +17,7 @@ public class VTile<V> {
         this.key = toKey(row, col);
     }
 
-    public static String toKey(int row, int col) {
+    public static String toKey(long row, long col) {
         return row + "," + col;
     }
 

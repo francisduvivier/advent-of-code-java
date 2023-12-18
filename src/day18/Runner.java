@@ -34,6 +34,13 @@ public class Runner {
         start.prev = curr.prev;
         curr.prev.setNext(start);
         grid.fillFromConnector(start);
+
+        System.out.println("--- GRID START---");
+//        System.out.println("");
+//        System.out.println(grid);
+//        System.out.println("");
+        System.out.println("--- GRID DONE---");
+
         return grid.findTilesInside(start);
     }
 
