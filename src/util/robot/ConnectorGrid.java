@@ -29,12 +29,11 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         if (grid.isOutSide(newTile.row, newTile.col)) {
             return true;
         }
-        if (!tilesLeft.add(newTile)) {
-            return false;
-        }
+        tilesLeft.add(newTile);
 
         var foundOutSide = false;
-        for (var newDir : DIRS) {
+        DIR[] dirsToTry = new DIR[]{dir};
+        for (var newDir : dirsToTry) {
             if (findTilesRec(grid, tilesLeft, newTile, newDir)) {
                 foundOutSide = true;
             }
