@@ -4,30 +4,29 @@ import util.DIR;
 import util.robot.Connector;
 import util.robot.ConnectorGrid;
 
+import java.util.function.Function;
+
 public class Runner {
 
-    private final String[] inputLines;
+    public static Function<? super String, ?> createInstruction;
+    private final INSTRUCT[] instructions;
 
-    Runner(String[] inputLines) {
-        this.inputLines = inputLines;
+    Runner(INSTRUCT[] instructions) {
+        this.instructions = instructions;
     }
 
     long run() {
         ConnectorGrid grid = new ConnectorGrid();
         var start = new Connector<>(0, 0, "", null);
         var curr = start;
-        for (var line : inputLines) {
-            var dir = DIR.valueOfLetter(line.split(" ")[0]);
-            assert dir != null;
-            var amount = Integer.parseInt(line.split(" ")[1]);
-            var color = line.split(" ")[2].split("[()#]+")[1];
+        for (INSTRUCT instruction : instructions) {
             if (curr == start) {
-                curr.setValue(color);
+                curr.setValue(instruction.color());
             }
-            for (int step = 1; step <= amount; step++) {
-                Connector<String> next = ConnectorGrid.createNext(curr, dir);
+            for (int step = 1; step <= instruction.amount(); step++) {
+                Connector<String> next = ConnectorGrid.createNext(curr, instruction.dir());
                 curr.setNext(next);
-                next.setValue(color);
+                next.setValue(instruction.color());
                 curr = next;
             }
         }
@@ -35,7 +34,10 @@ public class Runner {
         start.prev = curr.prev;
         curr.prev.setNext(start);
         grid.fillFromConnector(start);
-        System.out.println(grid.toString());
+//        System.out.println(grid.toString());
         return grid.findTilesInside(start);
+    }
+
+    public record INSTRUCT(DIR dir, int amount, String color) {
     }
 }

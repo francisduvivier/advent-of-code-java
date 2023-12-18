@@ -26,7 +26,7 @@ class MainTest {
     void solvePart1() {
         assertEquals("62", solve(sampleInput));
         System.out.println("Sample ok");
-        assertEquals("PART 1 SOLUTION IS", solve(input));
+        assertEquals("48503", solve(input));
     }
 
     @Test

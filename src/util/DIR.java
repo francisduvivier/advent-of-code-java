@@ -6,7 +6,7 @@ public enum DIR {
     RIGHT(0, 1, ">"),
     LEFT(0, -1, "<");
 
-    public static final DIR[] DIRS = new DIR[]{UP, RIGHT, DOWN, LEFT};
+    public static final DIR[] DIRS = new DIR[]{RIGHT, DOWN, LEFT, UP};
     public final int rowDiff;
     public final int colDiff;
     private final String print;
