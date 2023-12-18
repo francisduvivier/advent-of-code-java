@@ -75,11 +75,18 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
             }
         }
         assert !foundOutside;
-        for (var tile : tilesInside) {
-            tile.setValue("#");
-            setTile(tile);
+        var foundNewTiles = true;
+        while (foundNewTiles) {
+            var startAmount = tilesInside.size();
+            for (var tile : new HashSet<>(tilesInside)) {
+                tile.setValue("#");
+                setTile(tile);
+                for (var dir : DIRS) {
+                    findTilesRec(this, tilesInside, tile, dir);
+                }
+            }
+            foundNewTiles = startAmount != tilesInside.size();
         }
-        System.out.println(this.toString());
         return tiles.size();
     }
 
