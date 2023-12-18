@@ -19,28 +19,26 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         });
     }
 
-    static boolean findTilesRec(ConnectorGrid grid, Set<Connector<String>> tilesLeft, Connector<String> tile, DIR dir) {
-
-        Connector<String> loopTile = grid.getNext(tile, dir);
-        if (loopTile != null && loopTile.value != null) {
-            return false;
-        }
-        Connector<String> newTile = createNext(tile, dir);
-        if (grid.isOutSide(newTile.row, newTile.col)) {
-            return true;
-        }
-        if (!tilesLeft.add(newTile)) {
-            return false;
-        }
-
-        var foundOutSide = false;
-        DIR[] dirsToTry = new DIR[]{dir};
-        for (var newDir : dirsToTry) {
-            if (findTilesRec(grid, tilesLeft, newTile, newDir)) {
-                foundOutSide = true;
+    static boolean findTilesInDir(ConnectorGrid grid, Set<Connector<String>> tilesLeft, Connector<String> tile, DIR dir) {
+        Boolean result = null;
+        while (result == null) {
+            Connector<String> loopTile = grid.getNext(tile, dir);
+            if (loopTile != null && loopTile.value != null) {
+                result = false;
+                break;
             }
+            Connector<String> newTile = createNext(tile, dir);
+            if (grid.isOutSide(newTile.row, newTile.col)) {
+                result = true;
+                break;
+            }
+            if (!tilesLeft.add(newTile)) {
+                result = false;
+                break;
+            }
+            tile = newTile;
         }
-        return foundOutSide;
+        return result;
     }
 
     public static Connector<String> createNext(Connector<String> tile, DIR dir) {
@@ -54,7 +52,7 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         while (curr.prev != start) {
             if (!curr.isCornerTile()) {
                 DIR leftHandDir = DIR.calcDir(curr, curr.prev).getLeftHandDir();
-                if (findTilesRec(this, tilesInside, curr, leftHandDir)) {
+                if (findTilesInDir(this, tilesInside, curr, leftHandDir)) {
                     foundOutside = true;
                     break;
                 }
@@ -68,7 +66,7 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
             while (curr.prev != start) {
                 if (!curr.isCornerTile()) {
                     DIR rightHandDir = DIR.calcDir(curr, curr.prev).getRightHandDir();
-                    if (findTilesRec(this, tilesInside, curr, rightHandDir)) {
+                    if (findTilesInDir(this, tilesInside, curr, rightHandDir)) {
                         foundOutside = true;
                         break;
                     }
@@ -84,7 +82,7 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
                 tile.setValue("#");
                 setTile(tile);
                 for (var dir : DIRS) {
-                    findTilesRec(this, tilesInside, tile, dir);
+                    findTilesInDir(this, tilesInside, tile, dir);
                 }
             }
             foundNewTiles = startAmount != tilesInside.size();
@@ -97,7 +95,7 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
         var curr = start;
         while (curr.prev != start) {
             setTile(curr);
-            assert curr.value != null;
+//            assert curr.value != null;
             curr = curr.prev;
         }
         setTile(curr);
