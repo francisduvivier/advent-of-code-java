@@ -11,6 +11,8 @@ public class TGrid<V, T extends VTile<V>> {
     private final TileFactory<T> tileFactory;
     public int rows;
     public int cols;
+    public int minRow;
+    public int minCol;
 
     public TGrid(String[] lines, TileFactory<T> tileFactory) {
         this.lines = lines;
@@ -42,9 +44,11 @@ public class TGrid<V, T extends VTile<V>> {
         this.tiles.put(tile.key, tile);
         this.cols = Math.max(this.cols, tile.col + 1);
         this.rows = Math.max(this.rows, tile.row + 1);
-        if (tile.row < 0 || tile.col < 0) {
-            throw new IllegalArgumentException("NOK tile coordinates:" + tile);
-        }
+        this.minRow = Math.min(this.minRow, tile.row);
+        this.minCol = Math.min(this.minCol, tile.col);
+//        if (tile.row < 0 || tile.col < 0) {
+//            throw new IllegalArgumentException("NOK tile coordinates: " + tile.key);
+//        }
     }
 
     public T getTile(int row, int col) {
@@ -60,25 +64,25 @@ public class TGrid<V, T extends VTile<V>> {
     }
 
     public boolean isOutSide(int row, int col) {
-        return col < 0
+        return col < this.minCol
             || col >= this.cols
-            || row < 0
+            || row < this.minRow
             || row >= this.rows;
     }
 
     public String toString() {
-        String[] rowStrings = new String[rows];
-        for (var row = 0; row < rows; row++) {
-            var rowEls = new String[cols];
-            for (var col = 0; col < cols; col++) {
+        String[] rowStrings = new String[rows - this.minRow];
+        for (var row = this.minRow; row < rows; row++) {
+            var rowEls = new String[cols - this.minCol];
+            for (var col = this.minCol; col < cols; col++) {
                 T tile = getTile(row, col);
                 if (tile == null) {
-                    rowEls[col] = ".";
+                    rowEls[col - this.minCol] = ".";
                 } else {
-                    rowEls[col] = tile.toString();
+                    rowEls[col - this.minCol] = tile.toString();
                 }
             }
-            rowStrings[row] = String.join("", rowEls);
+            rowStrings[row - this.minRow] = String.join("", rowEls);
         }
         return String.join("\n", rowStrings);
     }

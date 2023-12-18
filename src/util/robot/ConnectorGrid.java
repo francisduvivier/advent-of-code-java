@@ -76,7 +76,12 @@ public class ConnectorGrid extends TGrid<String, Connector<String>> {
             }
         }
         assert !foundOutside;
-        return tilesInside.size();
+        for (var tile : tilesInside) {
+            tile.setValue("#");
+            setTile(tile);
+        }
+        System.out.println(this.toString());
+        return tiles.size();
     }
 
     public void fillFromConnector(Connector<String> start) {
