@@ -83,7 +83,7 @@ public class TGrid<V, T extends VTile<V>> {
         for (var row = this.minRow; row < rows; row++) {
             var rowEls = new String[(int) (cols - this.minCol)];
             for (var col = this.minCol; col < cols; col++) {
-                T tile = getTile((int) row, (int) col);
+                T tile = getTile(row, col);
                 if (tile == null) {
                     rowEls[(int) (col - this.minCol)] = ".";
                 } else {

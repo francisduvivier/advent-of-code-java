@@ -21,7 +21,7 @@ public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
                 result = false;
                 break;
             }
-            Connector<Integer> newTile = createNext(tile, dir, 0);
+            Connector<Integer> newTile = createNext(tile, dir, 1);
             if (grid.isOutSide(newTile.row, newTile.col)) {
                 result = true;
                 break;

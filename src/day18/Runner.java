@@ -24,9 +24,9 @@ public class Runner {
         CompactedGrid compactedGrid = getCompactedGrid(start);
 
         System.out.println("--- GRID START---");
-        System.out.println("");
+        System.out.println();
         System.out.println(compactedGrid);
-        System.out.println("");
+        System.out.println();
         System.out.println("--- GRID DONE---");
 
         return compactedGrid.findTilesInside();
@@ -45,15 +45,15 @@ public class Runner {
         var nodeCols = new TreeSet<>(nodeList.stream().map(n -> n.col).toList());
         for (var node : new ArrayList<>(nodeList)) {
             if (node.getDir().isHorizontal()) {
-                addHorizontalMultiplierEdges(node, nodeCols, nodeList);
+                addHorizontalMultiplierEdges(node, nodeCols);
             } else {
-                addVerticalMultiplierEdges(node, nodeRows, nodeList);
+                addVerticalMultiplierEdges(node, nodeRows);
             }
         }
         System.out.println("Checking expanded loop from original start");
-        CompactedGrid.createNodeList(start);
+        Set<Connector<Integer>> bridgedNodeList = CompactedGrid.createNodeList(start);
         System.out.println("Done Checking expanded loop from original start");
-        CompactedGrid compactedGrid = new CompactedGrid(nodeList);
+        CompactedGrid compactedGrid = new CompactedGrid(bridgedNodeList);
         return compactedGrid;
     }
 
@@ -61,8 +61,7 @@ public class Runner {
         var start = new Connector<>(0, 0, 1, null);
         var curr = start;
         for (INSTRUCT instruction : instructions) {
-            Connector<Integer> next = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
-            curr = next;
+            curr = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
         }
         assert curr.equals(start);
         start.prev = curr.prev;
@@ -70,7 +69,7 @@ public class Runner {
         return start;
     }
 
-    private void addVerticalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeRows, Set<Connector<Integer>> nodeList) {
+    private void addVerticalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeRows) {
         var min = Math.min(node.row, node.next.row);
         var max = Math.max(node.row, node.next.row);
         if (min == node.row) {
@@ -84,17 +83,11 @@ public class Runner {
                 continue;
             }
             var between = Math.abs(node.row - otherRow);
-            int inBetweenOnly = (int) (between - 1);
-            var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
-            nodeList.add(edge);
-            var connector = CompactedGrid.createNext(edge, dir, 1);
-            connector.setNext(origNext);
-            nodeList.add(connector);
-            currConnector = connector;
+            currConnector = insertBridges(currConnector, origNext, dir, between);
         }
     }
 
-    private void addHorizontalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeCols, Set<Connector<Integer>> nodeList) {
+    private void addHorizontalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeCols) {
         var min = Math.min(node.col, node.next.col);
         var max = Math.max(node.col, node.next.col);
         if (min == node.col) {
@@ -108,14 +101,18 @@ public class Runner {
                 continue;
             }
             var between = Math.abs(node.col - otherCol);
-            int inBetweenOnly = (int) (between - 1);
-            var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
-            nodeList.add(edge);
-            var connector = CompactedGrid.createNext(edge, dir, 1);
-            connector.setNext(origNext);
-            nodeList.add(connector);
-            currConnector = connector;
+            currConnector = insertBridges(currConnector, origNext, dir, between);
         }
+    }
+
+    private Connector<Integer> insertBridges(Connector<Integer> currConnector, Connector<Integer> origNext, DIR dir, long between) {
+        int inBetweenOnly = (int) (between - 1);
+        var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
+        var bridge = CompactedGrid.createNext(edge, dir, 1);
+        bridge.setNext(origNext);
+        currConnector.setValue(1);
+        currConnector = bridge;
+        return currConnector;
     }
 
     public record INSTRUCT(DIR dir, int amount, String color) {

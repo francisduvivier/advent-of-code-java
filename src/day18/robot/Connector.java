@@ -36,7 +36,9 @@ public class Connector<T> extends VTile<T> {
         if (this.next == null || this.prev == null) {
             return "O";
         }
-        if (this.isCornerTile() || this.value.equals(1)) {
+        if (this.value.equals(1)) {
+            return this.getDir().toString();
+        } else if (this.isCornerTile()) {
             return "X";
         } else {
             return this.getDir().isHorizontal() ? "-" : "|";
@@ -49,7 +51,7 @@ public class Connector<T> extends VTile<T> {
     }
 
     public boolean isCornerTile() {
-        return DIR.calcDir(this.next, this) != DIR.calcDir(this, this.prev);
+        return this.getDir() != prev.getDir();
     }
 
     public void setNext(Connector<T> next) {

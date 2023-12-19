@@ -8,11 +8,30 @@ import java.util.Set;
 
 public class CompactedGrid extends ConnectorGrid {
     public CompactedGrid(Set<Connector<Integer>> nodeList) {
-        var rowVals = nodeList.stream().map(n -> n.row).toList();
-        var colVals = nodeList.stream().map(n -> n.col).toList();
+        buildCompactedGrid(nodeList);
+    }
+
+    static Set<Connector<Integer>> createNodeList(Connector<Integer> startNode) {
+        Set<Connector<Integer>> nodeList = new HashSet<>();
+
+        nodeList.add(startNode);
+        var curr = startNode.next;
+        while (curr != startNode) {
+            System.out.println(curr.prev.getDir() + "" + curr.getDir() + ":" + curr.key + ":" + curr.value);
+            nodeList.add(curr);
+            curr = curr.next;
+        }
+        return nodeList;
+    }
+
+    private void buildCompactedGrid(Set<Connector<Integer>> nodeList) {
+        System.out.println("Building compacted grid with [" + nodeList.size() + "] elements");
+        var rowVals = nodeList.stream().map(n -> n.row).sorted().toList().reversed();
+        var colVals = nodeList.stream().map(n -> n.col).sorted().toList().reversed();
+        assert colVals.getFirst() < colVals.getLast();
         var startNode = nodeList.stream().toList().get(0);
         System.out.println("Checking expanded loop");
-        createNodeList(startNode);
+        assert nodeList.size() == createNodeList(startNode).size();
         System.out.println("Done Checking expanded loop");
         Connector<Integer> startCompacted = new Connector<>(rowVals.indexOf(startNode.row), colVals.indexOf(startNode.col), startNode.value, null);
         Connector<Integer> lastCompacted = startCompacted;
@@ -31,17 +50,5 @@ public class CompactedGrid extends ConnectorGrid {
         System.out.println("Checking compacted loop");
         createNodeList(startCompacted);
         System.out.println("Done Checking compacted loop");
-    }
-
-    static Set<Connector<Integer>> createNodeList(Connector<Integer> startNode) {
-        Set<Connector<Integer>> nodeList = new HashSet<>();
-
-        nodeList.add(startNode);
-        var curr = startNode.next;
-        while (curr != startNode) {
-            nodeList.add(curr);
-            curr = curr.next;
-        }
-        return nodeList;
     }
 }
