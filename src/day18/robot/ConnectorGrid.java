@@ -41,7 +41,8 @@ public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
         return next;
     }
 
-    public long findTilesInside(Connector<Integer> start) {
+    public long findTilesInside() {
+        Connector<Integer> start = tiles.values().stream().findAny().get();
         Set<Connector<Integer>> tilesInside = new HashSet<>();
         var curr = start;
         var foundOutside = false;

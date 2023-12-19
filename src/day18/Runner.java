@@ -17,6 +17,18 @@ public class Runner {
 
     long run() {
 
+        CompactedGrid compactedGrid = getCompactedGrid();
+
+        System.out.println("--- GRID START---");
+        System.out.println("");
+        System.out.println(compactedGrid);
+        System.out.println("");
+        System.out.println("--- GRID DONE---");
+
+        return compactedGrid.findTilesInside();
+    }
+
+    private CompactedGrid getCompactedGrid() {
         var start = new Connector<>(0, 0, 1, null);
         var curr = start;
         Set<Connector<Integer>> nodeList = new HashSet<>();
@@ -43,14 +55,7 @@ public class Runner {
             }
         }
         CompactedGrid compactedGrid = new CompactedGrid(nodeList);
-
-        System.out.println("--- GRID START---");
-        System.out.println("");
-        System.out.println(compactedGrid);
-        System.out.println("");
-        System.out.println("--- GRID DONE---");
-
-        return compactedGrid.findTilesInside(start);
+        return compactedGrid;
     }
 
     private void addVerticalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeRows, Set<Connector<Integer>> nodeList) {
