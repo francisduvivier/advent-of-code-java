@@ -15,35 +15,35 @@ public class Main {
 
     static String solve(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        Runner runner = new Runner(Arrays.stream(lines).map(Main::createInstruction1).toList().toArray(new Runner.INSTRUCT[0]));
+        LoopCompactor runner = new LoopCompactor(Arrays.stream(lines).map(Main::createInstruction1).toList().toArray(new LoopCompactor.INSTRUCT[0]));
         return "" + runner.run();
     }
 
-    public static Runner.INSTRUCT createInstruction1(String line) {
+    public static LoopCompactor.INSTRUCT createInstruction1(String line) {
         var dir = DIR.valueOfLetter(line.split(" ")[0]);
         assert dir != null;
         var amount = Integer.parseInt(line.split(" ")[1]);
         var color = line.split(" ")[2].split("[()#]+")[1];
-        Runner.INSTRUCT result = new Runner.INSTRUCT(dir, amount, color);
+        LoopCompactor.INSTRUCT result = new LoopCompactor.INSTRUCT(dir, amount, color);
         return result;
     }
 
     static String solve2(String sampleInput) {
         String[] lines = sampleInput.split("\n");
-        List<Runner.INSTRUCT> instructions = Arrays.stream(lines).map(Main::createInstruction2).toList();
+        List<LoopCompactor.INSTRUCT> instructions = Arrays.stream(lines).map(Main::createInstruction2).toList();
         for (var instruct : instructions) {
             System.out.println(instruct.dir() + ": " + instruct.amount());
         }
-        Runner runner = new Runner(instructions.toArray(new Runner.INSTRUCT[0]));
+        LoopCompactor runner = new LoopCompactor(instructions.toArray(new LoopCompactor.INSTRUCT[0]));
         return "" + runner.run();
     }
 
-    public static Runner.INSTRUCT createInstruction2(String line) {
+    public static LoopCompactor.INSTRUCT createInstruction2(String line) {
         var color = line.split(" ")[2].split("[()#]+")[1];
         var dir = DIRS[Integer.parseInt(color.split("")[color.length() - 1])];
         assert dir != null;
         var amount = Integer.parseInt(color.substring(0, 5), 16);
-        Runner.INSTRUCT result = new Runner.INSTRUCT(dir, amount, null);
+        LoopCompactor.INSTRUCT result = new LoopCompactor.INSTRUCT(dir, amount, null);
         return result;
     }
 

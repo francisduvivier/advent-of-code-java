@@ -9,12 +9,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Function;
 
-public class Runner {
+public class LoopCompactor {
 
     public static Function<? super String, ?> createInstruction;
     private final INSTRUCT[] instructions;
 
-    Runner(INSTRUCT[] instructions) {
+    LoopCompactor(INSTRUCT[] instructions) {
         this.instructions = instructions;
     }
 

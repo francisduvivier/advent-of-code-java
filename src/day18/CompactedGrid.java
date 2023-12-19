@@ -26,8 +26,8 @@ public class CompactedGrid extends ConnectorGrid {
 
     private void buildCompactedGrid(Set<Connector<Integer>> nodeList) {
         System.out.println("Building compacted grid with [" + nodeList.size() + "] elements");
-        var rowVals = nodeList.stream().map(n -> n.row).sorted().toList().reversed();
-        var colVals = nodeList.stream().map(n -> n.col).sorted().toList().reversed();
+        var rowVals = nodeList.stream().map(n -> n.row).sorted().toList();
+        var colVals = nodeList.stream().map(n -> n.col).sorted().toList();
         assert colVals.getFirst() < colVals.getLast();
         var startNode = nodeList.stream().toList().get(0);
         System.out.println("Checking expanded loop");
