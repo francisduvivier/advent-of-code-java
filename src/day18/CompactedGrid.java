@@ -3,6 +3,7 @@ package day18;
 import day18.robot.Connector;
 import day18.robot.ConnectorGrid;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class CompactedGrid extends ConnectorGrid {
@@ -11,7 +12,7 @@ public class CompactedGrid extends ConnectorGrid {
         var colVals = nodeList.stream().map(n -> n.col).toList();
         var startNode = nodeList.stream().toList().get(0);
         System.out.println("Checking expanded loop");
-        checkLoop(startNode);
+        createNodeList(startNode);
         System.out.println("Done Checking expanded loop");
         Connector<Integer> startCompacted = new Connector<>(rowVals.indexOf(startNode.row), colVals.indexOf(startNode.col), startNode.value, null);
         Connector<Integer> lastCompacted = startCompacted;
@@ -28,14 +29,19 @@ public class CompactedGrid extends ConnectorGrid {
         startCompacted.prev = lastCompacted;
         lastCompacted.next = startCompacted;
         System.out.println("Checking compacted loop");
-        checkLoop(startCompacted);
+        createNodeList(startCompacted);
         System.out.println("Done Checking compacted loop");
     }
 
-    private void checkLoop(Connector<Integer> startCompacted) {
-        var curr = startCompacted.next;
-        while (curr != startCompacted) {
-            curr = startCompacted.next;
+    static Set<Connector<Integer>> createNodeList(Connector<Integer> startNode) {
+        Set<Connector<Integer>> nodeList = new HashSet<>();
+
+        nodeList.add(startNode);
+        var curr = startNode.next;
+        while (curr != startNode) {
+            nodeList.add(curr);
+            curr = curr.next;
         }
+        return nodeList;
     }
 }

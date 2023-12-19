@@ -3,7 +3,10 @@ package day18;
 import day18.robot.Connector;
 import util.DIR;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 public class Runner {
@@ -17,7 +20,8 @@ public class Runner {
 
     long run() {
 
-        CompactedGrid compactedGrid = getCompactedGrid();
+        Connector<Integer> start = executeInstructions();
+        CompactedGrid compactedGrid = getCompactedGrid(start);
 
         System.out.println("--- GRID START---");
         System.out.println("");
@@ -28,20 +32,12 @@ public class Runner {
         return compactedGrid.findTilesInside();
     }
 
-    private CompactedGrid getCompactedGrid() {
-        var start = new Connector<>(0, 0, 1, null);
-        var curr = start;
-        Set<Connector<Integer>> nodeList = new HashSet<>();
-        nodeList.add(start);
-        for (INSTRUCT instruction : instructions) {
-            nodeList.add(curr);
-            Connector<Integer> next = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
-            curr = next;
-        }
-        assert curr.equals(start);
+    private CompactedGrid getCompactedGrid(Connector<Integer> start) {
+        System.out.println("Checking original loop");
+        Set<Connector<Integer>> nodeList = CompactedGrid.createNodeList(start);
         assert nodeList.size() == instructions.length;
-        start.prev = curr.prev;
-        curr.prev.setNext(start);
+        System.out.println("Done Checking original loop");
+
         // So what we want to do is: add the original connectors to the compacted grid with splitters in between them on all the other values of connector nodes
         // So we will first gather all the rows of connectors
         // Then for every vertical edge, we will split it for all of these x values and put multiplier edges in between
@@ -54,8 +50,24 @@ public class Runner {
                 addVerticalMultiplierEdges(node, nodeRows, nodeList);
             }
         }
+        System.out.println("Checking expanded loop from original start");
+        CompactedGrid.createNodeList(start);
+        System.out.println("Done Checking expanded loop from original start");
         CompactedGrid compactedGrid = new CompactedGrid(nodeList);
         return compactedGrid;
+    }
+
+    public Connector<Integer> executeInstructions() {
+        var start = new Connector<>(0, 0, 1, null);
+        var curr = start;
+        for (INSTRUCT instruction : instructions) {
+            Connector<Integer> next = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
+            curr = next;
+        }
+        assert curr.equals(start);
+        start.prev = curr.prev;
+        curr.prev.setNext(start);
+        return start;
     }
 
     private void addVerticalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeRows, Set<Connector<Integer>> nodeList) {
