@@ -43,6 +43,8 @@ public class LoopCompactor {
         // Then for every vertical edge, we will split it for all of these x values and put multiplier edges in between
         var nodeRows = new TreeSet<>(nodeList.stream().map(n -> n.row).toList());
         var nodeCols = new TreeSet<>(nodeList.stream().map(n -> n.col).toList());
+        assert nodeRows.first() < nodeRows.last();
+        assert nodeCols.first() < nodeCols.last();
         for (var node : new ArrayList<>(nodeList)) {
             if (node.getDir().isHorizontal()) {
                 addHorizontalMultiplierEdges(node, nodeCols);
@@ -76,41 +78,63 @@ public class LoopCompactor {
             nodeRows = nodeRows.reversed();
         }
         var currConnector = node;
-        DIR dir = node.getDir();
-        var origNext = node.next;
+        var reversed = min != node.row;
+        var dir = node.getDir();
+        if (reversed) {
+            currConnector = node.next;
+        }
         for (var otherRow : nodeRows) {
             if (otherRow <= min || otherRow >= max) {
                 continue;
             }
             var between = Math.abs(node.row - otherRow);
-            currConnector = insertBridges(currConnector, origNext, dir, between);
+            currConnector = insertBridges(currConnector, dir, between, reversed);
         }
     }
 
     private void addHorizontalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeCols) {
         var min = Math.min(node.col, node.next.col);
         var max = Math.max(node.col, node.next.col);
-        if (min == node.col) {
-            nodeCols = nodeCols.reversed();
-        }
         var currConnector = node;
-        var origNext = node.next;
+        var reversed = min != node.col;
+        if (reversed) {
+            currConnector = node.next;
+        }
         var dir = node.getDir();
         for (var otherCol : nodeCols) {
             if (otherCol <= min || otherCol >= max) {
                 continue;
             }
             var between = Math.abs(node.col - otherCol);
-            currConnector = insertBridges(currConnector, origNext, dir, between);
+            currConnector = insertBridges(currConnector, dir, between, reversed);
         }
     }
 
-    private Connector<Integer> insertBridges(Connector<Integer> currConnector, Connector<Integer> origNext, DIR dir, long between) {
-        int inBetweenOnly = (int) (between - 1);
-        var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
-        var bridge = CompactedGrid.createNext(edge, dir, 1);
-        bridge.setNext(origNext);
+    private Connector<Integer> insertBridges(Connector<Integer> start, DIR dir, long between, boolean reversed) {
+        var currConnector = start;
         currConnector.setValue(1);
+        int inBetweenOnly = (int) (between - 1);
+        var origNext = currConnector.next;
+        var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
+        if (reversed) {
+            currConnector.next = origNext;
+            if (edge != currConnector) {
+                edge.next = currConnector;
+                edge.prev = null;
+            }
+        }
+        var bridge = CompactedGrid.createNext(edge, dir, 1);
+        if (reversed) {
+            if (edge != currConnector) {
+                edge.next = currConnector;
+            }
+            edge.prev= bridge;
+            bridge.next = edge;
+            bridge.prev = start.next;
+            start.next.next = bridge;
+        } else {
+            bridge.setNext(start.next);
+        }
         currConnector = bridge;
         return currConnector;
     }

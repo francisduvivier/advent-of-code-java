@@ -5,6 +5,7 @@ import day18.robot.ConnectorGrid;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class CompactedGrid extends ConnectorGrid {
     public CompactedGrid(Set<Connector<Integer>> nodeList) {
@@ -26,9 +27,10 @@ public class CompactedGrid extends ConnectorGrid {
 
     private void buildCompactedGrid(Set<Connector<Integer>> nodeList) {
         System.out.println("Building compacted grid with [" + nodeList.size() + "] elements");
-        var rowVals = nodeList.stream().map(n -> n.row).sorted().toList();
-        var colVals = nodeList.stream().map(n -> n.col).sorted().toList();
+        var rowVals = new TreeSet<>(nodeList.stream().map(n -> n.row).toList()).stream().toList();
+        var colVals = new TreeSet<>(nodeList.stream().map(n -> n.col).toList()).stream().toList();
         assert colVals.getFirst() < colVals.getLast();
+        assert rowVals.getFirst() < rowVals.getLast();
         var startNode = nodeList.stream().toList().get(0);
         System.out.println("Checking expanded loop");
         assert nodeList.size() == createNodeList(startNode).size();
