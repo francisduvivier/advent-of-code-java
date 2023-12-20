@@ -21,7 +21,7 @@ public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
                 result = false;
                 break;
             }
-            Connector<Integer> newTile = createNext(tile, dir, 1);
+            Connector<Integer> newTile = createNext(tile, dir, 1, 1);
             if (grid.isOutSide(newTile.row, newTile.col)) {
                 result = true;
                 break;
@@ -35,9 +35,15 @@ public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
         return result;
     }
 
-    public static Connector<Integer> createNext(Connector<Integer> tile, DIR dir, int step) {
-        Connector<Integer> next = new Connector<>(tile.row + step * dir.rowDiff, tile.col + step * dir.colDiff, step, tile);
+    public static Connector<Integer> createNext(Connector<Integer> tile, DIR dir, int stepsBefore, int stepsAfter) {
+        var origNext = tile.next;
+        tile.setValue(stepsBefore);
+        Connector<Integer> next = new Connector<>(tile.row + stepsBefore * dir.rowDiff, tile.col + stepsBefore * dir.colDiff, stepsAfter, tile);
         tile.next = next;
+        next.setNext(origNext);
+        if (origNext != null) {
+            origNext.prev = next;
+        }
         return next;
     }
 

@@ -63,7 +63,7 @@ public class LoopCompactor {
         var start = new Connector<>(0, 0, 1, null);
         var curr = start;
         for (INSTRUCT instruction : instructions) {
-            curr = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
+            curr = CompactedGrid.createNext(curr, instruction.dir, instruction.amount, 1);
         }
         assert curr.equals(start);
         start.prev = curr.prev;
@@ -78,17 +78,14 @@ public class LoopCompactor {
             nodeRows = nodeRows.reversed();
         }
         var currConnector = node;
-        var reversed = min != node.row;
         var dir = node.getDir();
-        if (reversed) {
-            currConnector = node.next;
-        }
         for (var otherRow : nodeRows) {
             if (otherRow <= min || otherRow >= max) {
                 continue;
             }
-            var between = Math.abs(node.row - otherRow);
-            currConnector = insertBridges(currConnector, dir, between, reversed);
+            int stepsBefore = (int) Math.abs(currConnector.row - otherRow);
+            int stepsAfter = (int) Math.abs(currConnector.next.row - otherRow);
+            currConnector = insertBridges(currConnector, dir, stepsBefore, stepsAfter);
         }
     }
 
@@ -96,47 +93,21 @@ public class LoopCompactor {
         var min = Math.min(node.col, node.next.col);
         var max = Math.max(node.col, node.next.col);
         var currConnector = node;
-        var reversed = min != node.col;
-        if (reversed) {
-            currConnector = node.next;
-        }
         var dir = node.getDir();
         for (var otherCol : nodeCols) {
             if (otherCol <= min || otherCol >= max) {
                 continue;
             }
-            var between = Math.abs(node.col - otherCol);
-            currConnector = insertBridges(currConnector, dir, between, reversed);
+            int stepsBefore = (int) Math.abs(currConnector.col - otherCol);
+            int stepsAfter = (int) Math.abs(currConnector.next.col - otherCol);
+            currConnector = insertBridges(currConnector, dir, stepsBefore, stepsAfter);
         }
     }
 
-    private Connector<Integer> insertBridges(Connector<Integer> start, DIR dir, long between, boolean reversed) {
-        var currConnector = start;
-        currConnector.setValue(1);
-        int inBetweenOnly = (int) (between - 1);
-        var origNext = currConnector.next;
-        var edge = inBetweenOnly > 0 ? CompactedGrid.createNext(currConnector, dir, inBetweenOnly) : currConnector;
-        if (reversed) {
-            currConnector.next = origNext;
-            if (edge != currConnector) {
-                edge.next = currConnector;
-                edge.prev = null;
-            }
-        }
-        var bridge = CompactedGrid.createNext(edge, dir, 1);
-        if (reversed) {
-            if (edge != currConnector) {
-                edge.next = currConnector;
-            }
-            edge.prev= bridge;
-            bridge.next = edge;
-            bridge.prev = start.next;
-            start.next.next = bridge;
-        } else {
-            bridge.setNext(start.next);
-        }
-        currConnector = bridge;
-        return currConnector;
+    private Connector<Integer> insertBridges(Connector<Integer> start, DIR dir, int stepsBefore, int stepsAfter) {
+
+        var bridge = CompactedGrid.createNext(start, dir, stepsBefore, stepsAfter);
+        return bridge;
     }
 
     public record INSTRUCT(DIR dir, int amount, String color) {
