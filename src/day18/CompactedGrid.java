@@ -48,9 +48,12 @@ public class CompactedGrid extends ConnectorGrid {
             curr = curr.next;
         }
         startCompacted.prev = lastCompacted;
+        assert (startCompacted.prev.col != startCompacted.col) != (startCompacted.prev.row != startCompacted.row);// Straight line
         lastCompacted.next = startCompacted;
         System.out.println("Checking compacted loop");
         createNodeList(startCompacted);
         System.out.println("Done Checking compacted loop");
     }
+
+
 }

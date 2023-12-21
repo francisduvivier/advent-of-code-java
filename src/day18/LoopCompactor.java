@@ -56,6 +56,7 @@ public class LoopCompactor {
         Set<Connector<Integer>> bridgedNodeList = CompactedGrid.createNodeList(start);
         System.out.println("Done Checking expanded loop from original start");
         CompactedGrid compactedGrid = new CompactedGrid(bridgedNodeList);
+        CompactedGrid.createNodeList(compactedGrid.tiles.values().stream().findFirst().get());
         return compactedGrid;
     }
 
@@ -63,7 +64,7 @@ public class LoopCompactor {
         var start = new Connector<>(0, 0, 1, null);
         var curr = start;
         for (INSTRUCT instruction : instructions) {
-            curr = CompactedGrid.createNext(curr, instruction.dir, instruction.amount, 1);
+            curr = CompactedGrid.insertNext(curr, instruction.dir, instruction.amount);
         }
         assert curr.equals(start);
         start.prev = curr.prev;
@@ -84,8 +85,8 @@ public class LoopCompactor {
                 continue;
             }
             int stepsBefore = (int) Math.abs(currConnector.row - otherRow);
-            int stepsAfter = (int) Math.abs(currConnector.next.row - otherRow);
-            currConnector = insertBridges(currConnector, dir, stepsBefore, stepsAfter);
+            var bridge = CompactedGrid.insertNext(currConnector, dir, stepsBefore);
+            currConnector = bridge;
         }
     }
 
@@ -99,15 +100,11 @@ public class LoopCompactor {
                 continue;
             }
             int stepsBefore = (int) Math.abs(currConnector.col - otherCol);
-            int stepsAfter = (int) Math.abs(currConnector.next.col - otherCol);
-            currConnector = insertBridges(currConnector, dir, stepsBefore, stepsAfter);
+            Connector<Integer> bridge = CompactedGrid.insertNext(currConnector, dir, stepsBefore);
+            assert !bridge.isCornerTile();
+            assert bridge.next.isCornerTile();
+            currConnector = bridge;
         }
-    }
-
-    private Connector<Integer> insertBridges(Connector<Integer> start, DIR dir, int stepsBefore, int stepsAfter) {
-
-        var bridge = CompactedGrid.createNext(start, dir, stepsBefore, stepsAfter);
-        return bridge;
     }
 
     public record INSTRUCT(DIR dir, int amount, String color) {

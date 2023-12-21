@@ -25,7 +25,7 @@ public enum DIR {
                 return dir;
             }
         }
-        throw new IllegalArgumentException("Cannot find direction from tile: [" + from.key + "] to [" + from.key + "]");
+        throw new IllegalArgumentException("Cannot find direction from tile: [" + from.key + "] to [" + to.key + "]");
     }
 
     private static int sign(long val) {

@@ -12,7 +12,7 @@ public class Connector<T> extends VTile<T> {
         super(row, col, value);
         this.prev = prev;
         if (prev != null) {
-            assert prev.col != col || prev.row != row;
+            assert (prev.col != col) != (prev.row != row);// Straight line
         }
     }
 
