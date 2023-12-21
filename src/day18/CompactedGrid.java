@@ -17,10 +17,12 @@ public class CompactedGrid extends ConnectorGrid {
 
         nodeList.add(startNode);
         var curr = startNode.next;
+        curr.value = -1;
         while (curr != startNode) {
             System.out.println(curr.prev.getDir() + "" + curr.getDir() + ":" + curr.key + ":" + curr.value);
             nodeList.add(curr);
             curr = curr.next;
+            curr.value = -1;
         }
         return nodeList;
     }
