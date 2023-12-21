@@ -35,21 +35,19 @@ public class ConnectorGrid extends TGrid<Integer, Connector<Integer>> {
         return result;
     }
 
-    public static Connector<Integer> insertNext(Connector<Integer> tile, DIR dir, int amountToArrive) {
-        var origNext = tile.next;
-        tile.setValue(amountToArrive);
-        Connector<Integer> next = createNext(tile, dir, amountToArrive);
-        tile.next = next;
-        next.setNext(origNext);
-        if (origNext != null) {
-            origNext.setValue(origNext.value - amountToArrive);
-            origNext.prev = next;
-        }
-        return next;
+    public static Connector<Integer> insertBefore(Connector<Integer> start, DIR dir, long newCoord) {
+        Connector<Integer> newNode = dir.isHorizontal() ?
+            new Connector<>(start.row, newCoord, null, start.prev) :
+            new Connector<>(newCoord, start.col, null, start.prev);
+        newNode.setNext(start);
+        start.prev.setNext(newNode);
+        start.prev = newNode;
+        assert newNode.getDir() == dir;
+        return newNode;
     }
 
     public static Connector<Integer> createNext(Connector<Integer> tile, DIR dir, int amountToArrive) {
-        Connector<Integer> next = new Connector<>(tile.row + amountToArrive * dir.rowDiff, tile.col + amountToArrive * dir.colDiff, amountToArrive, tile);
+        Connector<Integer> next = new Connector<>(tile.row + amountToArrive * dir.rowDiff, tile.col + amountToArrive * dir.colDiff, null, tile);
         return next;
     }
 

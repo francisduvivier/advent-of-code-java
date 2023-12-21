@@ -3,10 +3,7 @@ package day18;
 import day18.robot.Connector;
 import util.DIR;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.function.Function;
 
 public class LoopCompactor {
@@ -61,49 +58,56 @@ public class LoopCompactor {
     }
 
     public Connector<Integer> executeInstructions() {
-        var start = new Connector<>(0, 0, 1, null);
+        var start = new Connector<>(0, 0, -1, null);
         var curr = start;
         for (INSTRUCT instruction : instructions) {
-            curr = CompactedGrid.insertNext(curr, instruction.dir, instruction.amount);
+            Connector<Integer> next = CompactedGrid.createNext(curr, instruction.dir, instruction.amount);
+            curr.next = next;
+            curr = next;
+
         }
         assert curr.equals(start);
-        start.prev = curr.prev;
-        curr.prev.setNext(start);
+        Connector<Integer> nodeBeforeStart = curr.prev;
+        start.prev = nodeBeforeStart;
+        nodeBeforeStart.setNext(start);
         return start;
     }
 
     private void addVerticalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeRows) {
-        var min = Math.min(node.row, node.next.row);
-        var max = Math.max(node.row, node.next.row);
+        var min = Math.min(node.row, node.prev.row);
+        var max = Math.max(node.row, node.prev.row);
         if (min == node.row) {
             nodeRows = nodeRows.reversed();
         }
-        var currConnector = node;
         var dir = node.getDir();
+        assert node.isCornerTile();
         for (var otherRow : nodeRows) {
             if (otherRow <= min || otherRow >= max) {
                 continue;
             }
-            int stepsBefore = (int) Math.abs(currConnector.row - otherRow);
-            var bridge = CompactedGrid.insertNext(currConnector, dir, stepsBefore);
-            currConnector = bridge;
+            var bridge = CompactedGrid.insertBefore(node, dir, otherRow);
+            assert !bridge.isCornerTile();
+            assert bridge.next == node;
+            assert bridge.next.isCornerTile();
         }
     }
 
     private void addHorizontalMultiplierEdges(Connector<Integer> node, SortedSet<Long> nodeCols) {
-        var min = Math.min(node.col, node.next.col);
-        var max = Math.max(node.col, node.next.col);
-        var currConnector = node;
+        var min = Math.min(node.col, node.prev.col);
+        var max = Math.max(node.col, node.prev.col);
+        if (min == node.col) {
+            nodeCols = nodeCols.reversed();
+        }
         var dir = node.getDir();
+        assert node.isCornerTile();
         for (var otherCol : nodeCols) {
             if (otherCol <= min || otherCol >= max) {
                 continue;
             }
-            int stepsBefore = (int) Math.abs(currConnector.col - otherCol);
-            Connector<Integer> bridge = CompactedGrid.insertNext(currConnector, dir, stepsBefore);
+            var bridge = CompactedGrid.insertBefore(node, dir, otherCol);
             assert !bridge.isCornerTile();
+            assert bridge.next == node;
             assert bridge.next.isCornerTile();
-            currConnector = bridge;
         }
     }
 

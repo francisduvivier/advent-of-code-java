@@ -36,13 +36,74 @@ public class Connector<T> extends VTile<T> {
         if (this.next == null || this.prev == null) {
             return "O";
         }
-        if (this.value.equals(1)) {
-            return this.getDir().toString();
-        } else if (this.isCornerTile()) {
-            return "X";
-        } else {
-            return this.getDir().isHorizontal() ? "-" : "|";
+        switch (getDir()) {
+            case UP -> {
+                switch (next.getDir()) {
+                    case UP -> {
+                        return getDir().toString();
+                    }
+                    case DOWN -> {
+                        return "X";
+                    }
+                    case RIGHT -> {
+                        return "F";
+                    }
+                    case LEFT -> {
+                        return "7";
+                    }
+                }
+            }
+            case DOWN -> {
+                switch (next.getDir()) {
+                    case UP -> {
+                        return "X";
+                    }
+                    case DOWN -> {
+                        return getDir().toString();
+                    }
+                    case RIGHT -> {
+                        return "L";
+                    }
+                    case LEFT -> {
+                        return "J";
+                    }
+                }
+
+            }
+            case RIGHT -> {
+                switch (next.getDir()) {
+                    case UP -> {
+                        return "J";
+                    }
+                    case DOWN -> {
+                        return "7";
+                    }
+                    case RIGHT -> {
+                        return getDir().toString();
+                    }
+                    case LEFT -> {
+                        return "X";
+                    }
+                }
+            }
+            case LEFT -> {
+                switch (next.getDir()) {
+                    case UP -> {
+                        return "L";
+                    }
+                    case DOWN -> {
+                        return "F";
+                    }
+                    case RIGHT -> {
+                        return "X";
+                    }
+                    case LEFT -> {
+                        return getDir().toString();
+                    }
+                }
+            }
         }
+        return "?";
     }
 
     @Override
@@ -51,7 +112,7 @@ public class Connector<T> extends VTile<T> {
     }
 
     public boolean isCornerTile() {
-        return this.getDir() != prev.getDir();
+        return this.getDir() != next.getDir();
     }
 
     public void setNext(Connector<T> next) {
@@ -59,6 +120,6 @@ public class Connector<T> extends VTile<T> {
     }
 
     public DIR getDir() {
-        return DIR.calcDir(this, this.next);
+        return DIR.calcDir(this.prev, this);
     }
 }
