@@ -4,8 +4,12 @@ import day18.robot.Connector;
 import day18.robot.ConnectorGrid;
 import util.DIR;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import static util.DIR.DOWN;
 import static util.DIR.UP;
 
 public class CompactedGrid extends ConnectorGrid<Connector> {
@@ -20,7 +24,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
             Connector<Connector> loopTile = grid.getNext(tile, dir);
             if (loopTile != null) {
                 connectorsInLine.add(loopTile);
-                if (loopTile.next.getDir().isOpposite(start.getDir())) {
+                if (loopTile.next.getDir() == DOWN) {
                     System.out.println("from [" + start.key + "]: " + start + ", FOUND opposite looptile [" + loopTile.key + "]: " + loopTile + ": opposite dir:" + loopTile.next.getDir().isOpposite(start.getDir()));
                     return connectorsInLine;
                 } else {
@@ -78,43 +82,33 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         Connector<Connector> start = tiles.values().stream().findAny().get();
         var curr = start;
         long surface = 0;
-        var countedConnectors = new HashSet<String>();
         int dirOffset = getInsideDirOffset(curr);
 
         while (curr.prev != start) {
-            if (curr.getDir() == UP && !countedConnectors.contains(curr.key)) {
+            if (curr.getDir() == UP) {
                 DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(dirOffset);
                 List<Connector<Connector>> oppositeLoopTiles = findOppositeLoopTile(this, curr, insideDir);
 
                 if (oppositeLoopTiles == null) {
                     throw new IllegalStateException("Looks like we are going the wrong direction.");
                 }
-                surface += getSurface(curr, countedConnectors, oppositeLoopTiles);
+                surface += getInsideSurface(curr, oppositeLoopTiles);
+                surface += getLineTiles(curr, oppositeLoopTiles);
             }
             curr = curr.prev;
         }
         return surface;
     }
 
-    private long getSurface(Connector<Connector> curr, HashSet<String> countedConnectors, List<Connector<Connector>> oppositeLoopTiles) {
+    private long getLineTiles(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles) {
+        return 0; //TODO
+    }
+
+    private long getInsideSurface(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles) {
         var oppositeLoopTile = oppositeLoopTiles.getLast();
         long verticalLength = Math.abs(curr.value.row - curr.prev.value.row) - 1;
-//        if (countedConnectors.add(curr.prev.key)) {
-//            verticalLength++;
-//        }
         long horizontalLength = Math.abs(oppositeLoopTile.value.col - curr.value.col) - 1;
         long newSurface = verticalLength * horizontalLength;
-//        var currStartTile = curr;
-//        if (!countedConnectors.contains(curr.key)) {
-//            newSurface++;
-//        }
-//        for (var oppositeTile : oppositeLoopTiles) {
-//            if (countedConnectors.add(oppositeTile.key)) {
-//                newSurface += Math.abs(oppositeLoopTile.value.col - currStartTile.value.col);
-//            }
-//            currStartTile = oppositeTile;
-//        }
-
         System.out.println("surface = " + verticalLength + " * " + horizontalLength + " = " + newSurface);
         return newSurface;
     }
