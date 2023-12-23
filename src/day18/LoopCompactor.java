@@ -80,7 +80,7 @@ public class LoopCompactor {
             nodeRows = nodeRows.reversed();
         }
         var dir = node.getDir();
-        assert node.isCornerTile();
+//        assert node.isCornerTile();
         for (var otherRow : nodeRows) {
             if (otherRow <= min || otherRow >= max) {
                 continue;

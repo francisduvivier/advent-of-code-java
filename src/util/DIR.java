@@ -100,4 +100,8 @@ public enum DIR {
     public boolean isHorizontal() {
         return this.rowDiff == 0;
     }
+
+    public boolean isOpposite(DIR dir) {
+        return this.isHorizontal() == dir.isHorizontal() && this != dir;
+    }
 }

@@ -7,11 +7,13 @@ import java.nio.file.Path;
 public class DayUtil {
 
     public static String sampleInput;
+    public static String squareSampleInput;
     public static String input;
 
     static {
         try {
             sampleInput = Files.readString(Path.of(getInputDir() + "/sample.txt"));
+            squareSampleInput = Files.readString(Path.of(getInputDir() + "/square_sample.txt"));
             input = Files.readString(Path.of(getInputDir() + "/input.txt"));
         } catch (IOException e) {
             throw new RuntimeException(e);

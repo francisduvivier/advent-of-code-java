@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static day18.DayUtil.input;
-import static day18.DayUtil.sampleInput;
+import static day18.DayUtil.*;
 import static day18.Main.solve;
 import static day18.Main.solve2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +23,8 @@ class MainTest {
 
     @Test
     void solvePart1() {
+        assertEquals("" + (3*4), solve(squareSampleInput));
+        System.out.println("Square Sample ok");
         assertEquals("62", solve(sampleInput));
         System.out.println("Sample ok");
         assertEquals("48503", solve(input));
