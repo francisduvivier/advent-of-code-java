@@ -23,7 +23,7 @@ class MainTest {
 
     @Test
     void solvePart1() {
-        assertEquals("" + (3*4), solve(squareSampleInput));
+        assertEquals("" + (4*6), solve(squareSampleInput));
         System.out.println("Square Sample ok");
         assertEquals("62", solve(sampleInput));
         System.out.println("Sample ok");

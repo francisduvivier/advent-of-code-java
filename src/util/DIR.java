@@ -85,6 +85,6 @@ public enum DIR {
     }
 
     public boolean isOpposite(DIR dir) {
-        return this.isHorizontal() == dir.isHorizontal() && this != dir;
+        return this.getOtherDir(2) == dir;
     }
 }
