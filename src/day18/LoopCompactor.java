@@ -1,18 +1,30 @@
 package day18;
 
 import day18.robot.Connector;
+import day18.robot.ConnectorGrid;
 import util.DIR;
 
 import java.util.*;
 import java.util.function.Function;
 
+import static day18.robot.ConnectorGrid.createNodeList;
+
 public class LoopCompactor {
 
     public static Function<? super String, ?> createInstruction;
     private final INSTRUCT[] instructions;
+    private final boolean DEBUG = true;
 
     LoopCompactor(INSTRUCT[] instructions) {
         this.instructions = instructions;
+    }
+
+    private static void visualizeNodes(Set<Connector<Integer>> bridgedNodeList) {
+        var originalGrid = new ConnectorGrid<Integer>();
+        for (var node : bridgedNodeList) {
+            originalGrid.setTile(node);
+        }
+        System.out.println(originalGrid.toString());
     }
 
     long run() {
@@ -31,7 +43,7 @@ public class LoopCompactor {
 
     private CompactedGrid getCompactedGrid(Connector<Integer> start) {
         System.out.println("Checking original loop");
-        Set<Connector<Integer>> nodeList = CompactedGrid.createNodeList(start);
+        Set<Connector<Integer>> nodeList = createNodeList(start);
         assert nodeList.size() == instructions.length;
         System.out.println("Done Checking original loop");
 
@@ -50,10 +62,13 @@ public class LoopCompactor {
             }
         }
         System.out.println("Checking expanded loop from original start");
-        Set<Connector<Integer>> bridgedNodeList = CompactedGrid.createNodeList(start);
+        Set<Connector<Integer>> bridgedNodeList = createNodeList(start);
         System.out.println("Done Checking expanded loop from original start");
+        if (DEBUG) {
+            visualizeNodes(bridgedNodeList);
+        }
         CompactedGrid compactedGrid = new CompactedGrid(bridgedNodeList);
-        CompactedGrid.createNodeList(compactedGrid.tiles.values().stream().findFirst().get());
+        createNodeList(compactedGrid.tiles.values().stream().findFirst().get());
         return compactedGrid;
     }
 

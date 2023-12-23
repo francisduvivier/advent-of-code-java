@@ -4,36 +4,25 @@ import day18.robot.Connector;
 import day18.robot.ConnectorGrid;
 import util.DIR;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+
+import static util.DIR.UP;
 
 public class CompactedGrid extends ConnectorGrid<Connector> {
     public CompactedGrid(Set<Connector<Integer>> nodeList) {
         buildCompactedGrid(nodeList);
     }
 
-    static <T> Set<Connector<T>> createNodeList(Connector<T> startNode) {
-        Set<Connector<T>> nodeList = new HashSet<>();
-
-        nodeList.add(startNode);
-        var curr = startNode.next;
-        while (curr != startNode) {
-            System.out.println(curr.getDir() + "" + curr.next.getDir() + ":" + curr.key + ":" + curr.value);
-            nodeList.add(curr);
-            curr = curr.next;
-        }
-        return nodeList;
-    }
-
-    static Connector<Connector> findOppositeLoopTile(CompactedGrid grid, Connector<Connector> start, DIR dir) {
+    static List<Connector<Connector>> findOppositeLoopTile(CompactedGrid grid, Connector<Connector> start, DIR dir) {
         Connector<Connector> tile = start;
+        List<Connector<Connector>> connectorsInLine = new ArrayList<>();
         while (true) {
             Connector<Connector> loopTile = grid.getNext(tile, dir);
             if (loopTile != null) {
+                connectorsInLine.add(loopTile);
                 if (loopTile.next.getDir().isOpposite(start.getDir())) {
                     System.out.println("from [" + start.key + "]: " + start + ", FOUND opposite looptile [" + loopTile.key + "]: " + loopTile + ": opposite dir:" + loopTile.next.getDir().isOpposite(start.getDir()));
-                    return loopTile;
+                    return connectorsInLine;
                 } else {
                     System.out.println("from [" + start.key + "]: " + start + ", skipping looptile because of wrong dir [" + loopTile.key + "]: " + loopTile);
                 }
@@ -44,6 +33,15 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
             }
             tile = newTile;
         }
+    }
+
+    private int getInsideDirOffset(Connector<Connector> curr) {
+        int tryOffset = 1;
+        DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(tryOffset);
+        if (findOppositeLoopTile(this, curr, insideDir) == null) {
+            return tryOffset + 2;
+        }
+        return tryOffset;
     }
 
     private void buildCompactedGrid(Set<Connector<Integer>> nodeList) {
@@ -79,41 +77,45 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
     public long findTilesInside() {
         Connector<Connector> start = tiles.values().stream().findAny().get();
         var curr = start;
-        var foundOutside = false;
         long surface = 0;
-        var countedTiles = new HashSet<String>();
+        var countedConnectors = new HashSet<String>();
+        int dirOffset = getInsideDirOffset(curr);
+
         while (curr.prev != start) {
-            if (!curr.getDir().isHorizontal() && !countedTiles.contains(curr.key)) {
-                DIR leftHandDir = DIR.calcDir(curr, curr.prev).getLeftHandDir();
-                Connector<Connector> oppositeLoopTile = findOppositeLoopTile(this, curr, leftHandDir);
-                if (oppositeLoopTile == null) {
-                    foundOutside = true;
-                    break;
+            if (curr.getDir() == UP && !countedConnectors.contains(curr.key)) {
+                DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(dirOffset);
+                List<Connector<Connector>> oppositeLoopTiles = findOppositeLoopTile(this, curr, insideDir);
+
+                if (oppositeLoopTiles == null) {
+                    throw new IllegalStateException("Looks like we are going the wrong direction.");
                 }
-                long verticalLength = 1 + Math.abs(curr.value.row - curr.prev.value.row);
-                long horizontalLength = 1 + Math.abs(oppositeLoopTile.value.col - curr.value.col);
-                surface += verticalLength * horizontalLength;
-                countedTiles.add(oppositeLoopTile.next.key);
+                surface += getSurface(curr, countedConnectors, oppositeLoopTiles);
             }
             curr = curr.prev;
         }
-        curr = start;
-        if (foundOutside) {
-            while (curr.prev != start) {
-                if (!curr.getDir().isHorizontal() && !countedTiles.contains(curr.key)) {
-                    DIR rightHandDir = DIR.calcDir(curr, curr.prev).getRightHandDir();
-                    Connector<Connector> oppositeLoopTile = findOppositeLoopTile(this, curr, rightHandDir);
-                    if (oppositeLoopTile == null) {
-                        throw new IllegalStateException("There should be an opposite tile");
-                    }
-                    long verticalLength = 1 + Math.abs(curr.value.row - curr.prev.value.row);
-                    long horizontalLength = 1 + Math.abs(oppositeLoopTile.value.col - curr.value.col);
-                    surface += verticalLength * horizontalLength;
-                    countedTiles.add(oppositeLoopTile.next.key);
-                }
-                curr = curr.prev;
-            }
-        }
         return surface;
+    }
+
+    private long getSurface(Connector<Connector> curr, HashSet<String> countedConnectors, List<Connector<Connector>> oppositeLoopTiles) {
+        var oppositeLoopTile = oppositeLoopTiles.getLast();
+        long verticalLength = Math.abs(curr.value.row - curr.prev.value.row) - 1;
+//        if (countedConnectors.add(curr.prev.key)) {
+//            verticalLength++;
+//        }
+        long horizontalLength = Math.abs(oppositeLoopTile.value.col - curr.value.col) - 1;
+        long newSurface = verticalLength * horizontalLength;
+//        var currStartTile = curr;
+//        if (!countedConnectors.contains(curr.key)) {
+//            newSurface++;
+//        }
+//        for (var oppositeTile : oppositeLoopTiles) {
+//            if (countedConnectors.add(oppositeTile.key)) {
+//                newSurface += Math.abs(oppositeLoopTile.value.col - currStartTile.value.col);
+//            }
+//            currStartTile = oppositeTile;
+//        }
+
+        System.out.println("surface = " + verticalLength + " * " + horizontalLength + " = " + newSurface);
+        return newSurface;
     }
 }

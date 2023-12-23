@@ -1,5 +1,7 @@
 package util;
 
+import java.util.Arrays;
+
 public enum DIR {
     UP(-1, 0, "^"),
     DOWN(1, 0, "v"),
@@ -10,6 +12,7 @@ public enum DIR {
     public final long rowDiff;
     public final long colDiff;
     private final String print;
+    private int dirIndex;
 
     DIR(long rowDiff, long colDiff, String print) {
         this.rowDiff = rowDiff;
@@ -62,39 +65,19 @@ public enum DIR {
     }
 
     public DIR getLeftHandDir() {
-        switch (this) {
-            case UP -> {
-                return LEFT;
-            }
-            case DOWN -> {
-                return RIGHT;
-            }
-            case RIGHT -> {
-                return UP;
-            }
-            case LEFT -> {
-                return DOWN;
-            }
-        }
-        return null;
+        return getOtherDir(3);
     }
 
     public DIR getRightHandDir() {
-        switch (this) {
-            case UP -> {
-                return RIGHT;
-            }
-            case DOWN -> {
-                return LEFT;
-            }
-            case RIGHT -> {
-                return DOWN;
-            }
-            case LEFT -> {
-                return UP;
-            }
-        }
-        return null;
+        return getOtherDir(1);
+    }
+
+    public DIR getOtherDir(int offset) {
+        return DIRS[(this.dirIndex() + offset) % DIRS.length];
+    }
+
+    private int dirIndex() {
+        return Arrays.stream(DIRS).toList().indexOf(this);
     }
 
     public boolean isHorizontal() {
