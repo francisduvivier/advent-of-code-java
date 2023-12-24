@@ -123,21 +123,21 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 case "L7": {
                     inside = !inside;
                     shouldDoCount = !inside;
-                    System.out.println("LINE: found " + shape + " shape");
+                    System.out.println("LINE " + tile.row + ": found " + shape + " shape");
                     lastVertical = null;
                     break;
                 }
                 case "LJ":
                 case "F7": {
                     shouldDoCount = !inside;
-                    System.out.println("LINE: found " + shape + " shape");
+                    System.out.println("LINE " + tile.row + ": found " + shape + " shape");
                     lastVertical = null;
                     break;
                 }
             }
             if (shouldDoCount) {
                 long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
-                System.out.println("LINE: shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
+                System.out.println("LINE " + tile.row + ": shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
                 tiles += lineTiles;
                 currStart = null;
                 lastVertical = null;
