@@ -40,7 +40,7 @@ public class TGrid<V, T extends VTile<V>> {
     }
 
     public T getNext(T tile, DIR dir) {
-        return getTile(tile.row + dir.rowDiff, tile.col + +dir.colDiff);
+        return getTile(tile.row + dir.rowDiff, tile.col + dir.colDiff);
     }
 
     public void setTile(T tile) {

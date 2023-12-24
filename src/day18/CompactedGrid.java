@@ -41,6 +41,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         if (findOppositeLoopTile(this, curr, insideDir) == null) {
             return tryOffset + 2;
         }
+        System.out.println("--- getInsideDirOffset done");
         return tryOffset;
     }
 
@@ -93,57 +94,55 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                     surface += getInsideSurface(curr, oppositeLoopTiles);
                 }
 
-                surface += getLineTiles(curr, oppositeLoopTiles, countedLineStarts);
+                surface += getAllLineTiles(curr, oppositeLoopTiles, countedLineStarts);
             }
             curr = curr.prev;
         }
         return surface;
     }
 
-    private long getLineTiles(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles, Set<Connector<Connector>> countedLineStarts) {
-        var oppositeLoopTile = oppositeLoopTiles.getLast();
-        long tiles = 0;
-        if (countedLineStarts.contains(oppositeLoopTile)) {
-            tiles--;
+    private long countTilesInLineFrom(Connector<Connector> lineStart) {
+        var tiles = 0L;
+        var currStart = lineStart;
+        for (var tryCol = lineStart.col + 1; tryCol < this.cols; tryCol++) {
+            Connector<Connector> tile = getTile(lineStart.row, tryCol);
+            if (currStart != null) {
+                DIR verticalDir = currStart.getConnectedVerticalDir();
+                if (tile != null && tile.getConnectedVerticalDir().isOpposite(verticalDir)) {
+                    long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
+                    tiles += lineTiles;
+                    System.out.println("LINE: from [" + currStart.key + "]: " + currStart + ", FOUND opposite tile [" + tile.key + "]: " + tile + ", adding " + lineTiles);
+                    currStart = null;
+                }
+            } else {
+                currStart = tile;
+            }
         }
-        if (countedLineStarts.contains(curr)) {
-            tiles--;
-        }
-        boolean currAlreadyCounted = !countedLineStarts.add(curr);
-        boolean oppositeAlreadyCounted = !countedLineStarts.add(oppositeLoopTile);
-        if (oppositeAlreadyCounted && currAlreadyCounted) {
-            System.out.println("LINE: from [" + curr.key + "]: " + curr + ", skipping oppositeLoopTile because already counted [" + oppositeLoopTile.key + "]: " + oppositeLoopTile);
+        return tiles;
+    }
+
+    private long getAllLineTiles(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles, Set<Connector<Connector>> countedLineStarts) {
+        var lineStart = getLineStart(curr);
+        boolean alreadyAdded = !countedLineStarts.add(lineStart);
+        if (alreadyAdded) {
             return 0;
         }
-        while (oppositeLoopTile.next.row == curr.row
-            && isFurtherFromOtherThen(oppositeLoopTile.next, oppositeLoopTile, curr)
-            && oppositeLoopTile.next.getDir() != UP
-            && countedLineStarts.add(oppositeLoopTile.prev)
-        ) {
-            oppositeLoopTile = oppositeLoopTile.next;
+        return countTilesInLineFrom(lineStart);
+    }
+
+    private Connector<Connector> getLineStart(Connector<Connector> curr) {
+        var row = curr.row;
+        for (var tryCol = this.minCol; tryCol < this.cols; tryCol++) {
+            Connector<Connector> tile = getTile(row, tryCol);
+            if (tile != null) {
+                return tile;
+            }
         }
+        throw new IllegalArgumentException("Could not find tile in given row.");
+    }
 
-        while (oppositeLoopTile.prev.row == curr.row
-            && isFurtherFromOtherThen(oppositeLoopTile.prev, oppositeLoopTile, curr)
-            && oppositeLoopTile.prev.getDir() != UP
-            && countedLineStarts.add(oppositeLoopTile.prev)
-        ) {
-            oppositeLoopTile = oppositeLoopTile.prev;
-        }
-
-        var outwardLineTile = curr;
-        while (outwardLineTile.next.row == curr.row && isFurtherFromOtherThen(outwardLineTile.next, outwardLineTile, oppositeLoopTile) && countedLineStarts.add(outwardLineTile.next)) {
-            outwardLineTile = outwardLineTile.next;
-        }
-        while (outwardLineTile.prev.row == curr.row && isFurtherFromOtherThen(outwardLineTile.prev, outwardLineTile, oppositeLoopTile) && countedLineStarts.add(outwardLineTile.prev)) {
-            outwardLineTile = outwardLineTile.prev;
-        }
-
-
-        tiles += Math.abs(outwardLineTile.value.col - oppositeLoopTile.value.col) + 1;
-        System.out.println("Line = " + outwardLineTile.key + " - " + curr.key + " - " + oppositeLoopTile.key + " = " + tiles);
-
-        return tiles;
+    public boolean isOutSide(Connector<Connector> next) {
+        return isOutSide(next.row, next.col);
     }
 
     private boolean isFurtherFromOtherThen(Connector<Connector> next, Connector<Connector> oppositeLoopTile, Connector<Connector> curr) {

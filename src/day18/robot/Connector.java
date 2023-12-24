@@ -122,4 +122,12 @@ public class Connector<T> extends VTile<T> {
     public DIR getDir() {
         return DIR.calcDir(this.prev, this);
     }
+
+    public DIR getConnectedVerticalDir() {
+        if (this.getDir().isHorizontal()) {
+            return this.next.getDir();
+        }
+//        assert !this.getDir().isHorizontal();
+        return this.getDir();
+    }
 }
