@@ -13,7 +13,7 @@ public class LoopCompactor {
 
     public static Function<? super String, ?> createInstruction;
     private final INSTRUCT[] instructions;
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
 
     LoopCompactor(INSTRUCT[] instructions) {
         this.instructions = instructions;
