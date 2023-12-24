@@ -102,20 +102,46 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
     }
 
     private long countTilesInLineFrom(Connector<Connector> lineStart) {
+        var inside = false;
         var tiles = 0L;
-        var currStart = lineStart;
-        for (var tryCol = lineStart.col + 1; tryCol < this.cols; tryCol++) {
+        Connector<Connector> currStart = null;
+        Connector<Connector> lastVertical = null;
+        assert !lineStart.getConnectedVerticalDir().isHorizontal();
+
+        for (var tryCol = lineStart.col; tryCol < this.cols; tryCol++) {
             Connector<Connector> tile = getTile(lineStart.row, tryCol);
-            if (currStart != null) {
-                DIR verticalDir = currStart.getConnectedVerticalDir();
-                if (tile != null && tile.getConnectedVerticalDir().isOpposite(verticalDir)) {
-                    long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
-                    tiles += lineTiles;
-                    System.out.println("LINE: from [" + currStart.key + "]: " + currStart + ", FOUND opposite tile [" + tile.key + "]: " + tile + ", adding " + lineTiles);
-                    currStart = null;
+            if (tile == null || tile.getConnectedVerticalDir().isHorizontal()) {
+                continue;
+            }
+            var shape = lastVertical == null ? tile.toString() : lastVertical.toString() + tile.toString();
+            var shouldDoCount = false;
+            switch (shape) {
+                case "^":
+                case "v":
+                case "FJ":
+                case "L7": {
+                    inside = !inside;
+                    shouldDoCount = !inside;
+                    System.out.println("LINE: found " + shape + " shape");
+                    break;
                 }
+                case "LJ":
+                case "F7": {
+                    shouldDoCount = !inside;
+                    System.out.println("LINE: found " + shape + " shape");
+                    break;
+                }
+            }
+            if (shouldDoCount) {
+                long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
+                tiles += lineTiles;
+                currStart = null;
+                lastVertical = null;
             } else {
-                currStart = tile;
+                lastVertical = tile;
+            }
+            if (currStart == null) {
+                currStart = lastVertical;
             }
         }
         return tiles;
