@@ -83,6 +83,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         while (curr.prev != start) {
             if (!curr.getDir().isHorizontal()) {
                 DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(dirOffset);
+                System.out.println("----");
                 List<Connector<Connector>> oppositeLoopTiles = findOppositeLoopTile(this, curr, insideDir);
 
                 if (oppositeLoopTiles == null) {
@@ -101,6 +102,10 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
 
     private long getLineTiles(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles, Set<Connector<Connector>> countedLineStarts, DIR insideDir) {
         var oppositeLoopTile = oppositeLoopTiles.getLast();
+        while (oppositeLoopTile.next.row == curr.row && curr.next.getDir().getOtherDir(2) == insideDir) {
+            oppositeLoopTile = oppositeLoopTile.next;
+        }
+
         if (!countedLineStarts.add(oppositeLoopTile)) {
             return 0;
         }
@@ -108,12 +113,14 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         while (outwardLineTile.next.row == curr.row && curr.next.getDir().getOtherDir(2) == insideDir) {
             outwardLineTile = outwardLineTile.next;
         }
+
         if (!countedLineStarts.add(outwardLineTile)) {
             return 0;
         }
-        System.out.println("Line = " + outwardLineTile.key + " - " + curr.key + " - " + oppositeLoopTile.key);
+        long tiles = Math.abs(outwardLineTile.value.col - oppositeLoopTile.value.col) + 1;
+        System.out.println("Line = " + outwardLineTile.key + " - " + curr.key + " - " + oppositeLoopTile.key + " = " + tiles);
 
-        return Math.abs(outwardLineTile.value.col - oppositeLoopTile.value.col) + 1;
+        return tiles;
     }
 
     private long getInsideSurface(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles) {
