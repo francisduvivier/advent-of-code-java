@@ -131,6 +131,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 case "F7": {
                     shouldDoCount = !inside;
                     System.out.println("LINE: found " + shape + " shape");
+                    lastVertical = null;
                     break;
                 }
             }
@@ -140,8 +141,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 tiles += lineTiles;
                 currStart = null;
                 lastVertical = null;
-            }
-            if (currStart == null) {
+            } else if (currStart == null) {
                 currStart = tile;
             }
         }
