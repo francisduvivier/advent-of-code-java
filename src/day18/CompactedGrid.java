@@ -114,6 +114,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 continue;
             }
             var shape = lastVertical == null ? tile.toString() : lastVertical.toString() + tile.toString();
+            lastVertical = tile;
             var shouldDoCount = false;
             switch (shape) {
                 case "^":
@@ -123,6 +124,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                     inside = !inside;
                     shouldDoCount = !inside;
                     System.out.println("LINE: found " + shape + " shape");
+                    lastVertical = null;
                     break;
                 }
                 case "LJ":
@@ -134,14 +136,13 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
             }
             if (shouldDoCount) {
                 long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
+                System.out.println("LINE: shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
                 tiles += lineTiles;
                 currStart = null;
                 lastVertical = null;
-            } else {
-                lastVertical = tile;
             }
             if (currStart == null) {
-                currStart = lastVertical;
+                currStart = tile;
             }
         }
         return tiles;
