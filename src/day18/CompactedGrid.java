@@ -21,10 +21,10 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
             if (loopTile != null) {
                 connectorsInLine.add(loopTile);
                 if (loopTile.next.getDir().isOpposite(start.getDir())) {
-                    System.out.println("from [" + start.key + "]: " + start + ", FOUND opposite looptile [" + loopTile.key + "]: " + loopTile + ": opposite dir:" + loopTile.next.getDir().isOpposite(start.getDir()));
+                    System.out.println("from [" + start.value.key + "]: " + start + ", FOUND opposite looptile [" + loopTile.value.key + "]: " + loopTile + ": opposite dir:" + loopTile.next.getDir().isOpposite(start.getDir()));
                     return connectorsInLine;
                 } else {
-                    System.out.println("from [" + start.key + "]: " + start + ", skipping looptile because of wrong dir [" + loopTile.key + "]: " + loopTile);
+                    System.out.println("from [" + start.value.key + "]: " + start + ", skipping looptile because of wrong dir [" + loopTile.value.key + "]: " + loopTile);
                 }
             }
             Connector<Connector> newTile = createNext(tile, dir, 1);
@@ -102,25 +102,38 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
 
     private long getLineTiles(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles, Set<Connector<Connector>> countedLineStarts, DIR insideDir) {
         var oppositeLoopTile = oppositeLoopTiles.getLast();
-        while (oppositeLoopTile.next.row == curr.row && curr.next.getDir().getOtherDir(2) == insideDir) {
+        while (oppositeLoopTile.next.row == curr.row && isFurtherFromOtherThen(oppositeLoopTile.next, oppositeLoopTile, curr)) {
             oppositeLoopTile = oppositeLoopTile.next;
         }
 
+        while (oppositeLoopTile.prev.row == curr.row && isFurtherFromOtherThen(oppositeLoopTile.prev, oppositeLoopTile, curr)) {
+            oppositeLoopTile = oppositeLoopTile.prev;
+        }
+
         if (!countedLineStarts.add(oppositeLoopTile)) {
+            System.out.println("LINE: from [" + curr.value.key + "]: " + curr + ", skipping oppositeLoopTile because already counted [" + oppositeLoopTile.value.key + "]: " + oppositeLoopTile);
             return 0;
         }
         var outwardLineTile = curr;
-        while (outwardLineTile.next.row == curr.row && curr.next.getDir().getOtherDir(2) == insideDir) {
+        while (outwardLineTile.next.row == curr.row && isFurtherFromOtherThen(outwardLineTile.next, outwardLineTile, oppositeLoopTile)) {
             outwardLineTile = outwardLineTile.next;
+        }
+        while (outwardLineTile.prev.row == curr.row && isFurtherFromOtherThen(outwardLineTile.prev, outwardLineTile, oppositeLoopTile)) {
+            outwardLineTile = outwardLineTile.prev;
         }
 
         if (!countedLineStarts.add(outwardLineTile)) {
+            System.out.println("LINE: from [" + curr.value.key + "]: " + curr + ", skipping outwardLineTile because already counted [" + outwardLineTile.value.key + "]: " + outwardLineTile);
             return 0;
         }
         long tiles = Math.abs(outwardLineTile.value.col - oppositeLoopTile.value.col) + 1;
-        System.out.println("Line = " + outwardLineTile.key + " - " + curr.key + " - " + oppositeLoopTile.key + " = " + tiles);
+        System.out.println("Line = " + outwardLineTile.value.key + " - " + curr.value.key + " - " + oppositeLoopTile.value.key + " = " + tiles);
 
         return tiles;
+    }
+
+    private boolean isFurtherFromOtherThen(Connector<Connector> next, Connector<Connector> oppositeLoopTile, Connector<Connector> curr) {
+        return Math.abs(next.col - curr.col) > Math.abs(oppositeLoopTile.col - curr.col);
     }
 
     private long getInsideSurface(Connector<Connector> curr, List<Connector<Connector>> oppositeLoopTiles) {
