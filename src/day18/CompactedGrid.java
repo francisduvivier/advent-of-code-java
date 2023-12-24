@@ -37,7 +37,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
 
     private int getInsideDirOffset(Connector<Connector> curr) {
         int tryOffset = 1;
-        DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(tryOffset);
+        DIR insideDir = curr.getDir().getOtherDir(tryOffset);
         if (findOppositeLoopTile(this, curr, insideDir) == null) {
             return tryOffset + 2;
         }
@@ -82,7 +82,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         Set<Connector<Connector>> countedLineStarts = new HashSet<>();
         while (curr.prev != start) {
             if (!curr.getDir().isHorizontal()) {
-                DIR insideDir = DIR.calcDir(curr, curr.prev).getOtherDir(dirOffset);
+                DIR insideDir = curr.getDir().getOtherDir(dirOffset);
                 System.out.println("----");
                 List<Connector<Connector>> oppositeLoopTiles = findOppositeLoopTile(this, curr, insideDir);
 
