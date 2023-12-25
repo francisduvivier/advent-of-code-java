@@ -43,11 +43,6 @@ public class LoopCompactor {
         System.out.println("--- GRID DONE---");
 
         long solution = compactedGrid.findTilesInside();
-        for (var loopTile : this.loopTiles) {
-            Connector<Connector> tile = compactedGrid.debugGrid.getTile(loopTile.key);
-            assert tile != null;
-            assert tile.value == null || (Integer) tile.value.value == -2;
-        }
         return solution;
 
     }

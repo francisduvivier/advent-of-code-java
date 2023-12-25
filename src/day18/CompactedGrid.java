@@ -11,12 +11,13 @@ import static util.DIR.RIGHT;
 import static util.DIR.UP;
 
 public class CompactedGrid extends ConnectorGrid<Connector> {
-    private static final boolean DEBUG = true;
-    public TGrid<Connector, Connector<Connector>> debugGrid;
+    private static final boolean DEBUG = false;
+    public TGrid<Object, Connector<Object>> debugGrid;
     public Set<Connector<Connector>> loopTiles;
 
     public CompactedGrid(Set<Connector<Integer>> nodeList) {
         buildCompactedGrid(nodeList);
+        debugGrid = new ConnectorGrid<>();
     }
 
     static List<Connector<Connector>> findOppositeLoopTile(CompactedGrid grid, Connector<Connector> start, DIR dir) {
@@ -87,7 +88,11 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         long surface = 0;
         int dirOffset = getInsideDirOffset(curr);
         Set<Connector<Connector>> countedLineStarts = new HashSet<>();
-        while (curr.prev != start) {
+        var needsToDoStart = true;
+        while (needsToDoStart) {
+            if (curr.prev == start) {
+                needsToDoStart = false;
+            }
             if (!curr.getDir().isHorizontal()) {
                 DIR insideDir = curr.getDir().getOtherDir(dirOffset);
                 System.out.println("----");
@@ -129,33 +134,32 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 case "L7": {
                     inside = !inside;
                     shouldDoCount = !inside;
-                    System.out.println("LINE " + tile.row + ": found " + shape + " shape");
+                    System.out.println("LINE " + tile.row + "->" + tile.value.row + ": found " + shape + " shape");
                     lastVertical = null;
                     break;
                 }
                 case "LJ":
                 case "F7": {
                     shouldDoCount = !inside;
-                    System.out.println("LINE " + tile.row + ": found " + shape + " shape");
+                    System.out.println("LINE " + tile.row + "->" + tile.value.row + ": found " + shape + " shape");
                     lastVertical = null;
                     break;
                 }
             }
             if (shouldDoCount) {
                 long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
-                System.out.println("LINE " + tile.row + ": shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
+                System.out.println("LINE " + tile.row + "->" + tile.value.row + ": shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
                 if (DEBUG) {
-                    if (debugGrid == null) {
-                        debugGrid = new ConnectorGrid<>();
-                    }
-                    for (long col = currStart.col; col <= tile.col; col++) {
-                        if (getTile(tile.row, col) != null) {
-                            debugGrid.setTile(getTile(tile.row, col));
-                            getTile(tile.row, col).value.value = -2;
+                    for (long origCol = currStart.value.col; origCol <= tile.value.col; origCol++) {
+                        Connector newTile;
+                        if (origCol == currStart.value.col) {
+                            newTile = currStart.value;
+                        } else if (origCol == tile.value.col) {
+                            newTile = tile.value;
                         } else {
-                            Connector<Connector> newTile = createNext(currStart, RIGHT, (int) (col - currStart.col));
-                            debugGrid.setTile(newTile);
+                            newTile = createNext(currStart.value, RIGHT, (int) (origCol - currStart.value.col));
                         }
+                        debugGrid.setTile(newTile);
                     }
                 }
                 tiles += lineTiles;
@@ -203,6 +207,15 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         var oppositeLoopTile = oppositeLoopTiles.getLast();
         long verticalLength = Math.abs(curr.value.row - curr.prev.value.row) - 1;
         long horizontalLength = Math.abs(oppositeLoopTile.value.col - curr.value.col) + 1;
+        if (DEBUG) {
+            var rowDir = curr.getDir().getOtherDir(2);
+            var colDir = DIR.calcDir(curr, oppositeLoopTile);
+            for (var row = curr.value.row + rowDir.rowDiff; rowDir.rowDiff * row < rowDir.rowDiff * curr.prev.value.row; row += rowDir.rowDiff) {
+                for (var col = curr.value.col; col * colDir.colDiff <= colDir.colDiff * oppositeLoopTile.value.col; col += colDir.colDiff) {
+                    debugGrid.setTile(new Connector<>(row, col, null, null));
+                }
+            }
+        }
         long newSurface = verticalLength * horizontalLength;
         System.out.println("surface = " + verticalLength + " * " + horizontalLength + " = " + newSurface);
         return newSurface;
