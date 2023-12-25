@@ -3,12 +3,18 @@ package day18;
 import day18.robot.Connector;
 import day18.robot.ConnectorGrid;
 import util.DIR;
+import util.TGrid;
 
 import java.util.*;
 
+import static util.DIR.RIGHT;
 import static util.DIR.UP;
 
 public class CompactedGrid extends ConnectorGrid<Connector> {
+    private static final boolean DEBUG = true;
+    public TGrid<Connector, Connector<Connector>> debugGrid;
+    public Set<Connector<Connector>> loopTiles;
+
     public CompactedGrid(Set<Connector<Integer>> nodeList) {
         buildCompactedGrid(nodeList);
     }
@@ -71,7 +77,7 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
         assert (startCompacted.prev.col != startCompacted.col) != (startCompacted.prev.row != startCompacted.row);// Straight line
         lastCompacted.next = startCompacted;
         System.out.println("Checking compacted loop");
-        createNodeList(startCompacted);
+        this.loopTiles = createNodeList(startCompacted);
         System.out.println("Done Checking compacted loop");
     }
 
@@ -138,6 +144,20 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
             if (shouldDoCount) {
                 long lineTiles = Math.abs(currStart.value.col - tile.value.col) + 1;
                 System.out.println("LINE " + tile.row + ": shouldDoCount " + currStart.key + " to " + tile.key + ": " + lineTiles);
+                if (DEBUG) {
+                    if (debugGrid == null) {
+                        debugGrid = new ConnectorGrid<>();
+                    }
+                    for (long col = currStart.col; col <= tile.col; col++) {
+                        if (getTile(tile.row, col) != null) {
+                            debugGrid.setTile(getTile(tile.row, col));
+                            getTile(tile.row, col).value.value = -2;
+                        } else {
+                            Connector<Connector> newTile = createNext(currStart, RIGHT, (int) (col - currStart.col));
+                            debugGrid.setTile(newTile);
+                        }
+                    }
+                }
                 tiles += lineTiles;
                 currStart = null;
                 lastVertical = null;
@@ -145,6 +165,9 @@ public class CompactedGrid extends ConnectorGrid<Connector> {
                 currStart = tile;
             }
         }
+        assert currStart == null;
+        assert lastVertical == null;
+        assert tiles != 0;
         return tiles;
     }
 

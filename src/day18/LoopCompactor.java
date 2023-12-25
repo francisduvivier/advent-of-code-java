@@ -4,7 +4,10 @@ import day18.robot.Connector;
 import day18.robot.ConnectorGrid;
 import util.DIR;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.function.Function;
 
 import static day18.robot.ConnectorGrid.createNodeList;
@@ -14,6 +17,7 @@ public class LoopCompactor {
     public static Function<? super String, ?> createInstruction;
     private final INSTRUCT[] instructions;
     private final boolean DEBUG = false;
+    private Set<Connector<Connector>> loopTiles;
 
     LoopCompactor(INSTRUCT[] instructions) {
         this.instructions = instructions;
@@ -38,7 +42,14 @@ public class LoopCompactor {
         System.out.println();
         System.out.println("--- GRID DONE---");
 
-        return compactedGrid.findTilesInside();
+        long solution = compactedGrid.findTilesInside();
+        for (var loopTile : this.loopTiles) {
+            Connector<Connector> tile = compactedGrid.debugGrid.getTile(loopTile.key);
+            assert tile != null;
+            assert tile.value == null || (Integer) tile.value.value == -2;
+        }
+        return solution;
+
     }
 
     private CompactedGrid getCompactedGrid(Connector<Integer> start) {
@@ -68,7 +79,8 @@ public class LoopCompactor {
             visualizeNodes(bridgedNodeList);
         }
         CompactedGrid compactedGrid = new CompactedGrid(bridgedNodeList);
-        createNodeList(compactedGrid.tiles.values().stream().findFirst().get());
+        this.loopTiles = createNodeList(compactedGrid.tiles.values().stream().findFirst().get());
+
         return compactedGrid;
     }
 
