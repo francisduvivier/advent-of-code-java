@@ -34,6 +34,6 @@ class MainTest {
     void solvePart2() {
         assertEquals("952408144115", solve2(sampleInput));
         System.out.println("Part 2 Sample ok");
-        assertEquals("PART 2 SOLUTION IS", solve2(input));
+        assertEquals("148442153147147", solve2(input));
     }
 }
