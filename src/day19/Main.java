@@ -21,21 +21,7 @@ public class Main {
      * findFlowResultRec(flowName):
      * rules = getFlow(flowName):
      * for rule in rules:
-     * destination = rule
-     * if(rule.equals("A")){
-     * return true;
-     * }
-     * else if(rule.equals("R")){
-     * return false;
-     * }else if(match "[><]"){
-     * letter, biggerOrSmaller (>=1, <=-1), value, destination
-     * if(xMas.getLetter(letter)*biggerOrSmaller > biggerOrSmaller * value){
-     * destination
-     * }
-     * // Best extract this into tested function checkBiggerSmallerThanRule(xmas, String rule)
-     * }else{
-     * return findFlowResultRec(rule)
-     * }
+     *  sum+=xmas.sum if findFlowResult(....)
      * // To follow the open closed principle, each of these rules should be some class implementing the boolean exec(xMas, flowMap) interface
      */
     static String solve(String input) {

@@ -26,4 +26,18 @@ public class Rule {
     String getRef() {
         return this.getParts()[this.getParts().length - 1];
     }
+
+    public boolean getCompareResult(Xmas xmas) {
+        assert !this.isDirect();
+
+        var parts = getParts();
+        var number = Long.parseLong(parts[1]);
+        var letterVal = xmas.getLetter(parts[0]);
+        int multiplier = isBiggerThan() ? 1 : -1;
+        if (letterVal * multiplier > number) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

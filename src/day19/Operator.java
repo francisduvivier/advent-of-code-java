@@ -1,9 +1,6 @@
 package day19;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Operator {
     Map<String, List<Rule>> flowMap = new HashMap<>();
@@ -26,9 +23,38 @@ public class Operator {
         return getFlowResultRec(input, "in");
     }
 
-    boolean getFlowResultRec(Xmas input, String flowKey) {
-        var flowRules = flowMap.get(flowKey);
-        // TODO implement
-        return false;
+    //        destination = rule
+//            * if(rule.equals("A")){
+//     * return true;
+//     * }
+//     * else if(rule.equals("R")){
+//     * return false;
+//     * }else if(match "[><]"){
+//     * letter, biggerOrSmaller (>=1, <=-1), value, destination
+//                * if(xMas.getLetter(letter)*biggerOrSmaller > biggerOrSmaller * value){
+//     * destination
+//                    * }
+//     * // Best extract this into tested function checkBiggerSmallerThanRule(xmas, String rule)
+//     * }else{
+//     * return findFlowResultRec(rule)
+//                * }
+    boolean getFlowResultRec(Xmas xmas, String flowKey) {
+        var flowRules = new ArrayList<>(flowMap.get(flowKey));
+        while (!flowRules.isEmpty()) {
+            var currRule = flowRules.removeFirst();
+            if (currRule.equals("A")) {
+                return true;
+            }
+            if (currRule.equals("R")) {
+                return false;
+            }
+            if (currRule.isDirect()) {
+                return getFlowResultRec(xmas, currRule.getRef());
+            }
+            if (currRule.getCompareResult(xmas)) {
+                return getFlowResultRec(xmas, currRule.getRef());
+            }
+        }
+        throw new IllegalStateException("Ended rules without a result");
     }
 }
