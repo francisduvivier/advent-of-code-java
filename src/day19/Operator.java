@@ -39,15 +39,15 @@ public class Operator {
 //     * return findFlowResultRec(rule)
 //                * }
     boolean getFlowResultRec(Xmas xmas, String flowKey) {
+        if (flowKey.equals("A")) {
+            return true;
+        }
+        if (flowKey.equals("R")) {
+            return false;
+        }
         var flowRules = new ArrayList<>(flowMap.get(flowKey));
         while (!flowRules.isEmpty()) {
             var currRule = flowRules.removeFirst();
-            if (currRule.equals("A")) {
-                return true;
-            }
-            if (currRule.equals("R")) {
-                return false;
-            }
             if (currRule.isDirect()) {
                 return getFlowResultRec(xmas, currRule.getRef());
             }
