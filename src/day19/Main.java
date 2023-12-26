@@ -1,5 +1,7 @@
 package day19;
 
+import java.util.Arrays;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
@@ -36,12 +38,17 @@ public class Main {
      * }
      * // To follow the open closed principle, each of these rules should be some class implementing the boolean exec(xMas, flowMap) interface
      */
-    static String solve(String sampleInput) {
-        String[] lines = sampleInput.split("\n");
-
-
+    static String solve(String input) {
+        var flowLines = input.split("\n *\n")[0].split("\n");
+        var operator = new Operator(flowLines);
+        var xMasLines = input.split("\n *\n")[1].split("\n");
+        var xMasObjects = Arrays.stream(xMasLines).map(Xmas::parse).toList();
         long result = 0;
-        // TODO
+        for (var xmas : xMasObjects) {
+            if (operator.getFlowResult(xmas)) {
+                result += xmas.getSum();
+            }
+        }
         return "" + result;
     }
 
