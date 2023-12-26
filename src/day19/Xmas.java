@@ -31,4 +31,12 @@ public class Xmas {
     Long getLetter(String letter) {
         return values.get(letter);
     }
+
+    Long getSum() {
+        var sum = 0L;
+        for (var value : values.values()) {
+            sum += value;
+        }
+        return sum;
+    }
 }
