@@ -27,7 +27,8 @@ public class Operator {
     }
 
     boolean getFlowResultRec(Xmas input, String flowKey) {
-        // TODO
+        var flowRules = flowMap.get(flowKey);
+        // TODO implement
         return false;
     }
 }
