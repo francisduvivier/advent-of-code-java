@@ -20,7 +20,7 @@ public class Main {
          *
          *    findFlowResultRec(flowName):
          *      rules = getFlow(flowName):
-     *          for rule in rules:
+         *          for rule in rules:
          *          destination = rule
          *          if(rule.equals("A")){
          *              return true;
@@ -36,7 +36,7 @@ public class Main {
          *          }else{
          *              return findFlowResultRec(rule)
          *          }
-         *          // TO follow the open closed principle, each of these rules should be some class implementing the boolean exec(xMas, flowMap) interface
+         *          // To follow the open closed principle, each of these rules should be some class implementing the boolean exec(xMas, flowMap) interface
          */
 
         long result = 0;
