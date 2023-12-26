@@ -34,7 +34,7 @@ public class Rule {
         var number = Long.parseLong(parts[1]);
         var letterVal = xmas.getLetter(parts[0]);
         int multiplier = isBiggerThan() ? 1 : -1;
-        if (letterVal * multiplier > number) {
+        if (letterVal * multiplier > number * multiplier) {
             return true;
         } else {
             return false;
