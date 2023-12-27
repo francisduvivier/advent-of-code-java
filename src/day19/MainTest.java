@@ -31,6 +31,6 @@ class MainTest {
     @Test
     void solvePart2() {
         assertEquals("167409079868000", solve2(sampleInput));
-        assertEquals("PART 2 SOLUTION IS", solve2(input));
+        assertEquals("125455345557345", solve2(input));
     }
 }
