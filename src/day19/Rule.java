@@ -1,5 +1,8 @@
 package day19;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Rule {
     private final String ruleString;
 
@@ -41,15 +44,20 @@ public class Rule {
         }
     }
 
-    public XmasRange narrowRange(XmasRange xmasRange) {
+    public List<XmasRange> getRangeSplit(XmasRange xmasRange) {
         assert !this.isDirect();
         var parts = getParts();
         var compareNumber = Long.parseLong(parts[1]);
         String letter = parts[0];
+        List<XmasRange> rangeSplit = new ArrayList<>();
+
         if (isBiggerThan()) {
-            return xmasRange.createWithChangedStart(letter, compareNumber + 1);
+            rangeSplit.add(xmasRange.createWithChangedStart(letter, compareNumber + 1));
+            rangeSplit.add(xmasRange.createWithChangedEnd(letter, compareNumber));
         } else {
-            return xmasRange.createWithChangedEnd(letter, compareNumber - 1);
+            rangeSplit.add(xmasRange.createWithChangedEnd(letter, compareNumber - 1));
+            rangeSplit.add(xmasRange.createWithChangedStart(letter, compareNumber));
         }
+        return rangeSplit;
     }
 }
