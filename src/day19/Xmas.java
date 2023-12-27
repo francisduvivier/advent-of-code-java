@@ -2,6 +2,7 @@ package day19;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Xmas {
     private final Map<String, Long> values;
@@ -38,5 +39,15 @@ public class Xmas {
             sum += value;
         }
         return sum;
+    }
+
+    public Set<String> keySet() {
+        return this.values.keySet();
+    }
+
+    public Xmas createChanged(String letter, long newValue) {
+        HashMap<String, Long> valuesClone = new HashMap<>(values);
+        valuesClone.put(letter, newValue);
+        return new Xmas(valuesClone);
     }
 }

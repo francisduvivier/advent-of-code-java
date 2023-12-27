@@ -21,7 +21,7 @@ public class Main {
      * findFlowResultRec(flowName):
      * rules = getFlow(flowName):
      * for rule in rules:
-     *  sum+=xmas.sum if findFlowResult(....)
+     * sum+=xmas.sum if findFlowResult(....)
      * // To follow the open closed principle, each of these rules should be some class implementing the boolean exec(xMas, flowMap) interface
      */
     static String solve(String input) {
@@ -38,11 +38,11 @@ public class Main {
         return "" + result;
     }
 
-    static String solve2(String sampleInput) {
-        String[] lines = sampleInput.split("\n");
-        long result = 0;
-        // TODO
-        return "" + result;
+    static String solve2(String input) {
+        var flowLines = input.split("\n *\n")[0].split("\n");
+        var operator = new Operator(flowLines);
+
+        return "" + operator.getAmountOfAcceptedFlows();
     }
 
 }

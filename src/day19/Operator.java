@@ -57,4 +57,33 @@ public class Operator {
         }
         throw new IllegalStateException("Ended rules without a result");
     }
+
+    public long getAmountOfAcceptedFlowsRec(XmasRange xmasRange, String flowKey) {
+        long multiplication = xmasRange.getMultiplication();
+        if (multiplication == 0) {
+            return 0;
+        }
+        if (flowKey.equals("A")) {
+            return multiplication;
+        }
+        if (flowKey.equals("R")) {
+            return 0;
+        }
+        var flowRules = new ArrayList<>(flowMap.get(flowKey));
+        var sum = 0L;
+        while (!flowRules.isEmpty()) {
+            var currRule = flowRules.removeFirst();
+            if (currRule.isDirect()) {
+                return getAmountOfAcceptedFlowsRec(xmasRange, currRule.getRef());
+            }
+            XmasRange narrowedRange = currRule.narrowRange(xmasRange);
+            sum += getAmountOfAcceptedFlowsRec(narrowedRange, currRule.getRef());
+        }
+        return sum;
+    }
+
+    public Long getAmountOfAcceptedFlows() {
+        XmasRange xmasRange = new XmasRange(Xmas.parse("{x=1,m=1,a=1,s=1}"), Xmas.parse("{x=4000,m=4000,a=4000,s=4000}"));
+        return getAmountOfAcceptedFlowsRec(xmasRange, "in");
+    }
 }

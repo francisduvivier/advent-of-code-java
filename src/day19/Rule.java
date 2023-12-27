@@ -40,4 +40,16 @@ public class Rule {
             return false;
         }
     }
+
+    public XmasRange narrowRange(XmasRange xmasRange) {
+        assert !this.isDirect();
+        var parts = getParts();
+        var compareNumber = Long.parseLong(parts[1]);
+        String letter = parts[0];
+        if (isBiggerThan()) {
+            return xmasRange.createWithChangedStart(letter, compareNumber + 1);
+        } else {
+            return xmasRange.createWithChangedEnd(letter, compareNumber - 1);
+        }
+    }
 }
