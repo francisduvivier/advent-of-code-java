@@ -74,12 +74,12 @@ public class Operator {
         while (!flowRules.isEmpty()) {
             var currRule = flowRules.removeFirst();
             if (currRule.isDirect()) {
-                return getAmountOfAcceptedFlowsRec(xmasRange, currRule.getRef());
+                return sum + getAmountOfAcceptedFlowsRec(xmasRange, currRule.getRef());
             }
             List<XmasRange> narrowedRange = currRule.getRangeSplit(xmasRange);
             var trueRange = narrowedRange.getFirst();
-            var falseRange = narrowedRange.getLast();
             sum += getAmountOfAcceptedFlowsRec(trueRange, currRule.getRef());
+            xmasRange = narrowedRange.getLast(); // False Range
         }
         return sum;
     }
