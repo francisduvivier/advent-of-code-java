@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static day0.DayUtil.*;
-import static day0.Main.solve;
-import static day0.Main.solve2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
@@ -23,13 +21,13 @@ class MainTest {
 
     @Test
     void solvePart1() {
-        assertEquals("TODO", solve(sampleInput));
-        assertEquals("PART 1 SOLUTION IS", solve(input));
+        assertEquals("TODO", Main.solvePart1(sampleInput));
+        assertEquals("PART 1 SOLUTION IS", Main.solvePart1(input));
     }
 
     @Test
     void solvePart2() {
-        assertEquals("TODO", solve2(sampleInput));
-        assertEquals("PART 2 SOLUTION IS", solve2(input));
+        assertEquals("TODO", Main.solvePart2(sampleInput));
+        assertEquals("PART 2 SOLUTION IS", Main.solvePart2(input));
     }
 }
