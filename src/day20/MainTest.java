@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import static day20.DayUtil.input;
 import static day20.DayUtil.sampleInput;
+import static day20.DayUtil.sampleInput2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class MainTest {
@@ -22,7 +23,8 @@ class MainTest {
 
     @Test
     void solvePart1() {
-        assertEquals("TODO", Main.solvePart1(sampleInput));
+        assertEquals("32000000", Main.solvePart1(sampleInput));
+        assertEquals("11687500", Main.solvePart1(sampleInput2));
         assertEquals("PART 1 SOLUTION IS", Main.solvePart1(input));
     }
 
